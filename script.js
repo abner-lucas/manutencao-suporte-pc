@@ -1,6 +1,7 @@
 /*
- * script.js · interface do portal (tema, rolagem, bancada, laboratórios).
+ * script.js · interface do portal (tema, rolagem, vista explodida, bancada, laboratórios, teclado).
  * As regras ficam em logica.js (window.Logica), testadas com node --test.
+ * Sem bibliotecas: tudo com um único laço de rolagem em requestAnimationFrame.
  */
 (function () {
     'use strict';
@@ -20,6 +21,8 @@
         return n;
     }
     function guardar(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    function limitar(v) { return Math.min(1, Math.max(0, v)); }
+    function suave(t) { return 1 - Math.pow(1 - t, 3); }
 
     /* ================= TEMA ================= */
     var botaoTema = $('#botao-tema');
@@ -29,7 +32,7 @@
         botaoTema.setAttribute('aria-label', escuro ? 'Ativar modo claro' : 'Ativar modo escuro');
     }
     sincronizarTema();
-    botaoTema.addEventListener('click', function (ev) {
+    botaoTema.addEventListener('click', function () {
         var trocar = function () {
             doc.dataset.tema = doc.dataset.tema === 'escuro' ? 'claro' : 'escuro';
             guardar('msc:tema', doc.dataset.tema);
@@ -60,6 +63,7 @@
     /* ================= TÍTULOS PALAVRA A PALAVRA ================= */
     $$('[data-palavras]').forEach(function (h) {
         var i = 0;
+        h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
         (function quebrar(no) {
             Array.prototype.slice.call(no.childNodes).forEach(function (n) {
                 if (n.nodeType === 3) {
@@ -67,7 +71,7 @@
                     n.textContent.split(/(\s+)/).forEach(function (p) {
                         if (!p) return;
                         if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
-                        var w = el('span', { classe: 'palavra' }, [el('span', { texto: p })]);
+                        var w = el('span', { classe: 'palavra', 'aria-hidden': 'true' }, [el('span', { texto: p })]);
                         w.firstChild.style.setProperty('--i', i++);
                         frag.appendChild(w);
                     });
@@ -75,31 +79,75 @@
                 } else if (n.nodeType === 1) quebrar(n);
             });
         })(h);
-        h.setAttribute('aria-label', h.textContent.replace(/\s+/g, ' ').trim());
     });
-    // título da abertura entra depois da cortina
-    var tituloAbertura = $('.abertura-titulo');
-    setTimeout(function () { tituloAbertura.classList.add('palavras-ok'); }, doc.hasAttribute('data-visitado') ? 60 : 1500);
 
-    /* ================= REVELAÇÃO (cascata + títulos) ================= */
-    $$('.cascata').forEach(function (c) {
-        var irmaos = $$(':scope > .cascata', c.parentElement);
-        c.style.setProperty('--i', irmaos.indexOf(c));
-    });
-    var revelar = function (n) { n.classList.add('visivel'); };
+    /* ================= REVELAÇÃO ================= */
+    $$('.revela').forEach(function (c) { c.style.setProperty('--i', $$(':scope > .revela', c.parentElement).indexOf(c)); });
+    var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (ents) {
+        ents.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visivel'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }) : null;
+    $$('.revela, .cabeca h2').forEach(function (n) { if (io) io.observe(n); else n.classList.add('visivel'); });
+
+    /* cupom: imprime uma vez quando a impressora aparece */
+    var impressora = $('#impressora'), cupom = $('#cupom');
+    function imprimir() {
+        if (cupom.classList.contains('impresso')) return;
+        impressora.classList.add('imprimindo');
+        cupom.classList.add('impresso');
+        setTimeout(function () { impressora.classList.remove('imprimindo'); }, reduzido ? 0 : 2400);
+    }
     if ('IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (ents) {
-            ents.forEach(function (e) { if (e.isIntersecting) { revelar(e.target); io.unobserve(e.target); } });
-        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-        $$('.cascata, .secao-cabeca h2').forEach(function (n) { io.observe(n); });
-    } else $$('.cascata, .secao-cabeca h2').forEach(revelar);
+        var ioCupom = new IntersectionObserver(function (ents) {
+            if (ents[0].isIntersecting) { imprimir(); ioCupom.disconnect(); }
+        }, { threshold: 0.35 });
+        ioCupom.observe(impressora);
+    } else imprimir();
 
-    /* ================= ROLAGEM: cabeçalho, progresso, cenas, menu atual, trilha ================= */
+    /* ================= VISTA EXPLODIDA ================= */
+    var explode = $('#inicio');
+    var trilhoVerbo = $('#verbo-trilho');
+    var legendas = $$('.legenda', explode);
+    var contador = $('#contador-etapa');
+    var pecasEx = $$('.peca-ex', explode).map(function (g) {
+        return { g: g, id: g.dataset.peca, dx: +g.dataset.dx, dy: +g.dataset.dy, de: +g.dataset.de, ate: +g.dataset.ate, tampa: g.classList.contains('tampa') };
+    });
+    var rotulos = $$('.rotulo', explode);
+    var etapaAtual = -1;
+
+    function desenharExplode(p) {
+        var prog = {};
+        pecasEx.forEach(function (pc) {
+            var e = pc.ate > pc.de ? suave(limitar((p - pc.de) / (pc.ate - pc.de))) : 1;
+            prog[pc.id] = e;
+            if (pc.ate > pc.de) pc.g.setAttribute('transform', 'translate(' + (pc.dx * e).toFixed(1) + ' ' + (pc.dy * e).toFixed(1) + ')');
+            if (pc.tampa) pc.g.style.opacity = (1 - e).toFixed(3);
+        });
+        rotulos.forEach(function (r) { r.classList.toggle('on', (prog[r.dataset.de] || 0) > 0.9); });
+
+        var etapa = p < 0.3 ? 0 : p < 0.72 ? 1 : 2;
+        var inicio = [0, 0.3, 0.72][etapa], fim = [0.3, 0.72, 1][etapa];
+        var local = limitar((p - inicio) / (fim - inicio));
+        // tipografia cinética: a palavra se alarga conforme a etapa avança
+        explode.style.setProperty('--wdth', (75 + 14 * local).toFixed(1));
+        if (etapa !== etapaAtual) {
+            etapaAtual = etapa;
+            explode.dataset.etapa = etapa;
+            trilhoVerbo.style.setProperty('--etapa', etapa);
+            legendas.forEach(function (l) { l.classList.toggle('ativa', +l.dataset.etapa === etapa); });
+            contador.textContent = '0' + (etapa + 1);
+        }
+    }
+    if (reduzido) desenharExplode(1);
+    if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (ents) { explode.classList.toggle('parado', !ents[0].isIntersecting); }).observe(explode);
+    }
+
+    /* ================= LAÇO DE ROLAGEM ================= */
     var topo = $('#topo'), barra = $('#progresso-barra');
     var cenas = $$('.cena');
     var secoes = $$('main section[id]');
     var linksMenu = $$('a', menu);
-    var boot = $('#boot'), etapas = $$('.boot-etapa');
+    var linhasBoot = $$('#bootlog li');
     var ultimoY = scrollY, agendado = false;
 
     function aoRolar() {
@@ -110,12 +158,14 @@
         if (!menu.classList.contains('aberto')) topo.classList.toggle('escondido', y > ultimoY && y > 200);
         ultimoY = y;
 
-        if (!reduzido) cenas.forEach(function (c) {
-            var t = c.getBoundingClientRect().top;
-            // termina quando o topo da seção chega a ~65% da altura da tela
-            var p = Math.min(1, Math.max(0, (vh - t) / (vh * 0.35)));
-            c.style.setProperty('--p', p.toFixed(3));
-        });
+        if (!reduzido) {
+            var re = explode.getBoundingClientRect();
+            if (re.bottom > 0) desenharExplode(limitar(-re.top / (re.height - vh)));
+            cenas.forEach(function (c) {
+                var t = c.getBoundingClientRect().top;
+                c.style.setProperty('--p', limitar((vh - t) / (vh * 0.35)).toFixed(3)); // termina com o topo a ~65% da tela
+            });
+        }
 
         var atual = null;
         secoes.forEach(function (s) { if (s.getBoundingClientRect().top < vh * 0.4) atual = s.id; });
@@ -124,37 +174,22 @@
             else a.removeAttribute('aria-current');
         });
 
-        var rb = boot.getBoundingClientRect();
-        var carga = Math.min(1, Math.max(0, (vh * 0.62 - rb.top) / rb.height));
-        boot.style.setProperty('--carga', carga.toFixed(3));
-        etapas.forEach(function (e) { e.classList.toggle('ativa', e.getBoundingClientRect().top < vh * 0.62); });
+        linhasBoot.forEach(function (li) { li.classList.toggle('ok', reduzido || li.getBoundingClientRect().top < vh * 0.72); });
     }
     addEventListener('scroll', function () { if (!agendado) { agendado = true; requestAnimationFrame(aoRolar); } }, { passive: true });
     addEventListener('resize', aoRolar);
+
+    /* status do log de boot: [ .... ] → [  OK  ] */
+    linhasBoot.forEach(function (li) { $('.st', li).innerHTML = '[<em> .... </em><b>  OK  </b>]'; });
     aoRolar();
 
-    /* ================= CURSOR DESLIZANTE (filtros e abas) ================= */
-    function moverCursor(grupo, cursor, ativo) {
+    /* ================= ABAS DO LABORATÓRIO ================= */
+    var abas = $('.abas'), cursorAba = $('.abas-cursor'), botoesAba = $$('.aba', abas);
+    function moverCursor(cursor, ativo) {
         if (!ativo) return;
         cursor.style.width = ativo.offsetWidth + 'px';
         cursor.style.transform = 'translateX(' + ativo.offsetLeft + 'px)';
     }
-
-    /* ================= ORDENS: filtro ================= */
-    var filtros = $('.filtros'), cursorFiltro = $('.filtros-cursor');
-    var botoesFiltro = $$('.filtro', filtros), ordens = $$('.os');
-    botoesFiltro.forEach(function (b) {
-        b.addEventListener('click', function () {
-            botoesFiltro.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-            moverCursor(filtros, cursorFiltro, b);
-            var f = b.dataset.filtro, n = 0;
-            ordens.forEach(function (o) { var mostra = f === 'todas' || o.dataset.categoria === f; o.hidden = !mostra; if (mostra) n++; });
-            $('#filtro-vazio').hidden = n > 0;
-        });
-    });
-
-    /* ================= ABAS DO LABORATÓRIO ================= */
-    var abas = $('.abas'), cursorAba = $('.abas-cursor'), botoesAba = $$('.aba', abas);
     function ativarAba(b, focar) {
         botoesAba.forEach(function (x) {
             var sel = x === b;
@@ -162,7 +197,7 @@
             x.tabIndex = sel ? 0 : -1;
             document.getElementById(x.getAttribute('aria-controls')).hidden = !sel;
         });
-        moverCursor(abas, cursorAba, b);
+        moverCursor(cursorAba, b);
         if (focar) b.focus();
     }
     botoesAba.forEach(function (b, i) {
@@ -175,27 +210,22 @@
     $$('[data-abrir-aba]').forEach(function (a) {
         a.addEventListener('click', function () { ativarAba(document.getElementById(a.dataset.abrirAba)); });
     });
-    $$('a[href="#lab-diagnostico"], a[href="#lab-particoes"]').forEach(function (a) {
-        a.addEventListener('click', function () { ativarAba(document.getElementById(a.getAttribute('href') === '#lab-particoes' ? 'aba-particoes' : 'aba-diagnostico')); });
-    });
-    function posicionarCursores() {
-        moverCursor(filtros, cursorFiltro, $('.filtro[aria-pressed="true"]'));
-        moverCursor(abas, cursorAba, $('.aba[aria-selected="true"]'));
-    }
-    addEventListener('resize', posicionarCursores);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(posicionarCursores);
-    posicionarCursores();
+    function posicionarCursor() { moverCursor(cursorAba, $('.aba[aria-selected="true"]')); }
+    addEventListener('resize', posicionarCursor);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(posicionarCursor);
+    posicionarCursor();
 
     /* luz do palco segue o ponteiro */
-    var palco = $('.palco-inner');
-    palco.addEventListener('pointermove', function (e) {
-        var r = palco.getBoundingClientRect();
-        palco.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        palco.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    $$('.palco-inner').forEach(function (palco) {
+        palco.addEventListener('pointermove', function (e) {
+            var r = palco.getBoundingClientRect();
+            palco.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+            palco.style.setProperty('--my', (e.clientY - r.top) + 'px');
+        });
     });
 
     /* ================= BANCADA: MONTAGEM + POST ================= */
-    var bancada = $('#bancada'), placa = $('#placa'), moldura = $('#placa-moldura');
+    var bancada = $('#bancada-fig'), placa = $('#placa'), moldura = $('#placa-moldura');
     var bandeja = $('#bandeja'), linhasTela = $('#tela-linhas'), resultadoTela = $('#tela-resultado');
     var botaoLigar = $('#botao-ligar'), botaoSom = $('#botao-som');
     var slots = $$('.slot', placa);
@@ -211,8 +241,7 @@
     var chips = $$('.chip-peca', bandeja);
 
     function linha(txt, tipo) {
-        var li = el('li', { classe: tipo ? 'tela-' + tipo : '', texto: txt });
-        linhasTela.appendChild(li);
+        linhasTela.appendChild(el('li', { classe: tipo ? 'tela-' + tipo : '', texto: txt }));
         while (linhasTela.children.length > 7) linhasTela.removeChild(linhasTela.firstChild);
     }
     function limparTela() { linhasTela.textContent = ''; resultadoTela.textContent = ''; resultadoTela.className = 'tela-resultado'; }
@@ -224,18 +253,15 @@
         slots.forEach(function (s) { s.classList.toggle('alvo', !!selecionada); });
         if (selecionada) linha('Peça na mão: ' + L.COMPONENTES[selecionada].nome + '. Escolha o encaixe.', 'info');
     }
-
     function desligar() {
         timers.forEach(clearTimeout); timers = [];
         bancada.classList.remove('ligado', 'girar');
         ligando = false; botaoLigar.disabled = false;
     }
-
     function render() {
         chips.forEach(function (c) { c.disabled = estado.instalados.indexOf(c.dataset.id) !== -1; });
         $$('.peca', placa).forEach(function (p) { p.classList.toggle('instalada', estado.instalados.indexOf(p.dataset.peca) !== -1); });
     }
-
     function tentar(id, slot, slotEl) {
         if (ligando) return;
         desligar();
@@ -244,7 +270,7 @@
         else if (slotEl) { slotEl.classList.remove('errado'); void slotEl.getBBox(); slotEl.classList.add('errado'); setTimeout(function () { slotEl.classList.remove('errado'); }, 450); }
         resultadoTela.textContent = '';
         linha(r.msg, r.tipo === 'ok' ? '' : r.tipo);
-        if (selecionada) selecionar(selecionada); // limpa a seleção
+        if (selecionada) selecionar(selecionada);
         render();
         if (r.ok && L.faltando(estado).length === 0) linha('Todas as peças instaladas. Aperte Ligar.', 'info');
     }
@@ -299,12 +325,12 @@
 
     /* som opcional: bipes do POST (Web Audio) */
     var audio = null;
-    function bipe(dur, atraso) {
+    function bipe(dur, atraso, freq) {
         if (!som) return;
         try {
             audio = audio || new (window.AudioContext || window.webkitAudioContext)();
             var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + (atraso || 0);
-            o.type = 'square'; o.frequency.value = 880;
+            o.type = 'square'; o.frequency.value = freq || 880;
             g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.01);
             g.gain.setValueAtTime(0.08, t + dur); g.gain.exponentialRampToValueAtTime(0.0001, t + dur + 0.03);
             o.connect(g).connect(audio.destination); o.start(t); o.stop(t + dur + 0.05);
@@ -332,7 +358,7 @@
         timers.push(setTimeout(function () {
             var res = r.resultado;
             resultadoTela.className = 'tela-resultado' + (res.codigo === 'ok' ? '' : ' falha');
-            resultadoTela.innerHTML = '';
+            resultadoTela.textContent = '';
             resultadoTela.appendChild(el('strong', { texto: res.titulo }));
             resultadoTela.appendChild(document.createTextNode(res.explicacao));
             (BIPES[res.codigo] || []).forEach(function (b) { bipe(b[0], b[1]); });
@@ -349,7 +375,6 @@
         linha('Placa vazia de novo. Desconecte sempre da tomada antes de desmontar.', 'info');
     });
 
-    /* inclinação 3D leve da placa ao passar o ponteiro */
     if (!reduzido && matchMedia('(pointer: fine)').matches) {
         moldura.addEventListener('pointermove', function (e) {
             var r = moldura.getBoundingClientRect();
@@ -363,7 +388,7 @@
 
     /* ================= DIAGNÓSTICO ================= */
     var caixaPergunta = $('#diag-pergunta'), listaCaminho = $('#diag-caminho');
-    var historico = []; // [{ id, indice }]
+    var historico = [];
     var atualDiag = 'inicio';
 
     function renderDiag(focar) {
@@ -422,8 +447,7 @@
         ultimaMsg = msg || null;
         renderDisco();
     }
-    function rotuloSeg(p) { return (p.rotulo || NOMES_TIPO[p.tipo]) ; }
-
+    function rotuloSeg(p) { return p.rotulo || NOMES_TIPO[p.tipo]; }
     function renderDisco() {
         barraDisco.textContent = '';
         var total = disco.tamanho;
@@ -446,14 +470,13 @@
             barraDisco.appendChild(seg);
         });
         var a = L.analisarDisco(disco);
-        var livre = a.livre;
-        if (livre > 0) { var vz = el('div', { 'aria-hidden': 'true' }); vz.style.flex = '1 1 0'; barraDisco.appendChild(vz); }
+        if (a.livre > 0) { var vz = el('div', { 'aria-hidden': 'true' }); vz.style.flex = '1 1 0'; barraDisco.appendChild(vz); }
         if (total > a.limite) {
             var ina = el('div', { classe: 'disco-seg disco-seg-inacessivel', title: 'inacessível com MBR' }, [el('span', { texto: 'inacessível' })]);
             ina.style.flex = '0 0 ' + ((total - a.limite) / total * 100) + '%';
             barraDisco.appendChild(ina);
         }
-        $('#disco-uso').textContent = 'usado ' + a.usado + ' GB · livre ' + livre + ' GB';
+        $('#disco-uso').textContent = 'usado ' + a.usado + ' GB · livre ' + a.livre + ' GB';
         $('#disco-real').textContent = total + ' GB na caixa ≈ ' + String(L.capacidadeReal(total)).replace('.', ',') + ' GB no Windows (base 2)';
 
         analise.textContent = '';
@@ -463,7 +486,6 @@
         a.alertas.forEach(function (al) { msg(al.tipo, al.tipo === 'aviso' ? 'Atenção' : 'Bom saber', al.msg); });
         $('#part-desfazer').disabled = disco.particoes.length === 0;
     }
-
     formConfig.addEventListener('change', function () {
         novoDisco({ tipo: 'info', titulo: 'Disco reiniciado', texto: 'Trocar a tabela (MBR ↔ GPT) exige apagar todas as partições, como no Gerenciamento de Disco do Windows.' });
     });
@@ -482,30 +504,52 @@
     });
     novoDisco();
 
-    /* ================= TERMOS ================= */
-    var campoQ = $('#termos-q'), caixaCats = $('#termos-cats'), gaveta = $('#gaveta'), conta = $('#termos-conta');
-    var catAtual = 'todos';
-    var cats = [['todos', 'Todos']].concat(Object.keys(L.CATEGORIAS).map(function (k) { return [k, L.CATEGORIAS[k]]; }));
-    cats.forEach(function (c) {
-        var b = el('button', { type: 'button', classe: 'chip', 'data-cat': c[0], 'aria-pressed': String(c[0] === 'todos'), texto: c[1] });
-        b.addEventListener('click', function () {
-            catAtual = c[0];
-            $$('.chip', caixaCats).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
-            renderTermos();
-        });
-        caixaCats.appendChild(b);
-    });
-    function renderTermos() {
-        var lista = L.buscarTermos(campoQ.value, catAtual);
-        gaveta.textContent = '';
-        lista.forEach(function (t, i) {
-            var li = el('li', { classe: 'termo' }, [el('p', { classe: 'termo-cat', texto: L.CATEGORIAS[t.cat] }), el('h3', { texto: t.termo }), el('p', { texto: t.def })]);
-            li.style.setProperty('--i', Math.min(i, 12));
-            gaveta.appendChild(li);
-        });
-        if (!lista.length) gaveta.appendChild(el('li', { classe: 'termos-vazio', texto: 'Nenhum termo encontrado. Tente outra palavra.' }));
-        conta.textContent = lista.length + ' de ' + L.TERMOS.length + ' termos';
+    /* ================= TERMOS: TECLADO ================= */
+    var teclado = $('#teclado'), campoQ = $('#termos-q');
+    var visorCat = $('#visor-cat'), visorTermo = $('#visor-termo'), visorDef = $('#visor-def');
+    var CORES = { hardware: '#e7e4d8', firmware: '#c6ff5a', energia: '#e3914f', armazenamento: '#3a4640', software: '#bcc3be', seguranca: '#f2694c' };
+    var digitando = null;
+
+    function mostrarTermo(t, botao) {
+        $$('.tecla', teclado).forEach(function (k) { k.setAttribute('aria-pressed', String(k === botao)); });
+        visorCat.textContent = L.CATEGORIAS[t.cat];
+        visorTermo.textContent = t.termo;
+        clearInterval(digitando);
+        if (reduzido) { visorDef.textContent = t.def; return; }
+        var i = 0;
+        visorDef.textContent = '';
+        digitando = setInterval(function () {
+            i += 3;
+            visorDef.textContent = t.def.slice(0, i);
+            if (i >= t.def.length) clearInterval(digitando);
+        }, 16);
     }
-    campoQ.addEventListener('input', renderTermos);
-    renderTermos();
+    L.TERMOS.forEach(function (t, i) {
+        var k = el('button', { type: 'button', classe: 'tecla', 'data-cat': t.cat, 'aria-pressed': 'false', 'aria-label': t.termo, texto: t.tecla });
+        k.addEventListener('click', function () {
+            k.classList.add('batida');
+            setTimeout(function () { k.classList.remove('batida'); }, 110);
+            mostrarTermo(t, k);
+        });
+        k.dataset.indice = i;
+        teclado.appendChild(k);
+    });
+    var teclas = $$('.tecla', teclado);
+    teclado.appendChild(el('span', { classe: 'tecla tecla-espaco', 'aria-hidden': 'true' })); // barra de espaço decorativa fecha a última fileira
+    var legenda = $('#teclado-legenda');
+    Object.keys(L.CATEGORIAS).forEach(function (c) {
+        var s = el('span', {}, [el('i', { 'aria-hidden': 'true' }), L.CATEGORIAS[c]]);
+        s.firstChild.style.setProperty('--c', CORES[c]);
+        legenda.appendChild(s);
+    });
+    campoQ.addEventListener('input', function () {
+        var achados = L.buscarTermos(campoQ.value);
+        var nomes = achados.map(function (t) { return t.termo; });
+        teclas.forEach(function (k, i) { k.classList.toggle('apagada', nomes.indexOf(L.TERMOS[i].termo) === -1); });
+        if (achados.length) mostrarTermo(achados[0], teclas[L.TERMOS.indexOf(achados[0])]);
+        else { visorCat.textContent = 'sem resultado'; visorTermo.textContent = 'Nenhuma tecla com esse termo'; visorDef.textContent = 'Tente outra palavra, sem se preocupar com acentos.'; }
+    });
+    mostrarTermo(L.TERMOS[0], teclas[0]);
+    // na carga não precisa animar a digitação
+    clearInterval(digitando); visorDef.textContent = L.TERMOS[0].def;
 })();

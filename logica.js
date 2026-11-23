@@ -380,6 +380,13 @@
     /* =====================================================================
      * 4. TERMOS TÉCNICOS
      * ===================================================================== */
+    // rótulo curto de cada termo na tecla do teclado
+    var TECLAS = {
+        'BIOS / UEFI': 'BIOS', 'Dual channel': 'Dual', 'PCI Express': 'PCIe', 'Fonte ATX': 'Fonte', 'M.2 / NVMe': 'NVMe',
+        'MBR / GPT': 'MBR·GPT', 'Formatação': 'Format', 'Pasta térmica': 'Pasta', 'Manutenção preventiva': 'Prevent',
+        'Manutenção corretiva': 'Corret', 'Periférico': 'Perif'
+    };
+
     var TERMOS = congelar([
         { termo: 'BIOS / UEFI', cat: 'firmware', def: 'Firmware gravado na placa-mãe que testa o hardware e entrega o controle ao sistema. UEFI é a versão moderna: interface gráfica, discos GPT e Secure Boot.' },
         { termo: 'POST', cat: 'firmware', def: 'Power-On Self-Test: autoteste ao ligar. Verifica CPU, memória e vídeo; se algo falha, avisa com bipes ou LEDs.' },
@@ -406,7 +413,7 @@
         { termo: 'Manutenção preventiva', cat: 'seguranca', def: 'Feita antes do defeito: limpeza, troca de pasta, backup, atualizações e verificação de discos.' },
         { termo: 'Manutenção corretiva', cat: 'seguranca', def: 'Feita depois do defeito: diagnosticar, isolar a peça e reparar ou substituir.' },
         { termo: 'Periférico', cat: 'hardware', def: 'Dispositivo ligado ao computador. Entrada (teclado, mouse), saída (monitor, impressora) ou entrada e saída (pendrive, multifuncional).' }
-    ].map(congelar));
+    ].map(function (t) { t.tecla = TECLAS[t.termo] || t.termo; return congelar(t); }));
 
     var CATEGORIAS = congelar({ hardware: 'Hardware', firmware: 'Firmware', energia: 'Energia', armazenamento: 'Armazenamento', software: 'Software', seguranca: 'Segurança' });
 

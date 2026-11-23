@@ -139,3 +139,9 @@ test('busca de termos ignora acentos e filtra categoria', () => {
     assert.ok(L.buscarTermos('', 'armazenamento').every(t => t.cat === 'armazenamento'));
     assert.equal(L.buscarTermos('xyzxyz').length, 0);
 });
+
+test('toda tecla tem rótulo curto e único', () => {
+    const teclas = L.TERMOS.map(t => t.tecla);
+    assert.ok(teclas.every(t => t.length <= 8), teclas.filter(t => t.length > 8).join(', '));
+    assert.equal(new Set(teclas).size, teclas.length);
+});
