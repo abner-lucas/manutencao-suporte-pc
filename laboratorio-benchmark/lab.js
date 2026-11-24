@@ -1,6 +1,6 @@
 /*
  * lab.js · peças próprias do Laboratório de Benchmark (depois de ../logica.js e ../comum.js).
- * Medidor com benchmark ao vivo, checklist salva no navegador, botões copiar,
+ * Medidor com benchmark ao vivo, botões copiar,
  * parâmetros que se revelam, curvas de clock e quiz certo/errado.
  */
 (function () {
@@ -71,30 +71,6 @@
             rodando = false; botao.disabled = false;
         });
     });
-
-    /* ================= CHECKLIST DO PRÉ-TESTE (salva no navegador) ================= */
-    var caixas = $$('#checklist input[type="checkbox"]'), conta = $('#checklist-conta');
-    var CHAVE = 'msc:pre-teste';
-    var salvo = {};
-    try { salvo = JSON.parse(localStorage.getItem(CHAVE) || '{}'); } catch (e) {}
-    function contar() {
-        var n = caixas.filter(function (c) { return c.checked; }).length;
-        conta.textContent = n === caixas.length ? 'Tudo conferido: pode dar a aula.' : n + ' de ' + caixas.length + ' conferidos';
-    }
-    caixas.forEach(function (c) {
-        c.checked = !!salvo[c.dataset.id];
-        c.addEventListener('change', function () {
-            salvo[c.dataset.id] = c.checked;
-            try { localStorage.setItem(CHAVE, JSON.stringify(salvo)); } catch (e) {}
-            contar();
-        });
-    });
-    $('#checklist-limpar').addEventListener('click', function () {
-        salvo = {}; caixas.forEach(function (c) { c.checked = false; });
-        try { localStorage.removeItem(CHAVE); } catch (e) {}
-        contar();
-    });
-    contar();
 
     /* ================= COPIAR COMANDOS ================= */
     $$('.cmd').forEach(function (bloco) {

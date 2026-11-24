@@ -22,7 +22,7 @@ comum.js                           # tema, menu, divisores e animações das sub
 disciplina/                        # plano da disciplina (index.html, disciplina.css, disciplina.js)
 laboratorio-benchmark/             # roteiro (index.html, lab.css, lab.js)
   ├── apresentacao/index.html      # slides
-  └── kit/                         # registrar.bat e registrador.ps1 (Estação 5)
+  └── kit/bench.zip                # kit do aluno: 7-Zip, DiskSpd, registrar e a planilha de entrega
 testes/logica.test.js              # node --test testes/logica.test.js
 ```
 
@@ -34,7 +34,7 @@ Cada `index.html` tem comentários `COMO ADICIONAR...` antes das listas. Em resu
 2. **Ordem de serviço** (portal): copie um `<li>` da lista do cupom e troque número, título, texto e link; atualize a linha TOTAL.
 3. **Aula** (plano da disciplina): copie um `<li class="aula">` dentro da unidade. O número (A01, A02…) e as contagens do mapa são automáticos.
 4. **PDF**: coloque o arquivo em `docs/` e aponte o link para ele.
-5. **Arquivo do kit**: coloque em `laboratorio-benchmark/kit/` e acrescente uma linha na tabela "Kit da pasta bench".
+5. **Kit do laboratório**: troque `laboratorio-benchmark/kit/bench.zip` e, se o conteúdo mudar, atualize a árvore de arquivos e o tamanho na seção "Prepare a máquina".
 
 Ao alterar qualquer CSS ou JS, troque o `?v=` nos links das páginas (ex.: `?v=2026.11.24d` → `?v=2026.12.01a`) para o navegador não misturar arquivos velhos e novos.
 
