@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano da disciplina · Manutenção e Suporte de Computadores</title>
+    <meta name="description" content="Plano de referência da disciplina de Manutenção e Suporte de Computadores (IFPA Campus Breves): unidades, aulas, materiais, atividades avaliativas e bibliografia.">
+    <meta name="theme-color" content="#eceee6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#08100c" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d3326'/%3E%3Crect x='9' y='9' width='14' height='14' rx='2' fill='none' stroke='%23c6ff5a' stroke-width='2'/%3E%3Cpath d='M12 5v4M16 5v4M20 5v4M12 23v4M16 23v4M20 23v4M5 12h4M5 16h4M5 20h4M23 12h4M23 16h4M23 20h4' stroke='%23e3914f' stroke-width='1.6'/%3E%3C/svg%3E">
+    <script>
+        (function () {
+            var d = document.documentElement;
+            try {
+                var salvo = localStorage.getItem('msc:tema');
+                var escuro = salvo ? salvo === 'escuro' : matchMedia('(prefers-color-scheme: dark)').matches;
+                d.dataset.tema = escuro ? 'escuro' : 'claro';
+            } catch (e) { d.dataset.tema = 'claro'; }
+            d.dataset.visitado = '';
+            d.classList.add('js');
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css?v=2026.11.24d">
+    <link rel="stylesheet" href="disciplina.css?v=2026.11.24d">
+</head>
+<body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <div class="progresso" aria-hidden="true"><span id="progresso-barra"></span></div>
+
+    <header class="topo" id="topo">
+        <div class="topo-inner">
+            <a href="../" class="marca" aria-label="Voltar ao portal de Manutenção e Suporte">
+                <svg class="marca-chip" viewBox="0 0 32 32" aria-hidden="true">
+                    <rect x="8" y="8" width="16" height="16" rx="3" />
+                    <path d="M12 4v4M16 4v4M20 4v4M12 24v4M16 24v4M20 24v4M4 12h4M4 16h4M4 20h4M24 12h4M24 16h4M24 20h4" />
+                    <circle cx="16" cy="16" r="2.6" />
+                </svg>
+                <span class="marca-texto">Manutenção <em>&amp; Suporte</em></span>
+            </a>
+            <nav class="menu" id="menu" aria-label="Seções da página da disciplina">
+                <a href="../" class="menu-voltar">← Portal</a>
+                <a href="#mapa">Mapa</a>
+                <a href="#unidade-1">Aulas</a>
+                <a href="#avaliacao">Avaliação</a>
+                <a href="#bibliografia">Bibliografia</a>
+            </nav>
+            <div class="topo-acoes">
+                <button class="botao-tema" id="botao-tema" type="button" aria-label="Alternar modo escuro" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8" /><path d="M7 6.3a7.5 7.5 0 1 0 10 0" /></svg>
+                </button>
+                <button class="botao-menu" id="botao-menu" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+                    <span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="conteudo">
+
+        <!-- ============ ABERTURA: ementa + etiqueta de especificação ============ -->
+        <section class="d-abertura" aria-labelledby="titulo-disc">
+            <div class="secao-inner d-abertura-grade">
+                <div>
+                    <p class="kicker entra" style="--atraso: .05s"><a href="../">Portal</a> / plano da disciplina</p>
+                    <h1 id="titulo-disc" class="d-titulo entra" style="--atraso: .12s">Manutenção e Suporte de <em>Computadores</em></h1>
+                    <p class="d-ementa entra" style="--atraso: .25s">
+                        <span class="d-ementa-rot">Ementa</span>
+                        Montagem e configuração de hardware. Instalação de softwares (sistema operacional e aplicativos).
+                        Gerenciador de partição. Uso de antivírus. Técnicas de manutenção preventiva e corretiva: problemas
+                        com o disco rígido, memória, fonte etc. Técnicas de diagnóstico. Tipos de periféricos. Termos técnicos
+                        de hardware. Técnicas de configuração e otimização. Segurança física e lógica: hardware e redes.
+                    </p>
+                    <p class="d-nota entra" style="--atraso: .3s">Plano de referência: a ordem e o ritmo das aulas podem mudar de uma turma para outra.</p>
+                    <div class="d-acoes entra" style="--atraso: .35s">
+                        <a class="botao botao-cheio" href="#unidade-1">Ver as aulas <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a>
+                        <a class="botao botao-linha" href="../laboratorio-benchmark/">Laboratório de benchmark</a>
+                    </div>
+                </div>
+
+                <!-- etiqueta de especificação (como a da lateral de uma fonte ATX) -->
+                <dl class="spec entra" style="--atraso: .3s" aria-label="Ficha da disciplina">
+                    <div class="spec-topo"><span>MSC</span><span>ref.</span></div>
+                    <div><dt>Curso</dt><dd>Técnico em Informática</dd></div>
+                    <div><dt>Área</dt><dd>Tecnologias da Informação</dd></div>
+                    <div><dt>Unidades</dt><dd id="spec-unidades">4</dd></div>
+                    <div><dt>Aulas no plano</dt><dd id="spec-aulas">—</dd></div>
+                    <div><dt>Docente</dt><dd>Prof. Ábner Lucas</dd></div>
+                    <div><dt>Campus</dt><dd>IFPA Breves</dd></div>
+                    <div class="spec-barras" aria-hidden="true"></div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- ============ MAPA: as unidades num barramento ============ -->
+        <section id="mapa" class="secao d-secao" aria-labelledby="titulo-mapa">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">00</span>
+                    <h2 id="titulo-mapa" data-palavras>Mapa da <em>disciplina</em></h2>
+                    <p class="cabeca-lede">Quatro unidades encaixadas num barramento: o tamanho de cada trecho acompanha quantas aulas ela tem. Toque numa unidade para ir até ela.</p>
+                </header>
+                <!-- os trechos são montados pelo script a partir das seções .unidade -->
+                <div class="regua" id="regua"></div>
+            </div>
+        </section>
+
+        <!--
+            COMO ADICIONAR UMA AULA
+            1. Dentro da <ol class="aulas"> da unidade, copie um <li class="aula">. O número (A01, A02…) é automático.
+            2. Troque o título, os tópicos e os materiais. Aula sem material: apague o <ul class="arquivos">.
+            3. Atividade avaliativa: use class="aula aula-avaliativa" e um <p class="selo">.
+            Os PDFs das aulas ficam na turma virtual. Para publicar um aqui, ponha o arquivo em docs/ e troque o
+            <span class="arquivo"> por <a class="arquivo" href="../docs/arquivo.pdf">.
+        -->
+
+        <div class="divisor" data-ref="U1" data-n="01" data-rotulo="unidade 1" aria-hidden="true"></div>
+
+        <!-- ============ UNIDADE 1 ============ -->
+        <section id="unidade-1" class="secao d-secao unidade" aria-labelledby="titulo-u1">
+            <div class="secao-inner">
+                <header class="u-cabeca">
+                    <div class="u-slot" aria-hidden="true"><span class="u-slot-fill"></span></div>
+                    <p class="u-num" aria-hidden="true">U1</p>
+                    <div>
+                        <h2 id="titulo-u1">Conceitos, componentes e fontes</h2>
+                        <p class="u-datas"><span class="u-conta"></span></p>
+                    </div>
+                </header>
+                <ol class="aulas">
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Introdução aos conceitos</h3>
+                            <p class="topicos">Definição dos principais conceitos · Confiabilidade e manutenibilidade</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="pdf">Introdução à Manutenção</span></li>
+                                <li><span class="arquivo" data-tipo="pdf">NBR 5462 · Confiabilidade e Mantenabilidade</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Principais componentes</h3>
+                            <p class="topicos">Gabinete · Monitor · Teclado · Mouse · Placa-mãe · Processador</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="pdf">Principais Componentes</span></li>
+                                <li><span class="arquivo" data-tipo="video">Vídeo: Como funciona TV de tubo, LCD, Plasma, LED e OLED (Integrando Conhecimento)</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Fontes de alimentação</h3>
+                            <p class="topicos">Lineares · Chaveadas · Função das fontes ATX</p>
+                            <ul class="arquivos"><li><span class="arquivo" data-tipo="pdf">Fonte de Alimentação</span></li></ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Montando o PC</h3>
+                            <p class="topicos">Como dimensionar uma fonte de alimentação na prática · Montagem de um PC on-line</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="site">Calculadora on-line de fonte de alimentação</span></li>
+                                <li><span class="arquivo" data-tipo="site">Monte seu PC on-line</span></li>
+                                <li><a class="arquivo" data-tipo="lab" href="../#bancada">Bancada de montagem do portal</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">atividade avaliativa</p>
+                            <h3>Diagnóstico e reparo de sistema computacional</h3>
+                            <p class="topicos">Diagnosticar os problemas de um sistema de alto desempenho a partir de um cenário e propor soluções, com links para os componentes sugeridos.</p>
+                            <ul class="arquivos"><li><span class="arquivo" data-tipo="form">Formulário: Diagnóstico e Reparo de Sistema Computacional</span></li></ul>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">atividade avaliativa</p>
+                            <h3>Escape Room: Desafio Master Tech</h3>
+                            <p class="topicos">Analisar cada situação, seguir o fluxograma para decidir e responder o formulário até liberar a saída.</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="img">Fluxograma</span></li>
+                                <li><span class="arquivo" data-tipo="form">Formulário: Desafio Master Tech</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa aula-prova revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">avaliação da unidade</p>
+                            <h3>Questionário on-line</h3>
+                            <p class="topicos">Diferença entre defeito, falha e pane · Fontes de alimentação (função das fontes ATX) · Componentes da placa-mãe (onboard e offboard) · Informações impressas num processador · Características dos monitores OLED</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="U2" data-n="02" data-rotulo="unidade 2" aria-hidden="true"></div>
+
+        <!-- ============ UNIDADE 2 ============ -->
+        <section id="unidade-2" class="secao d-secao unidade" aria-labelledby="titulo-u2">
+            <div class="secao-inner">
+                <header class="u-cabeca">
+                    <div class="u-slot" aria-hidden="true"><span class="u-slot-fill"></span></div>
+                    <p class="u-num" aria-hidden="true">U2</p>
+                    <div>
+                        <h2 id="titulo-u2">Placa-mãe, memória e armazenamento</h2>
+                        <p class="u-datas"><span class="u-conta"></span></p>
+                    </div>
+                </header>
+                <ol class="aulas">
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Placa-mãe</h3>
+                            <p class="topicos">Modelo ATX · Conectores · Gerador de clock · Firmwares · Chipsets</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="pdf">Placa-Mãe</span></li>
+                                <li><span class="arquivo" data-tipo="pdf">Arquitetura das Placas-Mãe</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Memórias</h3>
+                            <p class="topicos"><strong>Parte 1:</strong> memória RAM (SRAM, DRAM) · Ciclo de refresh · Clock × latência · Dual channel</p>
+                            <p class="topicos"><strong>Parte 2:</strong> HDD e SSD · Interfaces SATA e NVMe · Monitoramento (SMART) · Análise e manutenção de dispositivos de armazenamento</p>
+                            <ul class="arquivos">
+                                <li><span class="arquivo" data-tipo="pdf">RAM e desempenho</span></li>
+                                <li><span class="arquivo" data-tipo="pdf">Arquitetura de armazenamento</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa aula-prova revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">avaliação da unidade</p>
+                            <h3>Questionário on-line</h3>
+                            <p class="topicos">Placa-mãe, memórias e armazenamento.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="U3" data-n="03" data-rotulo="unidade 3" aria-hidden="true"></div>
+
+        <!-- ============ UNIDADE 3 ============ -->
+        <section id="unidade-3" class="secao d-secao unidade" aria-labelledby="titulo-u3">
+            <div class="secao-inner">
+                <header class="u-cabeca">
+                    <div class="u-slot" aria-hidden="true"><span class="u-slot-fill"></span></div>
+                    <p class="u-num" aria-hidden="true">U3</p>
+                    <div>
+                        <h2 id="titulo-u3">Inicialização, sistemas e instalação</h2>
+                        <p class="u-datas"><span class="u-conta"></span></p>
+                    </div>
+                </header>
+                <ol class="aulas">
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Inicialização e sistemas de arquivos</h3>
+                            <p class="topicos">Evolução do firmware: da BIOS (legacy) para a UEFI · Tabelas de partição: MBR (limite de 2 TiB) × GPT (discos grandes e Secure Boot) · Sistemas de arquivos: diferenças entre FAT32 e NTFS</p>
+                            <ul class="arquivos"><li><a class="arquivo" data-tipo="lab" href="../#lab-particoes">Particionador MBR × GPT do portal</a></li></ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Prática: instalação e particionamento</h3>
+                            <p class="topicos">Criação de máquina virtual no VirtualBox · Instalação passo a passo do Windows · Particionamento lógico: unidade C: (Sistema) e D: (Dados)</p>
+                            <ul class="arquivos">
+                                <li><a class="arquivo" data-tipo="site" href="https://www.microsoft.com/pt-br/software-download/windows11" target="_blank" rel="noopener noreferrer">Windows 11 · download oficial da Microsoft<span class="sr-only"> (abre em nova aba)</span></a></li>
+                                <li><a class="arquivo" data-tipo="site" href="https://www.microsoft.com/pt-br/evalcenter/download-windows-10-enterprise" target="_blank" rel="noopener noreferrer">Windows 10 Enterprise · avaliação gratuita<span class="sr-only"> (abre em nova aba)</span></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Construindo um regulador de tensão</h3>
+                            <p class="topicos">Divisor de tensão resistivo · Cálculo de resistência</p>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">atividade avaliativa</p>
+                            <h3>Manual do Instalador Técnico</h3>
+                            <p class="topicos">Documentar, como um técnico, o passo a passo de instalação e configuração trabalhado na unidade.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="U4" data-n="04" data-rotulo="unidade 4" aria-hidden="true"></div>
+
+        <!-- ============ UNIDADE 4 ============ -->
+        <section id="unidade-4" class="secao d-secao unidade" aria-labelledby="titulo-u4">
+            <div class="secao-inner">
+                <header class="u-cabeca">
+                    <div class="u-slot" aria-hidden="true"><span class="u-slot-fill"></span></div>
+                    <p class="u-num" aria-hidden="true">U4</p>
+                    <div>
+                        <h2 id="titulo-u4">Bancada, testes e desempenho</h2>
+                        <p class="u-datas"><span class="u-conta"></span></p>
+                    </div>
+                </header>
+                <ol class="aulas">
+                    <li class="aula revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <h3>Prática: teste de bancada</h3>
+                            <p class="topicos">Teste em fonte de alimentação · Montagem e desmontagem</p>
+                            <ul class="arquivos"><li><a class="arquivo" data-tipo="lab" href="../#bancada">Bancada de montagem e POST do portal</a></li></ul>
+                        </div>
+                    </li>
+                    <li class="aula aula-avaliativa revela">
+                        <span class="aula-n" aria-hidden="true"></span>
+                        <div class="aula-corpo">
+                            <p class="selo">laboratório avaliativo</p>
+                            <h3>Testes e benchmark</h3>
+                            <p class="topicos">Especificações do sistema pelo Gerenciador de Tarefas (Windows) · Plataformas de benchmark · Testes sintéticos de estresse e análise · Registro do laboratório</p>
+                            <ul class="arquivos">
+                                <li><a class="arquivo" data-tipo="lab" href="../laboratorio-benchmark/">Roteiro do Laboratório de Benchmark</a></li>
+                                <li><a class="arquivo" data-tipo="lab" href="../laboratorio-benchmark/apresentacao/">Apresentação da aula</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="AV" data-n="05" data-rotulo="avaliação" aria-hidden="true"></div>
+
+        <!-- ============ AVALIAÇÃO: os instrumentos, como um log de boot ============ -->
+        <section id="avaliacao" class="palco palco-terminal" aria-labelledby="titulo-aval">
+            <div class="palco-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">AV</span>
+                    <h2 id="titulo-aval" data-palavras>Como a turma é <em>avaliada</em></h2>
+                    <p class="cabeca-lede">Os instrumentos usados ao longo da disciplina. Cada um carrega quando você rola até ele.</p>
+                </header>
+                <ol class="bootlog" id="bootlog">
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Questionários on-line por unidade</h3><p>Aplicados em sala, sobre os conteúdos de cada unidade.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Diagnóstico e reparo</h3><p>Um cenário de defeito para diagnosticar e resolver, com proposta de peças.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Escape Room: Desafio Master Tech</h3><p>Desafios em sequência resolvidos com um fluxograma de decisão.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Manual do Instalador Técnico</h3><p>Documentação técnica de instalação e configuração.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Registro do Laboratório de Benchmark</h3><p>Planilha de medições, laudo de uma página e arquivo de evidências.</p></div></li>
+                </ol>
+                <p class="boot-fim" aria-hidden="true">avaliação carregada <span class="cursor">_</span></p>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="LIV" data-n="06" data-rotulo="bibliografia" aria-hidden="true"></div>
+
+        <!-- ============ BIBLIOGRAFIA ============ -->
+        <section id="bibliografia" class="secao d-secao" aria-labelledby="titulo-bib">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">LIV</span>
+                    <h2 id="titulo-bib" data-palavras>Bibliografia</h2>
+                    <p class="cabeca-lede">Livros indicados no plano da disciplina (PPC do Técnico em Informática), para consulta na biblioteca do campus.</p>
+                </header>
+                <table class="inventario">
+                    <caption class="sr-only">Bibliografia da disciplina</caption>
+                    <thead><tr><th scope="col">Etiqueta</th><th scope="col">Obra</th><th scope="col">Tipo</th><th scope="col"><span class="sr-only">Onde</span></th></tr></thead>
+                    <tbody>
+                        <tr><td class="pat">LIV-001</td><td>TORRES, G. <cite>Montagem de Micros: para autodidatas, estudantes e técnicos</cite>. 2. ed., 2013.</td><td>básica</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">LIV-002</td><td>FERREIRA, S. <cite>Hardware: montagem, configuração &amp; manutenção de micros</cite>. Axcel, 2005.</td><td>básica</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">LIV-003</td><td>BITTENCOURT, R. A. <cite>Montagem de Computadores e Hardware</cite>. Brasport, 2002.</td><td>básica</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">LIV-004</td><td>VASCONCELOS, L. <cite>Hardware na Prática</cite>. 3. ed., 2009.</td><td>complementar</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">LIV-005</td><td>SOUSA, L. B. <cite>Redes de Computadores: guia total</cite>. Érica, 2010.</td><td>complementar</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">LIV-006</td><td>MOREIRA, L. M. P. <cite>Montagem, Configuração e Manutenção de Micros</cite>. IBPI, 2002.</td><td>complementar</td><td>biblioteca</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-inner">
+            <div class="rodape-marca">
+                <svg class="marca-chip" viewBox="0 0 32 32" aria-hidden="true">
+                    <rect x="8" y="8" width="16" height="16" rx="3" />
+                    <path d="M12 4v4M16 4v4M20 4v4M12 24v4M16 24v4M20 24v4M4 12h4M4 16h4M4 20h4M24 12h4M24 16h4M24 20h4" />
+                    <circle cx="16" cy="16" r="2.6" />
+                </svg>
+                <p>Manutenção e Suporte de Computadores</p>
+            </div>
+            <dl class="rodape-dados">
+                <div><dt>Docente</dt><dd>Prof. Ábner Lucas</dd></div>
+                <div><dt>Instituição</dt><dd>IFPA Campus Breves</dd></div>
+                <div><dt>Curso</dt><dd>Técnico em Informática</dd></div>
+                <div><dt>Portal</dt><dd><a href="../">voltar ao início</a></dd></div>
+            </dl>
+        </div>
+        <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · PLANO DE REFERÊNCIA</p>
+    </footer>
+
+    <script src="../comum.js?v=2026.11.24d"></script>
+    <script src="disciplina.js?v=2026.11.24d"></script>
+</body>
+</html>

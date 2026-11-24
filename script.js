@@ -142,6 +142,51 @@
         new IntersectionObserver(function (ents) { explode.classList.toggle('parado', !ents[0].isIntersecting); }).observe(explode);
     }
 
+    /* ================= DIVISORES ENTRE SEÇÕES =================
+     * Cada divisor é uma trilha de cobre: vem da esquerda, desvia em 45°, passa por
+     * um conector (chip com o nome da próxima seção) e segue até a direita.
+     * O traço se desenha ao entrar na tela e um pulso de luz corre por ele.
+     * As linhas usam preserveAspectRatio="none" + vector-effect para não deformar.
+     */
+    var NS = 'http://www.w3.org/2000/svg';
+    function svg(tag, attrs) {
+        var n = document.createElementNS(NS, tag);
+        Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+        return n;
+    }
+    function trilha(lado) {
+        // lado esquerdo desce até o conector; o direito sobe de volta (espelhado)
+        var d = lado === 'e' ? 'M0 14 H70 L84 46 H100' : 'M0 46 H16 L30 14 H100';
+        var s = svg('svg', { viewBox: '0 0 100 60', preserveAspectRatio: 'none', class: 'divisor-trilha divisor-' + lado });
+        ['tr-base', 'tr-cobre', 'tr-pulso'].forEach(function (c) {
+            s.appendChild(svg('path', { d: d, class: c, 'vector-effect': 'non-scaling-stroke' }));
+        });
+        return s;
+    }
+    var divisores = $$('.divisor');
+    divisores.forEach(function (dv) {
+        var chip = el('div', { classe: 'divisor-chip' }, [
+            el('span', { classe: 'divisor-ref', texto: dv.dataset.ref }),
+            el('span', { classe: 'divisor-n', texto: dv.dataset.n }),
+            el('span', { classe: 'divisor-rot', texto: dv.dataset.rotulo }),
+            el('i', { classe: 'divisor-led' })
+        ]);
+        dv.appendChild(el('span', { classe: 'divisor-via divisor-via-e' }));
+        dv.appendChild(trilha('e'));
+        dv.appendChild(chip);
+        dv.appendChild(trilha('d'));
+        dv.appendChild(el('span', { classe: 'divisor-via divisor-via-d' }));
+    });
+    if ('IntersectionObserver' in window && !reduzido) {
+        var ioDiv = new IntersectionObserver(function (ents) {
+            ents.forEach(function (e) {
+                if (e.isIntersecting) e.target.classList.add('ligado');
+                e.target.classList.toggle('na-tela', e.isIntersecting); // pulso só anima quando visível
+            });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        divisores.forEach(function (dv) { ioDiv.observe(dv); });
+    } else divisores.forEach(function (dv) { dv.classList.add('ligado', 'na-tela'); });
+
     /* ================= LAÇO DE ROLAGEM ================= */
     var topo = $('#topo'), barra = $('#progresso-barra');
     var cenas = $$('.cena');

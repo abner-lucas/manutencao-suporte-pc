@@ -426,12 +426,30 @@
         });
     }
 
+
+    /* =====================================================================
+     * 5. BENCHMARK (laboratório): mediana das rodadas e razão entre notas
+     * ===================================================================== */
+    /** Valor do meio depois de ordenar; com quantidade par, média dos dois do meio. */
+    function mediana(valores) {
+        var v = (valores || []).filter(function (x) { return typeof x === 'number' && isFinite(x); }).slice().sort(function (a, b) { return a - b; });
+        if (!v.length) return null;
+        var m = Math.floor(v.length / 2);
+        return v.length % 2 ? v[m] : (v[m - 1] + v[m]) / 2;
+    }
+    /** Diferença percentual de b em relação a a (positiva = b maior). */
+    function diferencaPct(a, b) {
+        if (!(a > 0) || typeof b !== 'number') return null;
+        return (b - a) / a * 100;
+    }
+
     return {
         normalizar: normalizar,
         COMPONENTES: COMPONENTES, NOMES_SLOT: NOMES_SLOT, estadoInicial: estadoInicial, instalar: instalar, ligar: ligar, faltando: faltando,
         DIAGNOSTICO: DIAGNOSTICO, eFolha: eFolha, passo: passo, validarArvore: validarArvore,
         LIMITE_MBR_GB: LIMITE_MBR_GB, capacidadeReal: capacidadeReal, discoInicial: discoInicial, adicionarParticao: adicionarParticao,
         removerUltima: removerUltima, analisarDisco: analisarDisco,
-        TERMOS: TERMOS, CATEGORIAS: CATEGORIAS, buscarTermos: buscarTermos
+        TERMOS: TERMOS, CATEGORIAS: CATEGORIAS, buscarTermos: buscarTermos,
+        mediana: mediana, diferencaPct: diferencaPct
     };
 });

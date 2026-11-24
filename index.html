@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2026.11.23c">
+    <link rel="stylesheet" href="style.css?v=2026.11.24d">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -64,6 +64,7 @@
                 <a href="#laboratorio">Laboratório</a>
                 <a href="#termos">Termos</a>
                 <a href="#trilha">Trilha</a>
+                <a href="disciplina/" class="menu-disciplina">Disciplina</a>
             </nav>
 
             <div class="topo-acoes">
@@ -320,6 +321,11 @@
             </div>
         </section>
 
+        <!-- DIVISOR: cabo/trilha de cobre que se desenha ao rolar e liga uma seção à seguinte.
+             data-ref = código do conector; data-n = número da próxima seção; data-rotulo = nome dela.
+             O desenho (SVG) é montado pelo script.js. -->
+        <div class="divisor" data-ref="J2" data-n="02" data-rotulo="log da turma" aria-hidden="true"></div>
+
         <!-- ============ AVISOS: log de eventos + etiqueta de advertência ============ -->
         <section id="avisos" class="secao cena" aria-labelledby="titulo-avisos">
             <div class="secao-inner avisos-grade">
@@ -363,6 +369,8 @@
                 </aside>
             </div>
         </section>
+
+        <div class="divisor" data-ref="J3" data-n="03" data-rotulo="ordens de serviço" aria-hidden="true"></div>
 
         <!-- ============ ORDENS DE SERVIÇO: cupom da impressora térmica ============ -->
         <section id="atividades" class="secao cena" aria-labelledby="titulo-ordens">
@@ -410,6 +418,8 @@
                 </div>
             </div>
         </section>
+
+        <div class="divisor" data-ref="J4" data-n="04" data-rotulo="bancada de diagnóstico" aria-hidden="true"></div>
 
         <!-- ============ LABORATÓRIO (palco escuro) ============ -->
         <section id="laboratorio" class="palco cena" aria-labelledby="titulo-lab">
@@ -484,6 +494,8 @@
             </div>
         </section>
 
+        <div class="divisor" data-ref="J5" data-n="05" data-rotulo="aperte um termo" aria-hidden="true"></div>
+
         <!-- ============ TERMOS: teclado mecânico ============ -->
         <section id="termos" class="secao cena" aria-labelledby="titulo-termos">
             <div class="secao-inner">
@@ -509,13 +521,15 @@
             </div>
         </section>
 
+        <div class="divisor" data-ref="J6" data-n="06" data-rotulo="inventário" aria-hidden="true"></div>
+
         <!-- ============ MATERIAIS (inventário) ============ -->
         <section id="materiais" class="secao cena" aria-labelledby="titulo-materiais">
             <div class="secao-inner">
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">06</span>
                     <h2 id="titulo-materiais" data-palavras>Inventário</h2>
-                    <p class="cabeca-lede">Laboratórios do portal e a bibliografia do plano da disciplina, cada um com sua etiqueta de patrimônio.</p>
+                    <p class="cabeca-lede">Os laboratórios do portal e o plano da disciplina, cada um com sua etiqueta de patrimônio.</p>
                 </header>
 
                 <!--
@@ -531,16 +545,13 @@
                         <tr><td class="pat">PAT-002</td><td>Roteiro de diagnóstico de defeitos</td><td>laboratório</td><td><a class="link-abrir" href="#lab-diagnostico" data-abrir-aba="aba-diagnostico">abrir</a></td></tr>
                         <tr><td class="pat">PAT-003</td><td>Particionador MBR × GPT</td><td>laboratório</td><td><a class="link-abrir" href="#lab-particoes" data-abrir-aba="aba-particoes">abrir</a></td></tr>
                         <tr><td class="pat">PAT-004</td><td>Teclado de termos técnicos</td><td>glossário</td><td><a class="link-abrir" href="#termos">abrir</a></td></tr>
-                        <tr class="livro"><td class="pat">LIV-001</td><td>TORRES, G. <cite>Montagem de Micros: para autodidatas, estudantes e técnicos</cite>. 2. ed., 2013.</td><td>básica</td><td>biblioteca</td></tr>
-                        <tr class="livro"><td class="pat">LIV-002</td><td>FERREIRA, S. <cite>Hardware: montagem, configuração &amp; manutenção de micros</cite>. Axcel, 2005.</td><td>básica</td><td>biblioteca</td></tr>
-                        <tr class="livro"><td class="pat">LIV-003</td><td>BITTENCOURT, R. A. <cite>Montagem de Computadores e Hardware</cite>. Brasport, 2002.</td><td>básica</td><td>biblioteca</td></tr>
-                        <tr class="livro"><td class="pat">LIV-004</td><td>VASCONCELOS, L. <cite>Hardware na Prática</cite>. 3. ed., 2009.</td><td>complementar</td><td>biblioteca</td></tr>
-                        <tr class="livro"><td class="pat">LIV-005</td><td>SOUSA, L. B. <cite>Redes de Computadores: guia total</cite>. Érica, 2010.</td><td>complementar</td><td>biblioteca</td></tr>
-                        <tr class="livro"><td class="pat">LIV-006</td><td>MOREIRA, L. M. P. <cite>Montagem, Configuração e Manutenção de Micros</cite>. IBPI, 2002.</td><td>complementar</td><td>biblioteca</td></tr>
+                        <tr><td class="pat">PAT-005</td><td>Plano da disciplina: aulas, avaliações e bibliografia</td><td>página</td><td><a class="link-abrir" href="disciplina/">abrir</a></td></tr>
                     </tbody>
                 </table>
             </div>
         </section>
+
+        <div class="divisor" data-ref="J7" data-n="07" data-rotulo="inicializando a disciplina" aria-hidden="true"></div>
 
         <!-- ============ TRILHA: log de boot ============ -->
         <section id="trilha" class="palco palco-terminal cena" aria-labelledby="titulo-trilha">
@@ -589,7 +600,7 @@
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · POST OK · MATERIAL DIDÁTICO · 2026</p>
     </footer>
 
-    <script src="logica.js?v=2026.11.24a"></script>
-    <script src="script.js?v=2026.11.24a"></script>
+    <script src="logica.js?v=2026.11.24d"></script>
+    <script src="script.js?v=2026.11.24d"></script>
 </body>
 </html>

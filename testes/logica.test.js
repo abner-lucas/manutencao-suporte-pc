@@ -145,3 +145,16 @@ test('toda tecla tem rótulo curto e único', () => {
     assert.ok(teclas.every(t => t.length <= 8), teclas.filter(t => t.length > 8).join(', '));
     assert.equal(new Set(teclas).size, teclas.length);
 });
+
+
+test('mediana usa o valor do meio, não o melhor', () => {
+    assert.equal(L.mediana([1212, 1180, 1195]), 1195);
+    assert.equal(L.mediana([4, 1, 3, 2]), 2.5);
+    assert.equal(L.mediana([]), null);
+    assert.equal(L.mediana([7, NaN, 5, 9]), 7);
+});
+
+test('diferença percentual', () => {
+    assert.equal(L.diferencaPct(100, 110).toFixed(1), '10.0');
+    assert.equal(L.diferencaPct(0, 5), null);
+});

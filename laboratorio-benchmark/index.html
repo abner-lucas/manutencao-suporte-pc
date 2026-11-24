@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Benchmark · Manutenção e Suporte de Computadores</title>
+    <meta name="description" content="Aula prática de benchmark sem administrador: CPU, memória, navegador, disco e calor medidos com ferramentas portáteis e web, com roteiro, comandos, kit, registro e laudo.">
+    <meta name="theme-color" content="#eceee6" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#08100c" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d3326'/%3E%3Cpath d='M6 22a10 10 0 0 1 20 0' fill='none' stroke='%23c6ff5a' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M16 22l6-7' stroke='%23e3914f' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+    <script>
+        (function () {
+            var d = document.documentElement;
+            try {
+                var salvo = localStorage.getItem('msc:tema');
+                var escuro = salvo ? salvo === 'escuro' : matchMedia('(prefers-color-scheme: dark)').matches;
+                d.dataset.tema = escuro ? 'escuro' : 'claro';
+            } catch (e) { d.dataset.tema = 'claro'; }
+            d.dataset.visitado = '';
+            d.classList.add('js');
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css?v=2026.11.24d">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24d">
+    <link rel="stylesheet" href="lab.css?v=2026.11.24d">
+</head>
+<body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+    <div class="progresso" aria-hidden="true"><span id="progresso-barra"></span></div>
+
+    <header class="topo" id="topo">
+        <div class="topo-inner">
+            <a href="../" class="marca" aria-label="Voltar ao portal de Manutenção e Suporte">
+                <svg class="marca-chip" viewBox="0 0 32 32" aria-hidden="true">
+                    <rect x="8" y="8" width="16" height="16" rx="3" />
+                    <path d="M12 4v4M16 4v4M20 4v4M12 24v4M16 24v4M20 24v4M4 12h4M4 16h4M4 20h4M24 12h4M24 16h4M24 20h4" />
+                    <circle cx="16" cy="16" r="2.6" />
+                </svg>
+                <span class="marca-texto">Manutenção <em>&amp; Suporte</em></span>
+            </a>
+            <nav class="menu" id="menu" aria-label="Seções do laboratório">
+                <a href="../disciplina/" class="menu-voltar">← Disciplina</a>
+                <a href="#preparo">Preparo</a>
+                <a href="#estacao-1" data-grupo=".estacao">Estações</a>
+                <a href="#hipoteses">Hipóteses</a>
+                <a href="#entrega">Entrega</a>
+            </nav>
+            <div class="topo-acoes">
+                <button class="botao-tema" id="botao-tema" type="button" aria-label="Alternar modo escuro" aria-pressed="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8" /><path d="M7 6.3a7.5 7.5 0 1 0 10 0" /></svg>
+                </button>
+                <button class="botao-menu" id="botao-menu" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+                    <span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="conteudo">
+
+        <!-- ============ ABERTURA + MEDIDOR AO VIVO ============ -->
+        <section class="d-abertura lab-abertura" aria-labelledby="titulo-lab">
+            <div class="secao-inner d-abertura-grade">
+                <div>
+                    <p class="kicker entra" style="--atraso: .05s"><a href="../">Portal</a> / <a href="../disciplina/">disciplina</a> / laboratório</p>
+                    <h1 id="titulo-lab" class="d-titulo entra" style="--atraso: .12s">Laboratório de <em>Benchmark</em></h1>
+                    <p class="lab-pergunta entra" style="--atraso: .22s">O que torna um computador rápido, e como <strong>provar</strong> isso com números?</p>
+                    <p class="d-ementa entra" style="--atraso: .3s">
+                        A turma mede CPU, memória, navegador, disco e calor com ferramentas que rodam <strong>sem senha de administrador</strong>,
+                        e depois prova (ou derruba) hipóteses com os próprios números. Duplas por computador; quatro momentos: abertura,
+                        bateria básica, experimentos e fechamento com laudo.
+                    </p>
+                    <div class="d-acoes entra" style="--atraso: .4s">
+                        <a class="botao botao-cheio" href="apresentacao/">Abrir a apresentação <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a>
+                        <a class="botao botao-linha" href="#kit">Arquivos do kit</a>
+                    </div>
+                </div>
+
+                <!-- MEDIDOR: um benchmark de verdade, no navegador de quem está lendo -->
+                <figure class="medidor entra" style="--atraso: .3s" aria-labelledby="medidor-legenda">
+                    <div class="medidor-barra" aria-hidden="true"><span class="bancada-leds"><i></i><i></i><i></i></span><span>bench.js · rodada <b id="med-rodada">0</b>/3</span></div>
+                    <svg class="medidor-arco" viewBox="0 0 240 140" aria-hidden="true">
+                        <path class="arco-fundo" d="M20 124 A100 100 0 0 1 220 124" />
+                        <path class="arco-valor" id="arco-valor" d="M20 124 A100 100 0 0 1 220 124" pathLength="100" />
+                        <g class="arco-marcas"><path d="M20 124h10M120 24v10M220 124h-10M49 53l7 7M191 53l-7 7" /></g>
+                        <line class="ponteiro" id="ponteiro" x1="120" y1="124" x2="120" y2="40" />
+                        <circle cx="120" cy="124" r="7" class="ponteiro-eixo" />
+                    </svg>
+                    <p class="medidor-nota"><b id="med-nota">—</b><span>milhões de operações/s</span></p>
+                    <ol class="medidor-rodadas" id="med-rodadas" aria-label="Rodadas"></ol>
+                    <p class="medidor-mediana" id="med-mediana" aria-live="polite">Rode 3 vezes. Vale a mediana, não a melhor.</p>
+                    <button type="button" class="botao-power" id="med-botao">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v8" /><path d="M7 6.3a7.5 7.5 0 1 0 10 0" /></svg>
+                        Rodar benchmark
+                    </button>
+                    <figcaption id="medidor-legenda">Um teste de CPU de 1 thread, feito aqui no seu navegador: conta quantas operações de cálculo cabem em 0,8 s. É ilustrativo, para treinar o protocolo; as notas não se comparam com as do JetStream.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ============ MOMENTOS DA AULA ============ -->
+        <section class="secao d-secao" aria-labelledby="titulo-momentos">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">00</span>
+                    <h2 id="titulo-momentos" data-palavras>Quatro <em>momentos</em></h2>
+                    <p class="cabeca-lede">A aula cabe num encontro duplo ou em dois encontros: abertura e Partes A e B no primeiro, Parte C no segundo.</p>
+                </header>
+                <ol class="momentos">
+                    <li style="--peso: 20"><b>Abertura</b><span>ficha técnica · protocolo</span></li>
+                    <li style="--peso: 80"><b>Parte A</b><span>Estações 1 a 4: bateria básica</span></li>
+                    <li style="--peso: 60"><b>Parte B</b><span>Estação 5 · uma hipótese por dupla</span></li>
+                    <li style="--peso: 40"><b>Parte C</b><span>planilha da turma · laudo</span></li>
+                </ol>
+                <div class="fluxo-estacoes" aria-label="Estações">
+                    <a href="#estacao-1"><b>1</b>CPU<small>JetStream 3</small></a>
+                    <a href="#estacao-2"><b>2</b>CPU + RAM<small>7-Zip</small></a>
+                    <a href="#estacao-3"><b>3</b>Navegador<small>Speedometer · MotionMark</small></a>
+                    <a href="#estacao-4"><b>4</b>Disco<small>DiskSpd</small></a>
+                    <a href="#estacao-5" class="quente"><b>5</b>Calor<small>registrar</small></a>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="P0" data-n="01" data-rotulo="preparo do professor" aria-hidden="true"></div>
+
+        <!-- ============ PREPARO: kit, ferramentas e pré-teste ============ -->
+        <section id="preparo" class="secao d-secao" aria-labelledby="titulo-preparo">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">01</span>
+                    <h2 id="titulo-preparo" data-palavras>Antes da <em>aula</em></h2>
+                    <p class="cabeca-lede">Copie a pasta <code>bench</code> para <code>%USERPROFILE%\bench</code> de cada máquina antes da aula: baixar tudo em 20 máquinas ao mesmo tempo derruba a rede de qualquer campus.</p>
+                </header>
+
+                <div class="preparo-grade">
+                    <div>
+                        <h3 class="sub" id="kit">Kit da pasta bench</h3>
+                        <table class="inventario">
+                            <caption class="sr-only">Arquivos do kit</caption>
+                            <thead><tr><th scope="col">Item</th><th scope="col">Para quê</th><th scope="col"><span class="sr-only">Obter</span></th></tr></thead>
+                            <tbody>
+                                <tr><td class="pat">7-Zip</td><td><code>7zr.exe</code> e o pacote Extra; extraia a versão 64 bits em <code>extra\x64</code>. Estação 2.</td><td><a class="link-abrir" href="https://www.7-zip.org/download.html" target="_blank" rel="noopener noreferrer">site oficial<span class="sr-only"> (abre em nova aba)</span></a></td></tr>
+                                <tr><td class="pat">DiskSpd</td><td>Teste de disco da Microsoft, pasta <code>amd64</code>. Estação 4.</td><td><a class="link-abrir" href="https://github.com/microsoft/diskspd/releases" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> (abre em nova aba)</span></a></td></tr>
+                                <tr><td class="pat">registrar.bat</td><td>O aluno só digita <code>registrar</code>. Estação 5.</td><td><a class="link-abrir" href="kit/registrar.bat" download>baixar</a></td></tr>
+                                <tr><td class="pat">registrador.ps1</td><td>Grava o clock efetivo a cada segundo. Fica junto do .bat.</td><td><a class="link-abrir" href="kit/registrador.ps1" download>baixar</a></td></tr>
+                                <tr><td class="pat">Planilha</td><td><code>registro_benchmark.xlsx</code>: a planilha que cada dupla preenche e entrega.</td><td>na turma virtual</td></tr>
+                                <tr><td class="pat">Cinebench</td><td>Só no computador do professor, para a demonstração (pede 16 GB de RAM e CPU com AVX2).</td><td><a class="link-abrir" href="https://www.maxon.net/cinebench" target="_blank" rel="noopener noreferrer">Maxon<span class="sr-only"> (abre em nova aba)</span></a></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- checklist salva no navegador -->
+                    <div class="checklist" id="checklist">
+                        <h3 class="sub">Pré-teste, logado como aluno</h3>
+                        <p class="checklist-conta" id="checklist-conta" aria-live="polite"></p>
+                        <ul>
+                            <li><label><input type="checkbox" data-id="exe"><span>Executáveis e .bat rodam a partir da pasta do usuário (AppLocker pode bloquear).</span></label></li>
+                            <li><label><input type="checkbox" data-id="registrar"><span>O comando <code>registrar</code> funciona. Se scripts forem bloqueados, use só a Forma 1 da Estação 5.</span></label></li>
+                            <li><label><input type="checkbox" data-id="web"><span>Os sites do browserbench.org abrem no filtro de internet do campus.</span></label></li>
+                            <li><label><input type="checkbox" data-id="planilha"><span>A planilha abre no Excel, no LibreOffice ou no Google Planilhas.</span></label></li>
+                            <li><label><input type="checkbox" data-id="espaco"><span>Há 2 GB livres na pasta do usuário e o perfil não é apagado no logoff.</span></label></li>
+                        </ul>
+                        <button type="button" class="botao-mini" id="checklist-limpar">Limpar</button>
+                    </div>
+                </div>
+
+                <h3 class="sub">Ferramentas e o que cada uma mede</h3>
+                <p class="lab-nota">Todas rodam sem instalação e sem administrador. Ficaram de fora as que pedem driver de hardware: HWiNFO, CPU-Z, AIDA64 e CrystalDiskMark.</p>
+                <ul class="ferramentas">
+                    <li><b>JetStream 3</b><span>CPU: cálculo pesado em JavaScript e WebAssembly</span><em>Estação 1</em></li>
+                    <li><b>Cinebench</b><span>CPU: renderização 3D, 1 thread e todos</span><em>demonstração</em></li>
+                    <li><b>7-Zip</b><span>CPU e memória: compressão, 1 thread e todos</span><em>Estação 2</em></li>
+                    <li><b>Speedometer 3.1</b><span>resposta de aplicações web</span><em>Estação 3</em></li>
+                    <li><b>MotionMark 1.3</b><span>gráficos e animação no navegador</span><em>Estação 3</em></li>
+                    <li><b>DiskSpd</b><span>disco: MB/s, IOPS e latência</span><em>Estação 4</em></li>
+                    <li><b>registrar</b><span>clock efetivo, utilização e zona térmica</span><em>Estação 5</em></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============ PROTOCOLO (palco) ============ -->
+        <section id="protocolo" class="palco palco-terminal" aria-labelledby="titulo-protocolo">
+            <div class="palco-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">P</span>
+                    <h2 id="titulo-protocolo" data-palavras>Protocolo de <em>medição</em></h2>
+                    <p class="cabeca-lede">Um número de benchmark só vale se outra pessoa consegue repeti-lo. Estas regras ficam projetadas a aula toda.</p>
+                </header>
+                <ol class="bootlog">
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Mesmas condições</h3><p>Feche navegador, mensageiros e Explorador de Arquivos. Notebook ligado na tomada.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Aquecimento</h3><p>Espere 2 minutos depois do logon: o Windows indexa e atualiza logo no início.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Três repetições → mediana</h3><p>O valor do meio, não o melhor.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Uma variável por vez</h3><p>Se o experimento é trocar o navegador, todo o resto fica igual.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Registre o contexto</h3><p>Modelo da CPU, RAM, tipo de disco, versão da ferramenta e modo de energia.</p></div></li>
+                    <li><span class="st" aria-hidden="true"></span><div><h3>Mãos fora</h3><p>Mover o mouse ou abrir janela durante o teste altera o resultado.</p></div></li>
+                </ol>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="F0" data-n="02" data-rotulo="ficha técnica" aria-hidden="true"></div>
+
+        <!-- ============ FICHA TÉCNICA ============ -->
+        <section id="ficha" class="secao d-secao" aria-labelledby="titulo-ficha">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">02</span>
+                    <h2 id="titulo-ficha" data-palavras>Conheça a <em>máquina</em></h2>
+                    <p class="cabeca-lede">Só atalhos do Executar (<kbd>⊞</kbd> + <kbd>R</kbd>) e um comando no CMD. Tudo vai para a aba <strong>Ficha</strong> da planilha.</p>
+                </header>
+                <table class="inventario">
+                    <caption class="sr-only">Onde encontrar cada dado da ficha técnica</caption>
+                    <thead><tr><th scope="col">Digite no Executar</th><th scope="col">Onde olhar</th><th scope="col">O que anotar</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>taskmgr</code></td><td>Desempenho › CPU</td><td>Processador, núcleos, processadores lógicos, velocidade base, cache L2 e L3</td></tr>
+                        <tr><td><code>taskmgr</code></td><td>Desempenho › Memória</td><td>Total, velocidade, slots usados</td></tr>
+                        <tr><td><code>taskmgr</code></td><td>Desempenho › Disco</td><td>Tipo: HDD, SSD ou SSD NVMe</td></tr>
+                        <tr><td><code>msinfo32</code></td><td>Resumo do Sistema</td><td>Modelo do computador e versão do Windows</td></tr>
+                        <tr><td><code>dxdiag</code></td><td>Aba Exibir</td><td>Placa de vídeo e memória de vídeo</td></tr>
+                        <tr><td><code>systeminfo</code> (no CMD)</td><td>Resumo</td><td>Memória física total</td></tr>
+                    </tbody>
+                </table>
+                <ul class="notar">
+                    <li><b>Slots usados: 1 de 2</b> significa memória em canal simples, que limita a largura de banda. Aparece no 7-Zip.</li>
+                    <li><b>Velocidade base</b> é o clock nominal; o campo Velocidade mostra o clock de agora, que sobe (turbo) ou cai (throttling) sob carga.</li>
+                    <li><b>O tipo de disco</b> explica os números da Estação 4. Anote também os navegadores e as versões (menu › Ajuda › Sobre).</li>
+                </ul>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="E1" data-n="03" data-rotulo="estação 1 · CPU" aria-hidden="true"></div>
+
+        <!-- ============ ESTAÇÃO 1 ============ -->
+        <section id="estacao-1" class="secao d-secao estacao" style="--cor: #4cc3ff" aria-labelledby="titulo-e1">
+            <div class="secao-inner estacao-grade">
+                <header class="estacao-cabeca">
+                    <p class="estacao-n" aria-hidden="true">E1</p>
+                    <h2 id="titulo-e1">CPU no navegador</h2>
+                    <p class="estacao-ferr">JetStream 3 · ≈ 20 min</p>
+                    <p class="estacao-conceito">Mede as partes de cálculo pesado das aplicações web, em JavaScript e WebAssembly. Roda sem instalar nada e entra no lugar do Cinebench, que não roda nas máquinas do laboratório.</p>
+                </header>
+                <div class="estacao-corpo">
+                    <ol class="passos">
+                        <li>Feche as outras abas e maximize a janela. Notebook na tomada.</li>
+                        <li>Abra <a href="https://browserbench.org/JetStream3.0/" target="_blank" rel="noopener noreferrer">browserbench.org/JetStream3.0<span class="sr-only"> (abre em nova aba)</span></a> e clique em <b>Start Test</b>.</li>
+                        <li>Solte o mouse e não troque de aba: é o mais longo dos testes do BrowserBench.</li>
+                        <li>Anote a nota final na aba <b>Medicoes</b> e tire print (<kbd>⊞</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>).</li>
+                        <li>Repita mais duas vezes. A planilha calcula a mediana.</li>
+                    </ol>
+                    <div class="esperar">
+                        <p class="esperar-rot">o que aparece na tela</p>
+                        <p>Uma nota final e uma tabela de subtestes. Cada subteste combina inicialização, pior caso e caso médio; a nota final é a média geométrica de todos. Procure os subtestes de nota mais baixa: é onde a máquina sofre.</p>
+                        <p class="esperar-rot">o que ele não mostra</p>
+                        <p>A diferença entre 1 núcleo e todos. Isso sai do 7-Zip, na Estação 2.</p>
+                    </div>
+                    <div class="demo">
+                        <p class="esperar-rot">demonstração do professor · Cinebench</p>
+                        <p>File › <b>Advanced Benchmark</b>, com <b>Minimum Test Duration = Off</b>. O teste de 1 thread pinta um quadrado da imagem por vez; o multi, um quadrado por thread lógico. A razão multi ÷ single fica perto do número de núcleos físicos, mais um ganho do SMT.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="E2" data-n="04" data-rotulo="estação 2 · 7-Zip" aria-hidden="true"></div>
+
+        <!-- ============ ESTAÇÃO 2 ============ -->
+        <section id="estacao-2" class="secao d-secao estacao" style="--cor: #7fc400" aria-labelledby="titulo-e2">
+            <div class="secao-inner estacao-grade">
+                <header class="estacao-cabeca">
+                    <p class="estacao-n" aria-hidden="true">E2</p>
+                    <h2 id="titulo-e2">CPU e memória</h2>
+                    <p class="estacao-ferr">7-Zip · ≈ 20 min</p>
+                    <p class="estacao-conceito">O 7-Zip comprime e descomprime dados na memória e converte a velocidade em MIPS. A compressão depende muito de cache e RAM; a descompressão, mais do núcleo. É o teste que liga a teoria de IPC aos números.</p>
+                </header>
+                <div class="estacao-corpo">
+                    <div class="cmd" data-titulo="Prompt de Comando">
+<pre><code>cd %USERPROFILE%\bench\extra\x64
+7za b
+7za b -mmt1
+7za b -mmt2
+7za b -mmt4</code></pre>
+                    </div>
+                    <p class="lab-nota"><code>b</code> = benchmark com todos os threads; <code>-mmt1</code> limita a 1 thread, <code>-mmt2</code> a 2… De cada teste, anote a última linha, que começa com <b>Tot:</b>.</p>
+                    <dl class="colunas">
+                        <div><dt>Dict 22, 23, 24</dt><dd>Dicionário de 4, 8, 16 MB: o maior sai do cache e depende da RAM.</dd></div>
+                        <div><dt>Speed</dt><dd>KiB por segundo. Descompressão é muito mais rápida.</dd></div>
+                        <div><dt>Usage</dt><dd>100% por thread: com 8 threads, perto de 800%.</dd></div>
+                        <div><dt>R/U</dt><dd>Nota de um thread médio: compare com o clock efetivo.</dd></div>
+                        <div><dt>Rating</dt><dd>Nota total em MIPS: vai para a planilha.</dd></div>
+                        <div><dt>Tot</dt><dd>Média de compressão e descompressão.</dd></div>
+                    </dl>
+                    <div class="esperar">
+                        <p class="esperar-rot">três contas da dupla</p>
+                        <p><b>Razão:</b> Rating do <code>7za b</code> ÷ Rating do <code>7za b -mmt1</code>. Passou do número de núcleos físicos? O excedente é o ganho do SMT.</p>
+                        <p><b>IPC do 7-Zip:</b> R/U (MIPS) ÷ clock efetivo (MHz) = instruções por ciclo nessa tarefa. Compare entre gerações de processador, não o clock.</p>
+                        <p><b>Escalonamento:</b> gráfico threads × Rating. A nota quase dobra enquanto há núcleos físicos livres; no SMT o ganho cai.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="E3" data-n="05" data-rotulo="estação 3 · navegador" aria-hidden="true"></div>
+
+        <!-- ============ ESTAÇÃO 3 ============ -->
+        <section id="estacao-3" class="secao d-secao estacao" style="--cor: #b48cff" aria-labelledby="titulo-e3">
+            <div class="secao-inner estacao-grade">
+                <header class="estacao-cabeca">
+                    <p class="estacao-n" aria-hidden="true">E3</p>
+                    <h2 id="titulo-e3">Navegador e gráficos</h2>
+                    <p class="estacao-ferr">Speedometer 3.1 · MotionMark 1.3 · ≈ 20 min</p>
+                    <p class="estacao-conceito">O mesmo hardware dá notas diferentes conforme o software. Processador, GPU integrada e navegador são testados juntos, e dá para comparar com o celular.</p>
+                </header>
+                <div class="estacao-corpo">
+                    <ul class="testes-web">
+                        <li><a href="https://browserbench.org/Speedometer3.1/" target="_blank" rel="noopener noreferrer"><b>Speedometer 3.1</b><span>tempo de resposta em apps web: listas, editores, gráficos, notícias</span><span class="sr-only"> (abre em nova aba)</span></a></li>
+                        <li><a href="https://browserbench.org/MotionMark1.3/" target="_blank" rel="noopener noreferrer"><b>MotionMark 1.3</b><span>quantos elementos o navegador anima antes de perder quadros</span><span class="sr-only"> (abre em nova aba)</span></a></li>
+                    </ul>
+                    <p class="lab-nota">Uma aba só, janela maximizada, na tomada, e <b>não troque de aba</b>: o navegador desacelera abas em segundo plano.</p>
+                    <div class="esperar">
+                        <p class="esperar-rot">o que aparece na tela</p>
+                        <p><b>Speedometer:</b> nota com margem (±); em <b>Details</b>, o tempo de cada carga. Nota maior = clique e digitação mais ágeis.</p>
+                        <p><b>MotionMark:</b> detecta a taxa da tela antes de começar. Notas de telas de 60 Hz e 120 Hz não se comparam: anote os Hz.</p>
+                        <p class="esperar-rot">experimento rápido</p>
+                        <p>Speedometer no Edge, no Chrome e no celular de um aluno. A diferença entre navegadores na mesma máquina é maior ou menor que a diferença entre máquinas?</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="E4" data-n="06" data-rotulo="estação 4 · disco" aria-hidden="true"></div>
+
+        <!-- ============ ESTAÇÃO 4 ============ -->
+        <section id="estacao-4" class="secao d-secao estacao" style="--cor: #e3914f" aria-labelledby="titulo-e4">
+            <div class="secao-inner estacao-grade">
+                <header class="estacao-cabeca">
+                    <p class="estacao-n" aria-hidden="true">E4</p>
+                    <h2 id="titulo-e4">Disco</h2>
+                    <p class="estacao-ferr">DiskSpd · ≈ 20 min</p>
+                    <p class="estacao-conceito">Disco tem três números: MB/s (vazão) para copiar arquivos grandes; IOPS e latência para iniciar o Windows e abrir programas, que leem milhares de arquivos pequenos.</p>
+                </header>
+                <div class="estacao-corpo">
+                    <div class="cmd" data-titulo="Prompt de Comando">
+<pre><code>cd %USERPROFILE%\bench\DiskSpd\amd64
+diskspd -c1G -d20 -b1M -Sh -L teste.dat &gt; d1.txt
+diskspd -c1G -d20 -b1M -w100 -Sh -L teste.dat &gt; d2.txt
+diskspd -c1G -d20 -b4K -r -o1 -Sh -L teste.dat &gt; d3.txt
+diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat &gt; d4.txt
+diskspd -c1G -d20 -b1M -L teste.dat &gt; d5.txt
+del teste.dat</code></pre>
+                    </div>
+                    <ol class="passos passos-curtos">
+                        <li><b>d1</b> leitura sequencial, como copiar um filme.</li>
+                        <li><b>d2</b> escrita sequencial (<code>-w100</code>).</li>
+                        <li><b>d3</b> leitura aleatória de arquivos pequenos, uma por vez: abrir programas.</li>
+                        <li><b>d4</b> o mesmo com fila 32 e 4 threads: carga pesada.</li>
+                        <li><b>d5</b> igual ao d1, mas sem <code>-Sh</code>: o cache de memória entra na conta.</li>
+                    </ol>
+                    <!-- parâmetros: clique para revelar -->
+                    <div class="revelar-grade" role="list">
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-c1G</code><span>cria arquivo de teste de 1 GB</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-d20</code><span>mede por 20 segundos</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-b1M · -b4K</code><span>bloco grande ou pequeno</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-r</code><span>aleatório; sem ele, sequencial</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-o32 · -t4</code><span>fila de operações e threads</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-w100</code><span>só escrita; sem ele, só leitura</span></button>
+                        <button type="button" class="revelar destaque" role="listitem" aria-expanded="false"><code>-Sh</code><span>desliga o cache: mede o disco, não a RAM</span></button>
+                        <button type="button" class="revelar" role="listitem" aria-expanded="false"><code>-L</code><span>mede a latência</span></button>
+                    </div>
+                    <div class="esperar">
+                        <p class="esperar-rot">como ler (notepad d1.txt)</p>
+                        <p>Na tabela <b>Total IO</b>, linha <code>total:</code> → <b>MiB/s</b> (vazão), <b>I/O per s</b> (IOPS) e <b>AvgLat</b> (ms). Nos percentis, <b>99th</b>: 99% das operações terminaram abaixo desse tempo.</p>
+                        <p><b>Confira:</b> IOPS × bloco = vazão. 2.000 IOPS × 4 KB ≈ 8 MB/s.</p>
+                        <p><b>O d5 dá um número "impossível"?</b> É a RAM respondendo no lugar do disco: por isso o <code>-Sh</code> existe.</p>
+                        <p class="esperar-rot">cuidados</p>
+                        <p>Aponte só para o arquivo de teste, nunca para o disco inteiro. Testes de escrita gastam o SSD: uma vez por máquina. Sem administrador, criar o arquivo de 1 GB demora mais: avise a turma.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="E5" data-n="07" data-rotulo="estação 5 · calor" aria-hidden="true"></div>
+
+        <!-- ============ ESTAÇÃO 5 ============ -->
+        <section id="estacao-5" class="secao d-secao estacao" style="--cor: #ff6a4d" aria-labelledby="titulo-e5">
+            <div class="secao-inner estacao-grade">
+                <header class="estacao-cabeca">
+                    <p class="estacao-n" aria-hidden="true">E5</p>
+                    <h2 id="titulo-e5">Calor e throttling</h2>
+                    <p class="estacao-ferr">registrar · Parte B · ≈ 30 min</p>
+                    <p class="estacao-conceito">O processador acelera acima do clock base enquanto há folga de temperatura e energia. Sob carga longa, o calor acumula e o clock cai. Sem sensores de administrador, a prova é o clock efetivo que o próprio Windows calcula.</p>
+                </header>
+                <div class="estacao-corpo">
+                    <div class="duas">
+                        <div class="esperar">
+                            <p class="esperar-rot">forma 1 · só observar</p>
+                            <p><code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. <code>resmon</code> › aba CPU, <b>Frequência máxima</b> (acima de 100% = turbo). Anote a cada 30 segundos.</p>
+                        </div>
+                        <div class="cmd" data-titulo="Forma 2 · gravar em planilha">
+<pre><code>cd %USERPROFILE%\bench
+registrar</code></pre>
+                        </div>
+                    </div>
+                    <p class="lab-nota">Grava <code>log_cpu.csv</code> na Área de Trabalho, uma linha por segundo: Segundo · MHz_efetivo · Utilizacao · Temp_C. Para parar: <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
+
+                    <!-- linha do tempo do teste -->
+                    <ol class="estresse" aria-label="Roteiro do teste de estresse">
+                        <li style="--peso: 1"><b>1 min</b>repouso, <code>registrar</code> rodando</li>
+                        <li style="--peso: 10" class="carga"><b>≈ 10 min</b>outra janela do CMD, em <code>bench\extra\x64</code>: <code>7za b 60</code></li>
+                        <li style="--peso: 2"><b>2 min</b>resfriar, depois <kbd>Ctrl</kbd> + <kbd>C</kbd></li>
+                    </ol>
+
+                    <!-- curvas: escolha e veja -->
+                    <div class="curvas" id="curvas">
+                        <div class="curvas-abas" role="group" aria-label="Formato da curva">
+                            <button type="button" data-c="0" aria-pressed="true">Estável</button>
+                            <button type="button" data-c="1" aria-pressed="false">Pico e queda</button>
+                            <button type="button" data-c="2" aria-pressed="false">Dente de serra</button>
+                            <button type="button" data-c="3" aria-pressed="false">Abaixo da base</button>
+                        </div>
+                        <svg class="curvas-grafico" viewBox="0 0 600 220" role="img" aria-labelledby="curva-desc">
+                            <line x1="40" y1="20" x2="40" y2="190" class="eixo" /><line x1="40" y1="190" x2="590" y2="190" class="eixo" />
+                            <line x1="40" y1="110" x2="590" y2="110" class="base" /><text x="586" y="104" text-anchor="end" class="base-txt">clock base</text>
+                            <text x="44" y="210" class="eixo-txt">repouso</text><text x="300" y="210" class="eixo-txt">carga longa</text><text x="586" y="210" text-anchor="end" class="eixo-txt">resfria</text>
+                            <path id="curva" class="curva" d="" />
+                        </svg>
+                        <p id="curva-desc" class="curvas-desc" aria-live="polite"></p>
+                    </div>
+                    <div class="esperar">
+                        <p class="esperar-rot">temperatura</p>
+                        <p>A coluna Temp_C vem da zona térmica ACPI da placa, não do sensor do núcleo: em muitas máquinas fica parada ou vazia. Registre como limitação, nunca como "não esquentou". Se a máquina desligar sozinha, pare e trate como chamado de manutenção.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="B" data-n="08" data-rotulo="hipóteses" aria-hidden="true"></div>
+
+        <!-- ============ HIPÓTESES (Parte B) ============ -->
+        <section id="hipoteses" class="secao d-secao" aria-labelledby="titulo-hip">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">B</span>
+                    <h2 id="titulo-hip" data-palavras>Prove ou <em>derrube</em></h2>
+                    <p class="cabeca-lede">Cada dupla escolhe uma hipótese, mede as condições A e B com três rodadas cada e conclui: <b>confirmada</b>, <b>derrubada</b> ou <b>inconclusiva</b>. Tudo na aba Experimento.</p>
+                </header>
+                <table class="inventario hipoteses">
+                    <caption class="sr-only">Hipóteses da Parte B</caption>
+                    <thead><tr><th scope="col">Hipótese</th><th scope="col">Variável testada</th><th scope="col">Ferramenta</th></tr></thead>
+                    <tbody>
+                        <tr><td>Modo de energia muda o desempenho</td><td>Melhor eficiência × melhor desempenho</td><td>7-Zip + registrar</td></tr>
+                        <tr><td>Notebook perde desempenho na bateria</td><td>Tomada × bateria</td><td>7-Zip + registrar</td></tr>
+                        <tr><td>Segundo plano rouba desempenho</td><td>Máquina limpa × vídeo tocando</td><td>7-Zip e Speedometer</td></tr>
+                        <tr><td>Mais threads nem sempre rendem</td><td>1, 2, 4, 8 threads</td><td>7-Zip (<code>-mmt</code>)</td></tr>
+                        <tr><td>O pendrive é o gargalo, não o PC</td><td>Disco interno × USB 2.0 × USB 3.0</td><td>DiskSpd</td></tr>
+                        <tr><td>A primeira medição engana</td><td>1ª passada × média de 60</td><td>7-Zip (<code>7za b 60</code>)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="C" data-n="09" data-rotulo="registro e entrega" aria-hidden="true"></div>
+
+        <!-- ============ ENTREGA ============ -->
+        <section id="entrega" class="secao d-secao" aria-labelledby="titulo-entrega">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">C</span>
+                    <h2 id="titulo-entrega" data-palavras>Registro e <em>entrega</em></h2>
+                    <p class="cabeca-lede">Tudo vai para a planilha <code>registro_benchmark.xlsx</code>: amarelo é para digitar (só o número, com vírgula); branco calcula sozinho. No fim, cada dupla entrega três arquivos.</p>
+                </header>
+
+                <div class="entrega-grade">
+                    <ul class="arquivos-entrega">
+                        <li><span class="ext">xlsx</span><b>T2_D05_registro.xlsx</b><span>a planilha preenchida, com a aba Log CPU colada</span></li>
+                        <li><span class="ext">pdf</span><b>T2_D05_laudo.pdf</b><span>o laudo de uma página, salvo como PDF</span></li>
+                        <li><span class="ext">zip</span><b>T2_D05_evidencias.zip</b><span>prints PNG, d1.txt a d5.txt e log_cpu.csv</span></li>
+                    </ul>
+                    <div class="laudo">
+                        <h3 class="sub">O laudo</h3>
+                        <p class="laudo-pergunta">"Este computador serve para edição de vídeo leve e navegação com muitas abas? Qual é o primeiro upgrade que você recomenda?"</p>
+                        <ol>
+                            <li>Ficha técnica resumida</li>
+                            <li>Resultados da dupla × mediana da turma</li>
+                            <li>Gráfico do registrador com uma frase</li>
+                            <li>O gargalo e a prova numérica</li>
+                            <li>Upgrade recomendado, pelos números</li>
+                            <li>O que não deu para medir sem administrador</li>
+                        </ol>
+                        <dl class="rubrica">
+                            <div><dt>Protocolo seguido (3 repetições, mediana, contexto)</dt><dd>3</dd></div>
+                            <div><dt>Leitura correta das saídas</dt><dd>3</dd></div>
+                            <div><dt>Gargalo coerente com a evidência</dt><dd>2</dd></div>
+                            <div><dt>Recomendação e limitações justificadas</dt><dd>2</dd></div>
+                        </dl>
+                    </div>
+                </div>
+                <p class="lab-nota">Nome: T&lt;turma&gt;_D&lt;dupla&gt;_parte (exemplo: turma 2, dupla 5). O .zip sai de: selecionar os arquivos › botão direito › Enviar para › Pasta compactada, sem administrador.</p>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="?" data-n="10" data-rotulo="certo ou errado" aria-hidden="true"></div>
+
+        <!-- ============ CERTO OU ERRADO ============ -->
+        <section id="quiz" class="palco" aria-labelledby="titulo-quiz">
+            <div class="palco-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">?</span>
+                    <h2 id="titulo-quiz" data-palavras>Certo ou <em>errado?</em></h2>
+                    <p class="cabeca-lede">Os erros de interpretação mais comuns. Escolha e veja.</p>
+                </header>
+                <!-- data-certo="sim" quando a afirmação está certa -->
+                <ul class="quiz" id="quiz-lista">
+                    <li data-certo="nao" data-porque="Notas de versões diferentes de um benchmark não se comparam: a escala muda.">Comparar a nota do JetStream 3 com a de um JetStream antigo</li>
+                    <li data-certo="nao" data-porque="Os autores avisam: telas com taxas diferentes dão notas que não se comparam.">Comparar MotionMark de uma tela de 60 Hz com outra de 120 Hz</li>
+                    <li data-certo="nao" data-porque="Vale a mediana das três rodadas, não a melhor.">Usar o melhor dos três resultados</li>
+                    <li data-certo="nao" data-porque="Sem -Sh o cache da RAM responde no lugar do disco.">O d5 (sem -Sh) é a velocidade do disco</li>
+                    <li data-certo="nao" data-porque="Depende também do IPC e do número de núcleos.">Clock maior significa PC mais rápido</li>
+                    <li data-certo="sim" data-porque="É exatamente o que o registrador mostra.">Queda de clock sob carga longa indica limite térmico ou de energia</li>
+                </ul>
+                <p class="quiz-placar" id="quiz-placar" aria-live="polite"></p>
+            </div>
+        </section>
+
+        <div class="divisor" data-ref="REF" data-n="11" data-rotulo="fontes" aria-hidden="true"></div>
+
+        <!-- ============ FONTES ============ -->
+        <section id="fontes" class="secao d-secao" aria-labelledby="titulo-fontes">
+            <div class="secao-inner">
+                <header class="cabeca">
+                    <span class="cabeca-n" aria-hidden="true">REF</span>
+                    <h2 id="titulo-fontes" data-palavras>Fontes</h2>
+                    <p class="cabeca-lede">Documentação usada para montar o laboratório.</p>
+                </header>
+                <ul class="fontes">
+                    <li><a href="https://www.7-zip.org/" target="_blank" rel="noopener noreferrer">7-Zip</a>: comando <code>b</code> (Benchmark), colunas R/U, Rating e Tot.</li>
+                    <li><a href="https://browserbench.org/" target="_blank" rel="noopener noreferrer">BrowserBench</a>: JetStream 3, Speedometer 3.1 e MotionMark 1.3.</li>
+                    <li><a href="https://github.com/microsoft/diskspd" target="_blank" rel="noopener noreferrer">Microsoft DiskSpd</a>: parâmetros e leitura da saída.</li>
+                    <li><a href="https://www.maxon.net/cinebench" target="_blank" rel="noopener noreferrer">Maxon Cinebench</a>: requisitos e opções de teste.</li>
+                    <li>Microsoft Learn: acesso de usuário comum aos contadores de desempenho e % Processor Utility.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="rodape-inner">
+            <div class="rodape-marca">
+                <svg class="marca-chip" viewBox="0 0 32 32" aria-hidden="true">
+                    <rect x="8" y="8" width="16" height="16" rx="3" />
+                    <path d="M12 4v4M16 4v4M20 4v4M12 24v4M16 24v4M20 24v4M4 12h4M4 16h4M4 20h4M24 12h4M24 16h4M24 20h4" />
+                    <circle cx="16" cy="16" r="2.6" />
+                </svg>
+                <p>Laboratório de Benchmark</p>
+            </div>
+            <dl class="rodape-dados">
+                <div><dt>Disciplina</dt><dd><a href="../disciplina/">Manutenção e Suporte</a></dd></div>
+                <div><dt>Apresentação</dt><dd><a href="apresentacao/">abrir os slides</a></dd></div>
+                <div><dt>Docente</dt><dd>Prof. Ábner Lucas</dd></div>
+                <div><dt>Portal</dt><dd><a href="../">voltar ao início</a></dd></div>
+            </dl>
+        </div>
+        <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
+    </footer>
+
+    <script src="../logica.js?v=2026.11.24d"></script>
+    <script src="../comum.js?v=2026.11.24d"></script>
+    <script src="lab.js?v=2026.11.24d"></script>
+</body>
+</html>

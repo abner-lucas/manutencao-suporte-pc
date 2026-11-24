@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apresentação · Laboratório de Benchmark</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%230d3326%27/%3E%3Cpath d=%27M6 22a10 10 0 0 1 20 0%27 fill=%27none%27 stroke=%27%23c6ff5a%27 stroke-width=%272.4%27 stroke-linecap=%27round%27/%3E%3Cpath d=%27M16 22l6-7%27 stroke=%27%23e3914f%27 stroke-width=%272.4%27 stroke-linecap=%27round%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: palco fixo 1280x720 escalado à janela; slides empilhados; paleta de câmera térmica (frio -> quente) */
+:root{
+  --bg:#07100c; --panel:#10201a; --line:#23392e; --ink:#e6eee4; --muted:#9fb3a5;
+  --cool:#4cc3ff; --mint:#c6ff5a; --violet:#b48cff; --warm:#e3914f; --hot:#ff6a4d;
+  --accent:var(--cool);
+  --f-disp:"Bricolage Grotesque","Arial Narrow",sans-serif;
+  --f-body:"Instrument Sans","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow:hidden}
+#deck{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:50% 50%}
+.slide{position:absolute;inset:0;padding:56px 72px 64px;display:flex;flex-direction:column;gap:22px;
+  opacity:0;visibility:hidden;transform:translateX(40px) scale(.985);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s .6s}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1),visibility 0s}
+.slide.past{transform:translateX(-40px) scale(.985)}
+.slide::before{content:"";position:absolute;inset:0;z-index:-1;background:
+  radial-gradient(900px 420px at 100% 0%, color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%),
+  linear-gradient(180deg,#0c1712,var(--bg))}
+.eyebrow{font-family:var(--f-mono);font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1,h2,h3{font-family:var(--f-disp);margin:0;text-wrap:balance;line-height:1.02}
+h1{font-size:96px;font-weight:800}
+h2{font-size:52px;font-weight:700}
+h3{font-size:26px;font-weight:700}
+p{margin:0;font-size:22px;line-height:1.4;color:var(--muted);max-width:62ch}
+.big{font-size:30px;color:var(--ink)}
+.row{display:flex;gap:24px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:14px}
+.grow{flex:1;min-width:0}
+.center{align-items:center;justify-content:center}
+.mono{font-family:var(--f-mono)}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:14px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.note{font-size:15px;color:var(--muted);font-family:var(--f-mono)}
+/* passos: visíveis em repouso, acendem ao avançar */
+[data-s]{transition:opacity .45s ease,transform .45s ease,box-shadow .45s ease,border-color .45s}
+.slide [data-s]:not(.on){opacity:.22;transform:translateY(6px)}
+.field[data-s].on,.hl[data-s].on{box-shadow:0 0 0 3px var(--hot),0 0 22px color-mix(in srgb,var(--hot) 55%,transparent);border-radius:6px}
+.field[data-s]:not(.on),.hl[data-s]:not(.on){opacity:1;transform:none}
+.pin{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--hot);color:#1a0d08;font:700 14px var(--f-mono);margin-right:6px;flex:none;vertical-align:middle}
+.on .pin,.pin.on{animation:pulse 1.4s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--hot) 70%,transparent)}100%{box-shadow:0 0 0 14px transparent}}
+/* cartões */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:24px}
+.card p{font-size:18px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+.num{font-family:var(--f-disp);font-weight:800;font-size:44px;color:var(--accent);line-height:1}
+/* teclas */
+kbd{display:inline-grid;place-items:center;min-width:64px;height:58px;padding:0 14px;border-radius:10px;background:linear-gradient(#24402f,#16291e);border:1px solid #36543f;border-bottom-width:5px;font:600 24px var(--f-mono);color:var(--ink)}
+kbd.sm{min-width:38px;height:34px;font-size:15px;border-bottom-width:3px;border-radius:7px;padding:0 8px}
+.plus{font:700 30px var(--f-disp);color:var(--muted)}
+/* janelas simuladas (claras, como no Windows) */
+.win{background:#f3f4f7;color:#1b1f27;border-radius:10px;box-shadow:0 24px 60px rgba(0,0,0,.45);overflow:hidden;font-family:"Segoe UI",var(--f-body);border:1px solid #c9ced8}
+.win-bar{display:flex;align-items:center;justify-content:space-between;height:34px;padding:0 0 0 14px;background:#e6e8ee;font-size:14px;color:#2b303b;border-bottom:1px solid #d2d6de}
+.win-bar .ctl{display:flex}
+.win-bar .ctl span{width:44px;height:34px;display:grid;place-items:center;font-size:13px;color:#4a5160}
+.win-body{padding:16px}
+.win .lbl{font-size:13px;color:#5b6272}
+.win .val{font-size:20px;font-weight:600;color:#14171d}
+.win.dark{background:#1e1f23;color:#e6e6e6;border-color:#3a3c44}
+.win.dark .win-bar{background:#2a2b31;color:#d6d6d6;border-color:#3a3c44}
+.field{display:flex;align-items:center;gap:4px;padding:2px 4px}
+.mockcap{font-size:13px;color:var(--muted);font-family:var(--f-mono)}
+/* terminal */
+.term{background:#0b0d12;border:1px solid #2c3340;border-radius:10px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.term .win-bar{background:#1b1f28;color:#c8ccd4;border-color:#2c3340}
+.term pre{margin:0;padding:18px 20px;font:500 19px/1.55 var(--f-mono);color:#d8dde6;white-space:pre-wrap;min-height:120px}
+.term .pr{color:#8fd1ff}
+.term .cm{color:#ffd27a}
+.term .dim{color:#7d8696}
+.cursor{display:inline-block;width:10px;height:1.1em;background:#d8dde6;vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.copy{font:600 13px var(--f-mono);background:transparent;color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:4px 10px;cursor:pointer}
+.copy:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--warm);outline-offset:2px}
+/* fluxos */
+.flow{display:flex;align-items:center;gap:10px}
+.node{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;font-size:19px;min-width:0}
+.node b{display:block;font-family:var(--f-disp);font-size:24px;color:var(--ink)}
+.arrow{flex:none;width:44px;height:2px;background:var(--muted);position:relative}
+.arrow::after{content:"";position:absolute;right:-2px;top:-6px;border:7px solid transparent;border-left:10px solid var(--muted)}
+/* tabelas */
+table{border-collapse:collapse;width:100%;font-size:18px}
+th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{font-family:var(--f-mono);font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+td{font-variant-numeric:tabular-nums}
+code{font-family:var(--f-mono);background:#06100b;border:1px solid var(--line);border-radius:6px;padding:1px 7px;color:var(--warm);font-size:.92em}
+/* divisores de estação */
+.divider{justify-content:center}
+.divider .stn{font:800 220px/0.85 var(--f-disp);color:transparent;-webkit-text-stroke:2px var(--accent);position:absolute;right:60px;bottom:40px;opacity:.5}
+.divider h1{font-size:110px}
+.timerbtn{align-self:flex-start;font:600 18px var(--f-mono);background:var(--accent);color:#0b1018;border:0;border-radius:10px;padding:12px 18px;cursor:pointer}
+/* entradas */
+input[type=number]{width:140px;font:600 24px var(--f-mono);background:#06100b;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+label{font-size:16px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.result{font:800 54px var(--f-disp);color:var(--accent)}
+/* HUD */
+#hud{position:fixed;left:0;right:0;bottom:0;height:44px;display:flex;align-items:center;gap:14px;padding:0 16px;background:linear-gradient(transparent,rgba(4,10,7,.88));z-index:5;font:500 14px var(--f-mono);color:var(--muted)}
+#hud button{background:#132a20;color:var(--ink);border:1px solid var(--line);border-radius:8px;height:30px;min-width:38px;cursor:pointer;font:600 14px var(--f-mono)}
+#bar{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--cool),var(--warm),var(--hot));z-index:6;transition:width .5s}
+#timer{margin-left:auto;font:700 18px var(--f-mono);color:var(--warm)}
+#timer.end{color:var(--hot);animation:blink 1s steps(1) infinite}
+#ov{position:fixed;inset:0;background:rgba(4,10,7,.96);z-index:10;display:none;overflow:auto;padding:30px}
+#ov.open{display:block}
+#ov .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+#ov button{text-align:left;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;font:500 15px var(--f-body)}
+#ov button span{display:block;font:600 12px var(--f-mono);color:var(--muted)}
+/* revelar */
+.reveal{cursor:pointer;position:relative}
+.reveal .ans{opacity:0;max-height:0;overflow:hidden;transition:all .4s}
+.reveal.open .ans{opacity:1;max-height:200px}
+.reveal .hint{font:600 13px var(--f-mono);color:var(--accent)}
+.pick{cursor:pointer}
+.pick.sel{border-color:var(--hot);box-shadow:0 0 0 2px var(--hot)}
+canvas{display:block}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button{font:600 16px var(--f-body);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--accent);color:#0b1018;border-color:var(--accent)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="deck">
+
+<!-- 1 CAPA -->
+<section class="slide" data-title="Capa" data-init="heat" style="--accent:var(--warm)">
+  <canvas class="bgheat" width="1280" height="720" style="position:absolute;inset:0;z-index:-1;opacity:.55"></canvas>
+  <div class="eyebrow">Manutenção e Suporte de Computadores · aula prática</div>
+  <h1 style="margin-top:110px">Laboratório<br>de Benchmark</h1>
+  <p class="big">Medir para provar: CPU, memória, navegador, disco e calor.</p>
+  <div class="row" style="margin-top:auto;gap:12px;align-items:center">
+    <kbd class="sm">→</kbd><span class="note">avançar</span>
+    <kbd class="sm">←</kbd><span class="note">voltar</span>
+    <kbd class="sm">O</kbd><span class="note">visão geral</span>
+    <kbd class="sm">F</kbd><span class="note">tela cheia</span>
+  </div>
+</section>
+
+<!-- 2 PERGUNTA -->
+<section class="slide divider" data-title="Pergunta-guia">
+  <div class="eyebrow">Pergunta-guia</div>
+  <h1 style="font-size:84px">O que torna um<br>computador rápido?</h1>
+  <h2 data-s="1" style="color:var(--warm)">E como provar isso com números?</h2>
+</section>
+
+<!-- 3 ROTEIRO -->
+<section class="slide" data-title="Roteiro da aula">
+  <div class="eyebrow">Roteiro · 200 minutos</div>
+  <h2>Quatro momentos</h2>
+  <div class="col" style="gap:18px;margin-top:10px">
+    <div class="row center" data-s="1" style="justify-content:flex-start"><div style="width:180px" class="mono">Abertura</div><div style="height:46px;width:calc(20px*5);background:var(--cool);border-radius:8px"></div><span class="note">20 min · ficha técnica</span></div>
+    <div class="row center" data-s="2" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte A</div><div style="height:46px;width:calc(80px*5);background:var(--mint);border-radius:8px"></div><span class="note">80 min · Estações 1 a 4</span></div>
+    <div class="row center" data-s="3" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte B</div><div style="height:46px;width:calc(60px*5);background:var(--hot);border-radius:8px"></div><span class="note">60 min · Estação 5 + experimento</span></div>
+    <div class="row center" data-s="4" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte C</div><div style="height:46px;width:calc(40px*5);background:var(--violet);border-radius:8px"></div><span class="note">40 min · planilha e laudo</span></div>
+  </div>
+  <div class="flow" style="margin-top:auto" data-s="5">
+    <div class="node"><b>1 · CPU</b>JetStream 3</div><div class="arrow"></div>
+    <div class="node"><b>2 · CPU + RAM</b>7-Zip</div><div class="arrow"></div>
+    <div class="node"><b>3 · Navegador</b>Speedometer · MotionMark</div><div class="arrow"></div>
+    <div class="node"><b>4 · Disco</b>DiskSpd</div><div class="arrow"></div>
+    <div class="node" style="border-color:var(--hot)"><b>5 · Calor</b>Registrador</div>
+  </div>
+</section>
+
+<!-- 4 PROTOCOLO -->
+<section class="slide" data-title="Protocolo de medição" style="--accent:var(--mint)">
+  <div class="eyebrow">Protocolo · vale para todos os testes</div>
+  <h2>Seis regras</h2>
+  <div class="grid g3">
+    <div class="card" data-s="1"><div class="num">1</div><h3>Feche tudo</h3><p>Navegador, mensageiros, Explorador.</p></div>
+    <div class="card" data-s="2"><div class="num">2</div><h3>Na tomada</h3><p>Notebook nunca na bateria.</p></div>
+    <div class="card" data-s="3"><div class="num">3</div><h3>Espere 2 min</h3><p>Após o logon, o Windows ainda trabalha.</p></div>
+    <div class="card" data-s="4"><div class="num">4</div><h3>3 vezes → mediana</h3><p>O valor do meio, não o melhor.</p></div>
+    <div class="card" data-s="5"><div class="num">5</div><h3>Uma variável</h3><p>Mude só uma coisa por experimento.</p></div>
+    <div class="card" data-s="6"><div class="num">6</div><h3>Mãos fora</h3><p>Não mexa no PC durante o teste.</p></div>
+  </div>
+</section>
+
+<!-- 5 MEDIANA -->
+<section class="slide" data-title="Como achar a mediana" style="--accent:var(--mint)">
+  <div class="eyebrow">Regra 4 na prática</div>
+  <h2>Mediana em 3 passos</h2>
+  <div class="row center" style="gap:40px;margin-top:30px">
+    <div class="col center" data-s="1"><span class="note">anote</span><div class="row"><div class="card num" style="font-size:40px">1212</div><div class="card num" style="font-size:40px">1180</div><div class="card num" style="font-size:40px">1195</div></div></div>
+    <div class="arrow" data-s="2"></div>
+    <div class="col center" data-s="2"><span class="note">ordene</span><div class="row"><div class="card num" style="font-size:40px;color:var(--muted)">1180</div><div class="card num" style="font-size:40px;color:var(--muted)">1195</div><div class="card num" style="font-size:40px;color:var(--muted)">1212</div></div></div>
+    <div class="arrow" data-s="3"></div>
+    <div class="col center" data-s="3"><span class="note">pegue o do meio</span><div class="card num" style="font-size:64px;border-color:var(--mint);box-shadow:0 0 30px color-mix(in srgb,var(--mint) 40%,transparent)">1195</div></div>
+  </div>
+  <p class="note" style="margin-top:auto">Valores de exemplo.</p>
+</section>
+
+<!-- 5b COMO ANOTAR -->
+<section class="slide" data-title="Como anotar: a planilha" style="--accent:var(--mint)">
+  <div class="eyebrow">Registro · registro_benchmark.xlsx</div>
+  <h2>Tudo vai para uma planilha</h2>
+  <div class="row" style="gap:26px">
+    <div class="win" style="width:760px">
+      <div class="win-bar"><span>registro_benchmark.xlsx</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <table style="font-size:14px;color:#222;background:#fff">
+        <tr style="background:#1f3a5f;color:#fff"><td>Teste</td><td>Rodada 1</td><td>Rodada 2</td><td>Rodada 3</td><td>Mediana</td></tr>
+        <tr style="color:#888;font-style:italic"><td>JetStream 3 (exemplo)</td><td>108,2</td><td>112,5</td><td>110,9</td><td>110,9</td></tr>
+        <tr><td>JetStream 3 · nota final</td><td class="field" data-s="2" style="background:#fff2b3;color:#0000ff">105,4</td><td style="background:#fff2b3"></td><td style="background:#fff2b3"></td><td class="field" data-s="3"><b>105,4</b></td></tr>
+        <tr><td>7za b · Rating Tot</td><td style="background:#fff2b3"></td><td style="background:#fff2b3"></td><td style="background:#fff2b3"></td><td></td></tr>
+        <tr><td>7za b -mmt1 · Rating Tot</td><td style="background:#fff2b3"></td><td style="background:#fff2b3"></td><td style="background:#fff2b3"></td><td></td></tr>
+      </table>
+      <div style="display:flex;gap:2px;padding:6px 8px;background:#e6e8ee;font-size:13px">
+        <span class="field" data-s="1" style="padding:4px 10px;background:#fff">Leia-me</span><span class="field" data-s="1" style="padding:4px 10px;background:#fff">Ficha</span><span style="padding:4px 10px;background:#fff;font-weight:600;border-bottom:2px solid #1f7a45">Medicoes</span><span class="field" data-s="4" style="padding:4px 10px;background:#fff">Log CPU</span><span class="field" data-s="5" style="padding:4px 10px;background:#fff">Experimento</span>
+      </div>
+    </div>
+    <div class="col grow">
+      <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
+        <li data-s="1"><span class="pin">1</span>Comece pelo <b>Leia-me</b> e pela <b>Ficha</b></li>
+        <li data-s="2"><span class="pin">2</span>Amarelo = digitar. Só o número, com vírgula</li>
+        <li data-s="3"><span class="pin">3</span>Branco = calcula sozinho. Não apague</li>
+        <li data-s="4"><span class="pin">4</span><b>Log CPU</b>: colar o log_cpu.csv em A1</li>
+        <li data-s="5"><span class="pin">5</span><b>Experimento</b>: a hipótese da Parte B</li>
+      </ol>
+      <div class="card" data-s="6"><div class="row center" style="justify-content:flex-start;gap:8px"><kbd class="sm">⊞</kbd><span class="plus" style="font-size:20px">+</span><kbd class="sm">Shift</kbd><span class="plus" style="font-size:20px">+</span><kbd class="sm">S</kbd></div><p>Print de cada resultado, salvo como PNG.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 KIT -->
+<section class="slide" data-title="O kit na pasta bench">
+  <div class="eyebrow">Antes de começar</div>
+  <h2>O kit já está na sua pasta</h2>
+  <div class="row" style="gap:40px">
+    <div class="win" style="width:640px">
+      <div class="win-bar"><span>bench</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <div class="win-body mono" style="font-size:17px;line-height:1.9">
+        <div style="color:#5b6272">C:\Users\aluno\bench</div>
+        <div class="field" data-s="1">🌐 navegador: browserbench.org <span class="lbl" style="margin-left:auto">Estações 1 e 3</span></div>
+        <div class="field" data-s="2">📁 extra\x64\7za.exe <span class="lbl" style="margin-left:auto">Estação 2</span></div>
+        <div class="field" data-s="3">📁 DiskSpd\amd64\diskspd.exe <span class="lbl" style="margin-left:auto">Estação 4</span></div>
+        <div class="field" data-s="4">⚙ registrar.bat <span class="lbl" style="margin-left:auto">Estação 5</span></div>
+        <div class="field" style="opacity:.6">⚙ registrador.ps1 <span class="lbl" style="margin-left:auto">não mexer</span></div>
+      </div>
+    </div>
+    <div class="col grow" style="justify-content:center">
+      <p class="big">Chegue lá em 2 teclas:</p>
+      <div class="row center" style="justify-content:flex-start"><kbd>⊞</kbd><span class="plus">+</span><kbd>R</kbd></div>
+      <div class="term" style="width:100%"><pre><span class="pr">Abrir:</span> <span class="type" data-text="%USERPROFILE%\bench"></span><span class="cursor"></span></pre></div>
+      <p class="note">⊞ = tecla Windows · Enter abre a pasta</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 DIVISOR ABERTURA -->
+<section class="slide divider" data-title="Abertura · Ficha técnica" style="--accent:var(--cool)">
+  <div class="stn">00</div>
+  <div class="eyebrow">Abertura · 20 min</div>
+  <h1>Ficha técnica</h1>
+  <p class="big">Conheça a máquina antes de medir.</p>
+  <button class="timerbtn" data-min="10">▶ cronômetro 10:00</button>
+</section>
+
+<!-- 8 EXECUTAR -->
+<section class="slide" data-title="Abrir o Gerenciador de Tarefas">
+  <div class="eyebrow">Passo 1 · Executar</div>
+  <h2>Abra o Gerenciador de Tarefas</h2>
+  <div class="flow" style="gap:26px;margin-top:20px">
+    <div class="col center" data-s="1"><div class="row center"><kbd>⊞</kbd><span class="plus">+</span><kbd>R</kbd></div><span class="note">abre o Executar</span></div>
+    <div class="arrow" data-s="2"></div>
+    <div class="win" style="width:460px" data-s="2">
+      <div class="win-bar"><span>Executar</span><span class="ctl"><span>✕</span></span></div>
+      <div class="win-body" style="display:flex;flex-direction:column;gap:14px">
+        <div class="lbl" style="font-size:14px">Digite o nome de um programa, pasta, documento ou recurso da Internet.</div>
+        <div class="row center" style="gap:10px;justify-content:flex-start"><span class="lbl" style="font-size:15px">Abrir:</span>
+          <div class="field" data-s="3" style="flex:1;background:#fff;border:1px solid #8a93a5;height:34px;font:500 18px var(--f-mono)"><span class="type" data-s="3" data-text="taskmgr"></span></div></div>
+        <div class="row" style="justify-content:flex-end;gap:8px">
+          <span class="field" data-s="4" style="padding:6px 22px;background:#0067c0;color:#fff;border-radius:4px;font-size:14px">OK</span>
+          <span style="padding:6px 16px;background:#fff;border:1px solid #c4c9d3;border-radius:4px;font-size:14px">Cancelar</span>
+        </div>
+      </div>
+    </div>
+    <div class="arrow" data-s="4"></div>
+    <div class="col center" data-s="4"><kbd>Enter</kbd><span class="note">ou clique OK</span></div>
+  </div>
+  <p data-s="5" class="big" style="margin-top:auto">Depois: aba <b>Desempenho</b> (ícone de gráfico) → <b>CPU</b>.</p>
+</section>
+
+<!-- 9 TM CPU -->
+<section class="slide" data-title="Gerenciador · CPU" data-init="cpugraph">
+  <div class="row" style="gap:28px;height:100%">
+    <div class="win" style="width:780px;align-self:flex-start">
+      <div class="win-bar"><span>Gerenciador de Tarefas</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <div style="display:flex">
+        <div style="width:150px;background:#eceef3;padding:10px 0;font-size:14px;color:#454c5a">
+          <div style="padding:8px 14px">Processos</div><div style="padding:8px 14px;background:#dfe5f0;border-left:3px solid #0067c0;font-weight:600">Desempenho</div><div style="padding:8px 14px">Histórico</div><div style="padding:8px 14px">Inicializar</div><div style="padding:8px 14px">Usuários</div><div style="padding:8px 14px">Detalhes</div><div style="padding:8px 14px">Serviços</div>
+        </div>
+        <div style="flex:1;padding:14px 18px;display:flex;flex-direction:column;gap:10px">
+          <div class="row" style="justify-content:space-between;align-items:baseline">
+            <span style="font-size:26px;font-weight:600">CPU</span>
+            <span class="field" data-s="1" style="font-size:14px"><span class="pin">1</span>Intel(R) Core(TM) i5-10400 CPU @ 2.90GHz</span>
+          </div>
+          <canvas class="cpug" width="580" height="150" style="border:1px solid #9cc3e6;background:#fff"></canvas>
+          <div class="row" style="gap:30px">
+            <div class="col" style="gap:8px">
+              <div class="row" style="gap:30px"><div><div class="lbl">Utilização</div><div class="val" id="tmUse">12%</div></div>
+              <div class="field" data-s="2"><span class="pin">2</span><div><div class="lbl">Velocidade</div><div class="val" id="tmSpd">3,62 GHz</div></div></div></div>
+              <div class="row" style="gap:30px"><div><div class="lbl">Processos</div><div class="val">184</div></div><div><div class="lbl">Threads</div><div class="val">2391</div></div></div>
+            </div>
+            <div class="col" style="gap:3px;font-size:14px;margin-left:auto">
+              <div class="field" data-s="3"><span class="pin">3</span><span class="lbl" style="width:160px">Velocidade base:</span><b>2,90 GHz</b></div>
+              <div class="field"><span class="lbl" style="width:192px">Soquetes:</span><b>1</b></div>
+              <div class="field" data-s="4"><span class="pin">4</span><span class="lbl" style="width:160px">Núcleos:</span><b>6</b></div>
+              <div class="field" data-s="5"><span class="pin">5</span><span class="lbl" style="width:160px">Processadores lógicos:</span><b>12</b></div>
+              <div class="field" data-s="6"><span class="pin">6</span><span class="lbl" style="width:160px">Cache L2 / L3:</span><b>1,5 MB / 12,0 MB</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col grow">
+      <div class="eyebrow">Desempenho › CPU</div>
+      <h3>Anote</h3>
+      <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:20px">
+        <li data-s="1"><span class="pin">1</span>Modelo do processador</li>
+        <li data-s="2"><span class="pin">2</span>Velocidade agora</li>
+        <li data-s="3"><span class="pin">3</span>Velocidade base (nominal)</li>
+        <li data-s="4"><span class="pin">4</span>Núcleos físicos</li>
+        <li data-s="5"><span class="pin">5</span>Processadores lógicos (threads)</li>
+        <li data-s="6"><span class="pin">6</span>Cache L2 e L3</li>
+      </ol>
+      <p class="note" style="margin-top:auto">Tela ilustrativa. Os valores da sua máquina serão outros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 TM MEMORIA E DISCO -->
+<section class="slide" data-title="Gerenciador · Memória e Disco">
+  <div class="eyebrow">Desempenho › Memória · Disco</div>
+  <h2>Memória e disco</h2>
+  <div class="row" style="gap:28px">
+    <div class="win grow">
+      <div class="win-bar"><span>Gerenciador de Tarefas · Memória</span><span class="ctl"><span>✕</span></span></div>
+      <div class="win-body col" style="gap:8px;font-size:15px">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:600">Memória</span><span class="field" data-s="1"><span class="pin">1</span><b style="font-size:18px">16,0 GB</b></span></div>
+        <div style="height:70px;background:linear-gradient(90deg,#d9c6f2 0 62%,#f6f1fd 62%);border:1px solid #b79be0"></div>
+        <div class="field" data-s="2"><span class="pin">2</span><span class="lbl" style="width:140px">Velocidade:</span><b>2666 MT/s</b></div>
+        <div class="field" data-s="3"><span class="pin">3</span><span class="lbl" style="width:140px">Slots usados:</span><b>1 de 2</b></div>
+        <div class="field"><span class="lbl" style="width:172px">Fator forma:</span><b>DIMM</b></div>
+      </div>
+    </div>
+    <div class="win grow">
+      <div class="win-bar"><span>Gerenciador de Tarefas · Disco</span><span class="ctl"><span>✕</span></span></div>
+      <div class="win-body col" style="gap:8px;font-size:15px">
+        <div class="row" style="justify-content:space-between;align-items:baseline"><span style="font-size:24px;font-weight:600">Disco 0 (C:)</span><span class="lbl">Exemplo SSD 480GB</span></div>
+        <div style="height:70px;background:linear-gradient(90deg,#c9ecc9 0 8%,#f1faf1 8%);border:1px solid #8bc98b"></div>
+        <div class="field"><span class="lbl" style="width:172px">Capacidade:</span><b>447 GB</b></div>
+        <div class="field" data-s="4"><span class="pin">4</span><span class="lbl" style="width:140px">Tipo:</span><b>SSD (NVMe)</b></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:auto">
+    <div class="card" data-s="3" style="border-color:var(--hot)"><h3>Slots usados: 1 de 2</h3><p>Memória em canal simples. Menos largura de banda; aparece no 7-Zip.</p></div>
+    <div class="card" data-s="4"><h3>Tipo: HDD, SSD ou SSD (NVMe)</h3><p>Explica os números da Estação 4.</p></div>
+  </div>
+</section>
+
+<!-- 11 OUTROS COMANDOS -->
+<section class="slide" data-title="msinfo32 · dxdiag · systeminfo">
+  <div class="eyebrow">Complete a ficha</div>
+  <h2>Mais três atalhos</h2>
+  <div class="grid g3">
+    <div class="col" data-s="1">
+      <div class="term"><div class="win-bar"><span>Executar</span></div><pre><span class="pr">Abrir:</span> <span class="type" data-s="1" data-text="msinfo32"></span></pre></div>
+      <p><b style="color:var(--ink)">Resumo do Sistema</b>: modelo do computador e versão do Windows.</p>
+    </div>
+    <div class="col" data-s="2">
+      <div class="term"><div class="win-bar"><span>Executar</span></div><pre><span class="pr">Abrir:</span> <span class="type" data-s="2" data-text="dxdiag"></span></pre></div>
+      <p><b style="color:var(--ink)">Aba Exibir</b>: placa de vídeo e memória de vídeo.</p>
+    </div>
+    <div class="col" data-s="3">
+      <div class="term"><div class="win-bar"><span>Prompt de Comando</span></div><pre><span class="pr">C:\Users\aluno&gt;</span><span class="type" data-s="3" data-text="systeminfo"></span></pre></div>
+      <p><b style="color:var(--ink)">No CMD</b>: memória física total e resumo do sistema.</p>
+    </div>
+  </div>
+  <div class="card" data-s="4" style="margin-top:auto"><h3>Navegadores</h3><p>Quais estão instalados? Anote a versão de cada um: menu › Ajuda › Sobre. Precisamos disso para as Estações 1 e 3.</p></div>
+</section>
+
+<!-- 12 FICHA -->
+<section class="slide" data-title="Modelo da ficha">
+  <div class="eyebrow">No caderno ou na planilha</div>
+  <h2>Ficha da máquina</h2>
+  <table>
+    <tr><th>Item</th><th>Onde</th><th>Sua máquina</th></tr>
+    <tr data-s="1"><td>Processador</td><td class="mono">taskmgr › CPU</td><td>______________________</td></tr>
+    <tr data-s="1"><td>Núcleos / threads / base</td><td class="mono">taskmgr › CPU</td><td>____ / ____ / ____ GHz</td></tr>
+    <tr data-s="2"><td>RAM / velocidade / slots</td><td class="mono">taskmgr › Memória</td><td>____ GB / ____ MT/s / ____</td></tr>
+    <tr data-s="2"><td>Tipo de disco</td><td class="mono">taskmgr › Disco</td><td>______________________</td></tr>
+    <tr data-s="3"><td>Placa de vídeo</td><td class="mono">dxdiag › Exibir</td><td>______________________</td></tr>
+    <tr data-s="3"><td>Navegador e versão</td><td class="mono">menu › Ajuda › Sobre</td><td>______________________</td></tr>
+  </table>
+</section>
+
+<!-- 13 DIVISOR E1 -->
+<section class="slide divider" data-title="Estação 1 · JetStream 3" style="--accent:var(--cool)">
+  <div class="stn">01</div>
+  <div class="eyebrow">Estação 1 · 20 min</div>
+  <h1>CPU no<br>navegador</h1>
+  <p class="big">JetStream 3: cálculo pesado em JavaScript e WebAssembly.</p>
+  <button class="timerbtn" data-min="20">▶ cronômetro 20:00</button>
+</section>
+
+<!-- 14 JETSTREAM -->
+<section class="slide" data-title="JetStream 3 · onde clicar" style="--accent:var(--cool)">
+  <div class="row" style="gap:28px;height:100%">
+    <div class="win" style="width:820px;align-self:flex-start">
+      <div class="win-bar" style="background:#dee1e6"><span style="background:#fff;padding:6px 14px;border-radius:8px 8px 0 0;align-self:flex-end">JetStream 3</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#fff;border-bottom:1px solid #ddd">
+        <span style="color:#777">←  →  ⟳</span>
+        <div class="field" data-s="1" style="flex:1;background:#f1f3f4;border-radius:999px;padding:6px 14px;font:500 15px var(--f-mono)"><span class="pin">1</span><span class="type" data-s="1" data-text="browserbench.org/JetStream3.0"></span></div>
+      </div>
+      <div style="height:360px;background:linear-gradient(160deg,#f4f1ff,#fff);display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:24px">
+        <div style="font:700 34px var(--f-disp);color:#2a1d52">JetStream 3</div>
+        <div class="field" data-s="2" style="background:#6a3df0;color:#fff;padding:10px 28px;border-radius:8px;font-size:18px;font-weight:600"><span class="pin">2</span>Start Test</div>
+        <div class="field" data-s="3" style="font:800 46px var(--f-disp);color:#2a1d52"><span class="pin">3</span>112,5</div>
+        <div class="field" data-s="4" style="display:grid;grid-template-columns:repeat(3,150px);gap:8px;font-size:13px;color:#2a1d52">
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px"><span class="pin" style="width:20px;height:20px;font-size:11px">4</span>subteste A · 98</span>
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste B · 131</span>
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste C · 87</span>
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste D · 144</span>
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste E · 102</span>
+          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">…</span>
+        </div>
+      </div>
+    </div>
+    <div class="col grow">
+      <div class="eyebrow">Estação 1 · alunos</div>
+      <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
+        <li data-s="1"><span class="pin">1</span>Digite o endereço</li>
+        <li data-s="2"><span class="pin">2</span><b>Start Test</b> e solte o mouse</li>
+        <li data-s="3"><span class="pin">3</span>Anote a nota final</li>
+        <li data-s="4"><span class="pin">4</span>Veja os subtestes: onde a máquina sofre?</li>
+        <li data-s="5" style="color:var(--warm)">Anote na planilha + print. Repita 3 vezes.</li>
+      </ol>
+      <p class="note" style="margin-top:auto">Ilustração. Nota maior = mais rápido. Nomes e notas dos subtestes são de exemplo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 14b JETSTREAM NOTA -->
+<section class="slide" data-title="JetStream 3 · como sai a nota" style="--accent:var(--cool)">
+  <div class="eyebrow">O que a nota significa</div>
+  <h2>Três notas em cada subteste</h2>
+  <div class="flow" style="gap:16px;margin-top:10px">
+    <div class="node grow" data-s="1"><b>Inicialização</b>a 1ª rodada: abrir e começar</div>
+    <div class="node grow" data-s="2"><b>Pior caso</b>as rodadas mais lentas: os engasgos</div>
+    <div class="node grow" data-s="3"><b>Caso médio</b>o ritmo de trabalho</div>
+    <div class="arrow" data-s="4"></div>
+    <div class="node" data-s="4" style="border-color:var(--cool)"><b style="color:var(--cool)">Nota final</b>média geométrica de todos</div>
+  </div>
+  <div class="grid g2" style="margin-top:auto">
+    <div class="card" data-s="5"><h3>Por que serve para CPU</h3><p>Mede as partes de cálculo pesado das aplicações web, como WebAssembly.</p></div>
+    <div class="card" data-s="6"><h3>O que não mostra</h3><p>A diferença entre 1 núcleo e todos. Isso vem do 7-Zip, na Estação 2.</p></div>
+  </div>
+</section>
+
+<!-- 15 CINEBENCH TELA -->
+<section class="slide" data-title="Demonstração · Cinebench" data-init="buckets1" style="--accent:var(--cool)">
+  <div class="row" style="gap:28px;height:100%">
+    <div class="win dark" style="width:820px;align-self:flex-start">
+      <div class="win-bar"><span>Cinebench</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <div style="display:flex;gap:0;font-size:14px;border-bottom:1px solid #3a3c44;position:relative">
+        <span class="field" data-s="1" style="padding:6px 14px"><span class="pin">1</span>File</span><span style="padding:6px 14px;color:#9a9a9a">Help</span>
+        <div data-s="1" style="position:absolute;left:310px;top:32px;background:#2c2d33;border:1px solid #4a4c55;border-radius:6px;padding:6px 0;z-index:2;width:230px">
+          <div style="padding:6px 14px;color:#aaa">Preferences</div>
+          <div class="field" data-s="2" style="padding:6px 14px"><span class="pin">2</span>✓ Advanced Benchmark</div>
+          <div style="padding:6px 14px;color:#aaa">Quit</div>
+        </div>
+      </div>
+      <div style="display:flex">
+        <div style="width:300px;padding:16px;display:flex;flex-direction:column;gap:14px;font-size:15px;border-right:1px solid #3a3c44">
+          <div class="field" data-s="4" style="justify-content:space-between;background:#2a2b31;padding:10px;border-radius:6px"><span><span class="pin">4</span>CPU (Single Thread)</span><span style="background:#3d7eff;color:#fff;padding:4px 12px;border-radius:4px">Start</span></div>
+          <div class="field" data-s="5" style="justify-content:space-between;background:#2a2b31;padding:10px;border-radius:6px"><span><span class="pin">5</span>CPU (Multi Threads)</span><span style="background:#3d7eff;color:#fff;padding:4px 12px;border-radius:4px">Start</span></div>
+          <div class="field" data-s="3" style="flex-direction:column;align-items:flex-start;gap:6px;margin-top:10px"><span><span class="pin">3</span>Minimum Test Duration</span><span style="background:#2a2b31;border:1px solid #555;padding:6px 12px;border-radius:4px;width:100%">Off ▾</span></div>
+          <div style="margin-top:auto;color:#8b8b8b;font-size:13px">Ranking de comparação</div>
+        </div>
+        <canvas class="buck" width="518" height="330" style="background:#111214"></canvas>
+      </div>
+    </div>
+    <div class="col grow">
+      <div class="eyebrow">Demonstração do professor · como a indústria testa CPU</div>
+      <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
+        <li data-s="1"><span class="pin">1</span>Menu <b>File</b></li>
+        <li data-s="2"><span class="pin">2</span>Marque <b>Advanced Benchmark</b></li>
+        <li data-s="3"><span class="pin">3</span><b>Minimum Test Duration</b> = Off</li>
+        <li data-s="4"><span class="pin">4</span><b>Start</b> no Single Thread</li>
+        <li data-s="5"><span class="pin">5</span><b>Start</b> no Multi Threads</li>
+        <li data-s="6" style="color:var(--warm)">Exige 16 GB de RAM e AVX2: por isso não roda no laboratório.</li>
+      </ol>
+      <p class="note" style="margin-top:auto">Ilustração. Nomes dos testes variam: na R23 são Single Core e Multi Core.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 16 BUCKETS -->
+<section class="slide" data-title="Demonstração · cada quadrado é um thread" data-init="buckets2" style="--accent:var(--cool)">
+  <div class="eyebrow">Demonstração · Cinebench</div>
+  <h2>Cada quadrado é um thread trabalhando</h2>
+  <div class="row" style="gap:30px">
+    <canvas class="buck2" width="760" height="420" style="background:#111214;border-radius:10px"></canvas>
+    <div class="col grow">
+      <div class="tabs" role="group" aria-label="modo do teste">
+        <button type="button" data-mode="1" aria-pressed="true">1 thread</button>
+        <button type="button" data-mode="12" aria-pressed="false">12 threads</button>
+      </div>
+      <p data-s="1" class="big">1 thread: um quadrado por vez.</p>
+      <p data-s="2" class="big">Multi: um quadrado por thread lógico.</p>
+      <p data-s="3" class="big" style="color:var(--warm)">No laboratório, o 7-Zip mostra a mesma ideia em números.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 DIVISOR E2 -->
+<section class="slide divider" data-title="Estação 2 · 7-Zip" style="--accent:var(--mint)">
+  <div class="stn">02</div>
+  <div class="eyebrow">Estação 2 · 20 min</div>
+  <h1>CPU e<br>memória</h1>
+  <p class="big">7-Zip comprime e descomprime e dá a nota em MIPS.</p>
+  <button class="timerbtn" data-min="20">▶ cronômetro 20:00</button>
+</section>
+
+<!-- 19 7ZIP CMD -->
+<section class="slide" data-title="7-Zip · comandos" style="--accent:var(--mint)">
+  <div class="eyebrow">CMD · abra com ⊞ + R › cmd</div>
+  <h2>Cinco linhas</h2>
+  <div class="row" style="gap:28px">
+    <div class="term grow">
+      <div class="win-bar"><span>Prompt de Comando</span><span class="ctl"><button class="copy" data-copy="cd %USERPROFILE%\bench\extra\x64&#10;7za b&#10;7za b -mmt1&#10;7za b -mmt2&#10;7za b -mmt4" type="button">copiar</button></span></div>
+<pre><span class="pr">C:\Users\aluno&gt;</span><span class="type" data-s="1" data-text="cd %USERPROFILE%\bench\extra\x64"></span>
+<span class="pr">...\x64&gt;</span><span class="type cm" data-s="2" data-text="7za b"></span>
+<span class="pr">...\x64&gt;</span><span class="type cm" data-s="3" data-text="7za b -mmt1"></span>
+<span class="pr">...\x64&gt;</span><span class="type cm" data-s="4" data-text="7za b -mmt2"></span>
+<span class="pr">...\x64&gt;</span><span class="type cm" data-s="4" data-text="7za b -mmt4"></span></pre>
+    </div>
+    <div class="col" style="width:330px">
+      <div class="card" data-s="2"><h3><code>b</code></h3><p>benchmark com todos os threads</p></div>
+      <div class="card" data-s="3"><h3><code>-mmt1</code></h3><p>só 1 thread</p></div>
+      <div class="card" data-s="4"><h3><code>-mmt2</code> · <code>-mmt4</code></h3><p>2 e 4 threads</p></div>
+    </div>
+  </div>
+  <p class="big" data-s="5" style="margin-top:auto;color:var(--warm)">De cada um, anote a última linha: <code>Tot:</code></p>
+</section>
+
+<!-- 20 7ZIP SAIDA -->
+<section class="slide" data-title="7-Zip · ler a saída" style="--accent:var(--mint)">
+  <div class="eyebrow">Ler a saída</div>
+  <h2>O que cada coluna diz</h2>
+  <div class="term">
+<pre style="font-size:17px;line-height:1.5"><span class="dim">RAM size:   16242 MB,  # CPU hardware threads:  12</span>
+<span class="dim">RAM usage:   2658 MB,  # Benchmark threads:     12</span>
+
+                       <span class="hl" data-s="2">Compressing</span>  |                  <span class="hl" data-s="2">Decompressing</span>
+<span class="hl" data-s="1">Dict</span>     <span class="hl" data-s="3">Speed</span> <span class="hl" data-s="4">Usage</span>    <span class="hl" data-s="5">R/U</span> <span class="hl" data-s="6">Rating</span>  |      Speed Usage    R/U Rating
+         KiB/s     %   MIPS   MIPS  |      KiB/s     %   MIPS   MIPS
+22:      48210  1032   4544  46900  |     610400  1150   4650  53480
+23:      45330  1065   4342  46240  |     598700  1158   4579  53030
+24:      42870  1084   4255  46100  |     586200  1162   4480  52050
+<span class="hl" data-s="7">Tot:</span>             1108   4475  49630</pre>
+  </div>
+  <div class="grid g4" style="gap:10px">
+    <div class="card" data-s="1" style="padding:10px 14px"><b>Dict 22, 23, 24</b><span class="note">dicionário 4, 8, 16 MB: maior sai do cache</span></div>
+    <div class="card" data-s="3" style="padding:10px 14px"><b>Speed</b><span class="note">KiB por segundo</span></div>
+    <div class="card" data-s="4" style="padding:10px 14px"><b>Usage</b><span class="note">100% por thread: 12 threads ≈ 1200%</span></div>
+    <div class="card" data-s="5" style="padding:10px 14px"><b>R/U</b><span class="note">nota de 1 thread médio</span></div>
+    <div class="card" data-s="6" style="padding:10px 14px"><b>Rating</b><span class="note">nota total em MIPS</span></div>
+    <div class="card" data-s="7" style="padding:10px 14px;border-color:var(--mint)"><b>Tot</b><span class="note">média: vai para a planilha</span></div>
+    <div class="card" data-s="2" style="padding:10px 14px"><b>Descompressão</b><span class="note">bem mais rápida que compressão</span></div>
+    <div class="card" style="padding:10px 14px"><b class="note">Valores ilustrativos</b></div>
+  </div>
+</section>
+
+<!-- 21 ESCALONAMENTO -->
+<section class="slide" data-title="7-Zip · escalonamento" data-init="scaling" style="--accent:var(--mint)">
+  <div class="eyebrow">Gráfico da dupla</div>
+  <h2>Mais threads nem sempre rendem</h2>
+  <div class="row" style="gap:30px">
+    <canvas class="scal" width="760" height="420"></canvas>
+    <div class="col grow">
+      <p data-s="1" class="big">Até o número de núcleos: a nota quase dobra.</p>
+      <p data-s="2" class="big" style="color:var(--warm)">Depois, no SMT: o ganho cai.</p>
+      <p class="note" style="margin-top:auto">Formato esperado, valores ilustrativos para 6 núcleos e 12 threads.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 21b RAZAO 7ZIP -->
+<section class="slide" data-title="7-Zip · razão todos/1 thread" style="--accent:var(--mint)">
+  <div class="eyebrow">Interprete</div>
+  <h2>Quanto o processador escala?</h2>
+  <div class="row" style="gap:40px;margin-top:10px">
+    <div class="col" style="gap:18px">
+      <label for="cbS">Rating da linha Tot · <code>7za b -mmt1</code><input type="number" id="cbS" value="7200"></label>
+      <label for="cbM">Rating da linha Tot · <code>7za b</code><input type="number" id="cbM" value="49630"></label>
+      <label for="cbC">Núcleos físicos (ficha)<input type="number" id="cbC" value="6"></label>
+    </div>
+    <div class="col grow">
+      <span class="note">razão todos ÷ 1 thread</span>
+      <div class="result" id="cbR">6,9×</div>
+      <p class="big" id="cbT">Acima dos 6 núcleos: o SMT acrescentou cerca de 15%.</p>
+      <p class="note" style="margin-top:auto">Valores de exemplo. Digite os seus.</p>
+    </div>
+  </div>
+  <p data-s="1" style="margin-top:auto">A nota de 1 thread é a que mais pesa para abrir programas e navegar. É o mesmo raciocínio do Cinebench.</p>
+</section>
+
+<!-- 22 IPC -->
+<section class="slide" data-title="IPC do 7-Zip" style="--accent:var(--mint)">
+  <div class="eyebrow">Clock não é tudo</div>
+  <h2>Calcule o IPC do 7-Zip</h2>
+  <div class="row" style="gap:40px;margin-top:10px">
+    <div class="col" style="gap:18px">
+      <label for="ipcR">R/U da linha Tot (MIPS)<input type="number" id="ipcR" value="4475"></label>
+      <label for="ipcM">Clock efetivo (MHz) · Estação 5<input type="number" id="ipcM" value="3900"></label>
+    </div>
+    <div class="col grow">
+      <span class="note">instruções por ciclo nessa tarefa</span>
+      <div class="result" id="ipcO">1,15</div>
+      <p class="big">Compare com duplas de outras gerações de processador.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:auto"><p>A documentação do 7-Zip diz que R/U deve ficar perto da frequência real da CPU em processadores modernos.</p></div>
+</section>
+
+<!-- 23 DIVISOR E3 -->
+<section class="slide divider" data-title="Estação 3 · Navegador" style="--accent:var(--violet)">
+  <div class="stn">03</div>
+  <div class="eyebrow">Estação 3 · 20 min</div>
+  <h1>Navegador<br>e gráficos</h1>
+  <p class="big">Mesmo hardware, software diferente, nota diferente.</p>
+  <button class="timerbtn" data-min="20">▶ cronômetro 20:00</button>
+</section>
+
+<!-- 24 TESTES WEB -->
+<section class="slide" data-title="Os testes web" style="--accent:var(--violet)">
+  <div class="eyebrow">browserbench.org</div>
+  <h2>Dois testes</h2>
+  <div class="grid g3">
+    <div class="card" data-s="1"><span class="tag">poucos minutos</span><h3>Speedometer 3.1</h3><p>Resposta de apps web: listas, editores, gráficos.</p><code>browserbench.org/Speedometer3.1</code></div>
+    <div class="card" data-s="2"><span class="tag">poucos minutos</span><h3>MotionMark 1.3</h3><p>Gráficos e animação. Anote os Hz da tela.</p><code>browserbench.org/MotionMark1.3</code></div>
+    <div class="card" data-s="3" style="opacity:.7"><span class="tag">já feito</span><h3>JetStream 3</h3><p>Ficou na Estação 1, como teste de CPU.</p></div>
+  </div>
+  <div class="row" data-s="4" style="gap:12px;margin-top:auto">
+    <span class="tag" style="font-size:17px">1 aba só</span><span class="tag" style="font-size:17px">janela maximizada</span><span class="tag" style="font-size:17px">na tomada</span><span class="tag" style="font-size:17px;border-color:var(--hot);color:var(--hot)">não troque de aba</span>
+  </div>
+</section>
+
+<!-- 25 BROWSER MOCK -->
+<section class="slide" data-title="Speedometer · onde clicar" style="--accent:var(--violet)">
+  <div class="row" style="gap:28px;height:100%">
+    <div class="win" style="width:820px;align-self:flex-start">
+      <div class="win-bar" style="background:#dee1e6"><span style="background:#fff;padding:6px 14px;border-radius:8px 8px 0 0;align-self:flex-end">Speedometer 3.1</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+      <div style="display:flex;gap:10px;align-items:center;padding:8px 12px;background:#fff;border-bottom:1px solid #ddd">
+        <span style="color:#777">←  →  ⟳</span>
+        <div class="field" data-s="1" style="flex:1;background:#f1f3f4;border-radius:999px;padding:6px 14px;font:500 15px var(--f-mono)"><span class="pin">1</span><span class="type" data-s="1" data-text="browserbench.org/Speedometer3.1"></span></div>
+      </div>
+      <div style="height:330px;background:linear-gradient(160deg,#eef3fb,#fff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+        <div style="font:700 34px var(--f-disp);color:#1b2a44">Speedometer 3.1</div>
+        <div class="field" data-s="2" style="background:#1b6ef3;color:#fff;padding:12px 30px;border-radius:8px;font-size:18px;font-weight:600"><span class="pin">2</span>Start Test</div>
+        <div class="field" data-s="3" style="font:800 44px var(--f-disp);color:#1b2a44"><span class="pin">3</span>18,4 <span style="font-size:22px;color:#6b7690">± 0,6</span></div>
+        <div class="field" data-s="4" style="color:#1b6ef3;font-size:16px;text-decoration:underline"><span class="pin">4</span>Details</div>
+      </div>
+    </div>
+    <div class="col grow">
+      <div class="eyebrow">Passos</div>
+      <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
+        <li data-s="1"><span class="pin">1</span>Digite o endereço</li>
+        <li data-s="2"><span class="pin">2</span><b>Start Test</b> e solte o mouse</li>
+        <li data-s="3"><span class="pin">3</span>Anote a nota e o ±</li>
+        <li data-s="4"><span class="pin">4</span><b>Details</b>: tempo de cada tarefa</li>
+      </ol>
+      <p class="note" style="margin-top:auto">Ilustração. Nota maior = mais rápido.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 26 EXPERIMENTO WEB -->
+<section class="slide" data-title="Experimento: navegador × celular" style="--accent:var(--violet)">
+  <div class="eyebrow">Experimento rápido</div>
+  <h2>O que pesa mais: navegador ou máquina?</h2>
+  <table>
+    <tr><th>Speedometer</th><th>Edge (PC do lab)</th><th>Chrome (PC do lab)</th><th>Celular do aluno</th></tr>
+    <tr data-s="1"><td>Rodada 1</td><td></td><td></td><td></td></tr>
+    <tr data-s="1"><td>Rodada 2</td><td></td><td></td><td></td></tr>
+    <tr data-s="1"><td>Rodada 3</td><td></td><td></td><td></td></tr>
+    <tr data-s="2"><td><b>Mediana</b></td><td></td><td></td><td></td></tr>
+  </table>
+  <p class="big" data-s="3" style="margin-top:auto">A diferença entre navegadores é maior ou menor que a diferença entre máquinas?</p>
+</section>
+
+<!-- 27 DIVISOR E4 -->
+<section class="slide divider" data-title="Estação 4 · Disco" style="--accent:var(--warm)">
+  <div class="stn">04</div>
+  <div class="eyebrow">Estação 4 · 20 min</div>
+  <h1>Disco</h1>
+  <p class="big">DiskSpd, da Microsoft: o mesmo motor do CrystalDiskMark.</p>
+  <button class="timerbtn" data-min="20">▶ cronômetro 20:00</button>
+</section>
+
+<!-- 28 TRES NUMEROS -->
+<section class="slide" data-title="MB/s · IOPS · latência" style="--accent:var(--warm)">
+  <div class="eyebrow">Disco tem três números</div>
+  <h2>Pense numa estrada</h2>
+  <div class="grid g3">
+    <div class="card" data-s="1"><div class="num">MB/s</div><h3>Vazão</h3><p>Quanta carga passa por segundo. Copiar um filme.</p></div>
+    <div class="card" data-s="2"><div class="num">IOPS</div><h3>Viagens por segundo</h3><p>Quantas entregas pequenas. Abrir programas.</p></div>
+    <div class="card" data-s="3"><div class="num">ms</div><h3>Latência</h3><p>Quanto demora cada entrega. A sensação de travado.</p></div>
+  </div>
+  <div class="card" data-s="4" style="margin-top:auto;border-color:var(--warm)"><p class="big">IOPS × tamanho do bloco = MB/s</p></div>
+</section>
+
+<!-- 29 PARAMETROS -->
+<section class="slide" data-title="DiskSpd · parâmetros" style="--accent:var(--warm)">
+  <div class="eyebrow">Clique para ver o significado</div>
+  <h2>Os parâmetros</h2>
+  <div class="grid g3">
+    <div class="card reveal"><h3><code>-c1G</code></h3><span class="hint">mostrar</span><p class="ans">Cria arquivo de teste de 1 GB</p></div>
+    <div class="card reveal"><h3><code>-d20</code></h3><span class="hint">mostrar</span><p class="ans">Mede por 20 segundos</p></div>
+    <div class="card reveal"><h3><code>-b1M</code> · <code>-b4K</code></h3><span class="hint">mostrar</span><p class="ans">Bloco grande (1 MB) ou pequeno (4 KB)</p></div>
+    <div class="card reveal"><h3><code>-r</code></h3><span class="hint">mostrar</span><p class="ans">Aleatório. Sem ele: sequencial</p></div>
+    <div class="card reveal"><h3><code>-o1</code> · <code>-o32</code> · <code>-t4</code></h3><span class="hint">mostrar</span><p class="ans">Fila de operações e número de threads</p></div>
+    <div class="card reveal"><h3><code>-w100</code></h3><span class="hint">mostrar</span><p class="ans">Só escrita. Sem ele: só leitura</p></div>
+    <div class="card reveal" style="border-color:var(--warm)"><h3><code>-Sh</code></h3><span class="hint">mostrar</span><p class="ans">Desliga o cache: mede o disco, não a RAM</p></div>
+    <div class="card reveal"><h3><code>-L</code></h3><span class="hint">mostrar</span><p class="ans">Mede a latência</p></div>
+    <div class="card reveal"><h3><code>&gt; d1.txt</code></h3><span class="hint">mostrar</span><p class="ans">Salva o resultado num arquivo</p></div>
+  </div>
+</section>
+
+<!-- 30 DISKSPD CMD -->
+<section class="slide" data-title="DiskSpd · comandos" style="--accent:var(--warm)">
+  <div class="eyebrow">CMD</div>
+  <h2>Cinco testes e a limpeza</h2>
+  <div class="term">
+    <div class="win-bar"><span>Prompt de Comando</span><span class="ctl"><button class="copy" type="button" data-copy="cd %USERPROFILE%\bench\DiskSpd\amd64&#10;diskspd -c1G -d20 -b1M -Sh -L teste.dat > d1.txt&#10;diskspd -c1G -d20 -b1M -w100 -Sh -L teste.dat > d2.txt&#10;diskspd -c1G -d20 -b4K -r -o1 -Sh -L teste.dat > d3.txt&#10;diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat > d4.txt&#10;diskspd -c1G -d20 -b1M -L teste.dat > d5.txt&#10;del teste.dat">copiar</button></span></div>
+<pre style="font-size:18px"><span class="pr">&gt;</span><span class="type" data-s="1" data-text="cd %USERPROFILE%\bench\DiskSpd\amd64"></span>
+<span class="pr">&gt;</span><span class="type cm" data-s="2" data-text="diskspd -c1G -d20 -b1M -Sh -L teste.dat > d1.txt"></span>          <span class="dim">ler sequencial</span>
+<span class="pr">&gt;</span><span class="type cm" data-s="3" data-text="diskspd -c1G -d20 -b1M -w100 -Sh -L teste.dat > d2.txt"></span>    <span class="dim">gravar sequencial</span>
+<span class="pr">&gt;</span><span class="type cm" data-s="4" data-text="diskspd -c1G -d20 -b4K -r -o1 -Sh -L teste.dat > d3.txt"></span>    <span class="dim">arquivos pequenos</span>
+<span class="pr">&gt;</span><span class="type cm" data-s="5" data-text="diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat > d4.txt"></span> <span class="dim">carga pesada</span>
+<span class="pr">&gt;</span><span class="type cm" data-s="6" data-text="diskspd -c1G -d20 -b1M -L teste.dat > d5.txt"></span>              <span class="dim">SEM -Sh</span>
+<span class="pr">&gt;</span><span class="type" data-s="7" data-text="del teste.dat"></span>                                              <span class="dim">não pule</span></pre>
+  </div>
+  <p class="note" data-s="2">O primeiro teste demora mais: o Windows cria o arquivo de 1 GB antes.</p>
+</section>
+
+<!-- 31 DISKSPD SAIDA -->
+<section class="slide" data-title="DiskSpd · ler o resultado" style="--accent:var(--warm)">
+  <div class="eyebrow">notepad d1.txt</div>
+  <h2>Onde estão os números</h2>
+  <div class="row" style="gap:24px">
+    <div class="win" style="width:820px">
+      <div class="win-bar"><span>d1.txt - Bloco de Notas</span><span class="ctl"><span>✕</span></span></div>
+<pre style="margin:0;padding:14px 16px;font:500 15px/1.55 var(--f-mono);background:#fff;color:#222">Total IO
+thread |   bytes     |   I/Os  |   <span class="hl" data-s="1">MiB/s</span>  |  <span class="hl" data-s="2">I/O per s</span> |  <span class="hl" data-s="3">AvgLat</span>  | LatStdDev
+-------------------------------------------------------------------
+total: | 10200547328 |   9728  |  <span class="hl" data-s="1">486.40</span>  |    <span class="hl" data-s="2">486.40</span> |   <span class="hl" data-s="3">4.106</span> |   1.210
+
+  %-ile |  Read (ms) | Write (ms) | Total (ms)
+----------------------------------------------
+    min |      1.802 |        N/A |      1.802
+    50th |      3.951 |        N/A |      3.951
+    <span class="hl" data-s="4">99th</span> |      <span class="hl" data-s="4">8.733</span> |        N/A |      8.733
+    max |     21.408 |        N/A |     21.408</pre>
+    </div>
+    <div class="col grow">
+      <div class="card" data-s="1"><b>MiB/s</b><span class="note">vazão</span></div>
+      <div class="card" data-s="2"><b>I/O per s</b><span class="note">IOPS</span></div>
+      <div class="card" data-s="3"><b>AvgLat</b><span class="note">latência média (ms)</span></div>
+      <div class="card" data-s="4"><b>99th</b><span class="note">99% terminaram abaixo disso</span></div>
+      <p class="note" style="margin-top:auto">Recorte ilustrativo de um SSD SATA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 32 CALCULADORA IOPS -->
+<section class="slide" data-title="Calculadora IOPS × bloco" style="--accent:var(--warm)">
+  <div class="eyebrow">Confira a conta</div>
+  <h2>IOPS × bloco = vazão</h2>
+  <div class="row" style="gap:40px;margin-top:10px">
+    <div class="col" style="gap:18px">
+      <label for="dkI">IOPS (I/O per s)<input type="number" id="dkI" value="2000"></label>
+      <label for="dkB">Bloco (KB)<input type="number" id="dkB" value="4"></label>
+    </div>
+    <div class="col grow">
+      <span class="note">vazão esperada</span>
+      <div class="result" id="dkO">7,8 MiB/s</div>
+      <p class="big">Bateu com a coluna MiB/s do seu teste?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 33 ORDENS DE GRANDEZA -->
+<section class="slide" data-title="Ordens de grandeza" data-init="bars" style="--accent:var(--warm)">
+  <div class="eyebrow">Leitura sequencial · aproximado</div>
+  <h2>Onde seu disco cai?</h2>
+  <canvas class="barsc" width="1130" height="330"></canvas>
+  <div class="grid g2">
+    <div class="card" data-s="1"><h3>HD: ~100 a 200 IOPS em 4 KB</h3><p>SSD: milhares. Por isso o SSD "acorda" o PC.</p></div>
+    <div class="card" data-s="2" style="border-color:var(--hot)"><h3>d5 deu número impossível?</h3><p>É a RAM respondendo. É por isso que existe o -Sh.</p></div>
+  </div>
+</section>
+
+<!-- 34 DIVISOR E5 -->
+<section class="slide divider" data-title="Estação 5 · Calor" style="--accent:var(--hot)">
+  <div class="stn">05</div>
+  <div class="eyebrow">Estação 5 · Parte B · 30 min</div>
+  <h1>Calor e<br>throttling</h1>
+  <p class="big">O clock sobe, o calor chega, o clock cai.</p>
+  <button class="timerbtn" data-min="30">▶ cronômetro 30:00</button>
+</section>
+
+<!-- 35 CONCEITO -->
+<section class="slide" data-title="Turbo e throttling" data-init="throttle" style="--accent:var(--hot)">
+  <div class="eyebrow">Conceito</div>
+  <h2>Turbo enquanto há folga</h2>
+  <div class="row" style="gap:28px">
+    <canvas class="thr" width="860" height="400"></canvas>
+    <div class="col grow">
+      <div class="card"><span class="note">clock</span><div class="result" id="thrC" style="color:var(--warm)">0,80 GHz</div></div>
+      <div class="card"><span class="note">temperatura</span><div style="height:20px;background:#06100b;border-radius:10px;overflow:hidden"><div id="thrT" style="height:100%;width:20%;background:linear-gradient(90deg,var(--cool),var(--warm),var(--hot))"></div></div></div>
+      <p class="note">Animação ilustrativa de um notebook.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 36 FORMA 1 -->
+<section class="slide" data-title="Forma 1: observar" style="--accent:var(--hot)">
+  <div class="eyebrow">Forma 1 · só observar</div>
+  <h2>Dois lugares para olhar</h2>
+  <div class="row" style="gap:28px">
+    <div class="col grow">
+      <div class="term"><div class="win-bar"><span>Executar</span></div><pre><span class="pr">Abrir:</span> <span class="type" data-s="1" data-text="taskmgr"></span></pre></div>
+      <div class="win" data-s="1"><div class="win-bar"><span>Desempenho › CPU</span></div><div class="win-body row" style="gap:30px"><div><div class="lbl">Utilização</div><div class="val">100%</div></div><div class="field" data-s="1"><span class="pin">1</span><div><div class="lbl">Velocidade</div><div class="val">3,91 GHz</div></div></div></div></div>
+    </div>
+    <div class="col grow">
+      <div class="term"><div class="win-bar"><span>Executar</span></div><pre><span class="pr">Abrir:</span> <span class="type" data-s="2" data-text="resmon"></span></pre></div>
+      <div class="win" data-s="2"><div class="win-bar"><span>Monitor de Recursos</span></div>
+        <div style="display:flex;font-size:13px;border-bottom:1px solid #d2d6de"><span style="padding:6px 12px">Visão Geral</span><span style="padding:6px 12px;background:#fff;font-weight:600">CPU</span><span style="padding:6px 12px">Memória</span><span style="padding:6px 12px">Disco</span><span style="padding:6px 12px">Rede</span></div>
+        <div class="win-body row" style="gap:18px;font-size:15px;background:#fff"><b>CPU</b><span>■ 100% Uso da CPU</span><span class="field" data-s="2"><span class="pin">2</span>■ 135% Frequência Máxima</span></div></div>
+    </div>
+  </div>
+  <div class="card" data-s="3" style="margin-top:auto"><p class="big">Acima de 100% = turbo. Anote a Velocidade a cada 30 segundos.</p></div>
+</section>
+
+<!-- 37 FORMA 2 -->
+<section class="slide" data-title="Forma 2: registrar" data-init="logger" style="--accent:var(--hot)">
+  <div class="eyebrow">Forma 2 · gravar em planilha</div>
+  <h2>Uma palavra: <code style="font-size:44px">registrar</code></h2>
+  <div class="row" style="gap:28px">
+    <div class="term grow">
+      <div class="win-bar"><span>Prompt de Comando</span><span class="ctl"><button class="copy" type="button" data-copy="cd %USERPROFILE%\bench&#10;registrar">copiar</button></span></div>
+<pre style="height:330px;overflow:hidden" class="logpre"><span class="pr">C:\Users\aluno&gt;</span>cd %USERPROFILE%\bench
+<span class="pr">C:\Users\aluno\bench&gt;</span><span class="cm">registrar</span>
+Gravando em C:\Users\aluno\Desktop\log_cpu.csv  (Ctrl+C para parar)
+<span class="logl"></span></pre>
+    </div>
+    <div class="col" style="width:360px">
+      <div class="card"><span class="note">colunas</span><p style="color:var(--ink)">Segundo · MHz_efetivo · Utilizacao · Temp_C</p></div>
+      <div class="card"><span class="note">para parar</span><div class="row center" style="justify-content:flex-start"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>C</kbd></div></div>
+      <div class="card" style="border-color:var(--hot)"><span class="note">confira</span><p>MHz_efetivo acompanha a Velocidade do Gerenciador?</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 38 ROTEIRO ESTRESSE -->
+<section class="slide" data-title="Roteiro do estresse" style="--accent:var(--hot)">
+  <div class="eyebrow">13 minutos</div>
+  <h2>Repouso, carga, resfriamento</h2>
+  <div class="row" style="gap:6px;margin-top:20px;align-items:stretch;height:130px">
+    <div class="node" data-s="1" style="width:calc(1136px*1/13);border-color:var(--cool)"><b>1</b>min</div>
+    <div class="node" data-s="2" style="width:calc(1136px*10/13);border-color:var(--hot);background:linear-gradient(90deg,color-mix(in srgb,var(--hot) 15%,var(--panel)),color-mix(in srgb,var(--hot) 35%,var(--panel)))"><b>~10 min de carga</b><code>7za b 60</code> na pasta <code>bench\extra\x64</code></div>
+    <div class="node" data-s="3" style="width:calc(1136px*2/13);border-color:var(--cool)"><b>2</b>min</div>
+  </div>
+  <div class="grid g3" style="margin-top:10px">
+    <div class="card" data-s="1"><span class="pin">1</span><p><code>registrar</code> rodando em uma janela do CMD, PC parado.</p></div>
+    <div class="card" data-s="2"><span class="pin">2</span><p>Em outra janela do CMD: <code>7za b 60</code>. Mãos fora.</p></div>
+    <div class="card" data-s="3"><span class="pin">3</span><p>Espere esfriar e aperte Ctrl + C.</p></div>
+  </div>
+  <p class="note" data-s="4" style="margin-top:auto">O PC desligou sozinho? Pare e trate como chamado de manutenção.</p>
+</section>
+
+<!-- 39 GRAFICO EXCEL -->
+<section class="slide" data-title="Fazer o gráfico" style="--accent:var(--hot)">
+  <div class="eyebrow">Área de Trabalho › log_cpu.csv</div>
+  <h2>Do CSV ao gráfico</h2>
+  <div class="row" style="gap:28px">
+    <div class="win" style="width:700px">
+      <div class="win-bar"><span>log_cpu.csv - Planilha</span><span class="ctl"><span>✕</span></span></div>
+      <div style="display:flex;gap:16px;padding:8px 12px;font-size:14px;background:#fff;border-bottom:1px solid #ddd"><span>Página Inicial</span><span class="field" data-s="2"><span class="pin">2</span><b>Inserir</b></span><span>Dados</span></div>
+      <table style="font-size:15px;color:#222;background:#fff">
+        <tr style="background:#f0f2f5"><td style="width:36px"></td><td class="field" data-s="1" style="font-weight:600"><span class="pin">1</span>A · Segundo</td><td class="field" data-s="1" style="font-weight:600">B · MHz_efetivo</td><td>C · Utilizacao</td><td>D · Temp_C</td></tr>
+        <tr><td>2</td><td>0</td><td>1380</td><td>4</td><td>41</td></tr>
+        <tr><td>3</td><td>1</td><td>1410</td><td>5</td><td>41</td></tr>
+        <tr><td>4</td><td>61</td><td>4180</td><td>100</td><td>63</td></tr>
+        <tr><td>5</td><td>62</td><td>4175</td><td>100</td><td>66</td></tr>
+        <tr><td>6</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+      </table>
+    </div>
+    <div class="col grow">
+      <ol class="col" style="padding-left:0;list-style:none;gap:14px;font-size:19px">
+        <li data-s="1"><span class="pin">1</span>Selecione as colunas A e B</li>
+        <li data-s="2"><span class="pin">2</span><b>Inserir</b> › Gráfico de <b>Linhas</b></li>
+        <li data-s="3"><span class="pin">3</span>Título: modelo da CPU + data</li>
+      </ol>
+      <p class="note" style="margin-top:auto">Valores ilustrativos. O CSV usa ponto e vírgula: abre direto no Excel em português.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 40 LER A CURVA -->
+<section class="slide" data-title="Ler a curva" data-init="curves" style="--accent:var(--hot)">
+  <div class="eyebrow">Interprete o seu gráfico</div>
+  <h2>Qual curva é a sua?</h2>
+  <div class="tabs curvetabs" role="group" aria-label="formatos de curva">
+    <button type="button" data-c="0" aria-pressed="true">Estável</button>
+    <button type="button" data-c="1" aria-pressed="false">Pico e queda</button>
+    <button type="button" data-c="2" aria-pressed="false">Dente de serra</button>
+    <button type="button" data-c="3" aria-pressed="false">Abaixo da base</button>
+  </div>
+  <div class="row" style="gap:28px">
+    <canvas class="curv" width="800" height="380"></canvas>
+    <div class="col grow">
+      <h3 id="cvT">Estável</h3>
+      <p class="big" id="cvD">Refrigeração dá conta. Típico de desktop.</p>
+      <p class="note" style="margin-top:auto">Formatos ilustrativos. Linha tracejada = clock base.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 41 TEMPERATURA -->
+<section class="slide" data-title="Cuidado com a temperatura" style="--accent:var(--hot)">
+  <div class="eyebrow">Limitação da medição</div>
+  <h2>Temp_C parada ou vazia?</h2>
+  <div class="grid g2">
+    <div class="card" data-s="1"><h3>Ela não é o sensor do núcleo</h3><p>É a zona térmica da placa (ACPI). Em muitas máquinas quase não muda.</p></div>
+    <div class="card" data-s="2" style="border-color:var(--hot)"><h3>Não conclua "não esquentou"</h3><p>Registre no laudo como limitação. A prova do calor é a queda do clock.</p></div>
+  </div>
+</section>
+
+<!-- 42 EXPERIMENTOS -->
+<section class="slide" data-title="Parte B · escolha a hipótese" style="--accent:var(--hot)">
+  <div class="eyebrow">Parte B · uma hipótese por dupla · clique para escolher</div>
+  <h2>Prove ou derrube</h2>
+  <div class="grid g3">
+    <div class="card pick" tabindex="0"><h3>Modo de energia muda o desempenho</h3><p>Eficiência × desempenho</p><span class="tag">7-Zip + registrar</span></div>
+    <div class="card pick" tabindex="0"><h3>Notebook perde na bateria</h3><p>Tomada × bateria</p><span class="tag">7-Zip + registrar</span></div>
+    <div class="card pick" tabindex="0"><h3>Segundo plano rouba desempenho</h3><p>Limpo × com vídeo tocando</p><span class="tag">7-Zip e Speedometer</span></div>
+    <div class="card pick" tabindex="0"><h3>Mais threads nem sempre rendem</h3><p>1, 2, 4, 8 threads</p><span class="tag">7-Zip -mmt</span></div>
+    <div class="card pick" tabindex="0"><h3>O pendrive é o gargalo</h3><p>Interno × USB 2.0 × USB 3.0</p><span class="tag">DiskSpd</span></div>
+    <div class="card pick" tabindex="0"><h3>A primeira medição engana</h3><p>1ª passada × média de 60 passadas</p><span class="tag">7-Zip b 60</span></div>
+  </div>
+</section>
+
+<!-- 43 DIVISOR C -->
+<section class="slide divider" data-title="Parte C · Fechamento" style="--accent:var(--violet)">
+  <div class="stn">C</div>
+  <div class="eyebrow">Parte C · 40 min</div>
+  <h1>Juntar os<br>números</h1>
+  <p class="big">Planilha da turma, leitura coletiva, laudo.</p>
+  <button class="timerbtn" data-min="15">▶ cronômetro 15:00</button>
+</section>
+
+<!-- 44 PLANILHA -->
+<section class="slide" data-title="Planilha da turma" style="--accent:var(--violet)">
+  <div class="eyebrow">Uma linha por dupla · sempre a mediana</div>
+  <h2>Planilha da turma</h2>
+  <div class="grid g4" style="gap:10px">
+    <div class="card" data-s="1"><span class="tag">ficha</span><p style="color:var(--ink)">CPU · RAM e slots · disco</p></div>
+    <div class="card" data-s="2"><span class="tag">estação 1</span><p style="color:var(--ink)">JetStream 3</p></div>
+    <div class="card" data-s="2"><span class="tag">estação 2</span><p style="color:var(--ink)">7-Zip 1 thread · todos · R/U</p></div>
+    <div class="card" data-s="3"><span class="tag">estação 3</span><p style="color:var(--ink)">Speedometer · MotionMark (Hz)</p></div>
+    <div class="card" data-s="3"><span class="tag">estação 4</span><p style="color:var(--ink)">Seq. leitura MiB/s · 4K fila 1 IOPS</p></div>
+    <div class="card" data-s="4"><span class="tag">estação 5</span><p style="color:var(--ink)">MHz efetivo sob carga</p></div>
+    <div class="card" data-s="4"><span class="tag">parte B</span><p style="color:var(--ink)">Hipótese: caiu ou ficou?</p></div>
+  </div>
+  <div class="card" data-s="5" style="margin-top:auto;border-color:var(--violet)"><p class="big">Máquinas iguais com mais de 5% a 10% de diferença? Algo está errado nelas.</p></div>
+</section>
+
+<!-- 45 LAUDO -->
+<section class="slide" data-title="O laudo" style="--accent:var(--violet)">
+  <div class="eyebrow">Entrega · 1 página</div>
+  <h2>"Este PC serve para edição de vídeo leve?"</h2>
+  <div class="row" style="gap:30px">
+    <ol class="col grow" style="padding-left:0;list-style:none;gap:10px;font-size:20px">
+      <li data-s="1"><span class="pin" style="background:var(--violet)">1</span>Ficha técnica resumida</li>
+      <li data-s="1"><span class="pin" style="background:var(--violet)">2</span>Seus resultados × mediana da turma</li>
+      <li data-s="2"><span class="pin" style="background:var(--violet)">3</span>Gráfico do registrador + 1 frase</li>
+      <li data-s="2"><span class="pin" style="background:var(--violet)">4</span>O gargalo e a prova numérica</li>
+      <li data-s="3"><span class="pin" style="background:var(--violet)">5</span>Upgrade recomendado, pelos números</li>
+      <li data-s="3"><span class="pin" style="background:var(--violet)">6</span>O que não deu para medir sem administrador</li>
+    </ol>
+    <div class="card" style="width:400px" data-s="4">
+      <span class="note">nota</span>
+      <table style="font-size:16px"><tr><td>Protocolo seguido</td><td><b>3</b></td></tr><tr><td>Leitura correta das saídas</td><td><b>3</b></td></tr><tr><td>Gargalo coerente</td><td><b>2</b></td></tr><tr><td>Recomendação e limitações</td><td><b>2</b></td></tr></table>
+    </div>
+  </div>
+</section>
+
+<!-- 45b ENTREGA -->
+<section class="slide" data-title="O que entregar" style="--accent:var(--violet)">
+  <div class="eyebrow">Entrega · 3 arquivos · nome T&lt;turma&gt;_D&lt;dupla&gt;_parte</div>
+  <h2>O que entregar</h2>
+  <div class="grid g3">
+    <div class="card" data-s="1"><span class="tag">planilha</span><h3 class="mono" style="font-size:20px">T2_D05_registro.xlsx</h3><p>A planilha preenchida, com a aba Log CPU colada.</p></div>
+    <div class="card" data-s="2"><span class="tag">laudo</span><h3 class="mono" style="font-size:20px">T2_D05_laudo.pdf</h3><p>1 página. Word ou Google Docs › Salvar como PDF.</p></div>
+    <div class="card" data-s="3"><span class="tag">evidências</span><h3 class="mono" style="font-size:20px">T2_D05_evidencias.zip</h3><p>Prints PNG, d1.txt a d5.txt, log_cpu.csv.</p></div>
+  </div>
+  <div class="flow" data-s="4" style="margin-top:10px">
+    <div class="node"><b>Selecione</b>os arquivos</div><div class="arrow"></div>
+    <div class="node"><b>Botão direito</b></div><div class="arrow"></div>
+    <div class="node"><b>Enviar para</b></div><div class="arrow"></div>
+    <div class="node" style="border-color:var(--violet)"><b>Pasta compactada</b>vira .zip</div>
+  </div>
+  <p class="note" data-s="4" style="margin-top:auto">Exemplo de nome: turma 2, dupla 5. Envie pela plataforma da turma.</p>
+</section>
+
+<!-- 46 ERROS -->
+<section class="slide" data-title="Certo ou errado?" style="--accent:var(--violet)">
+  <div class="eyebrow">Clique para revelar</div>
+  <h2>Certo ou errado?</h2>
+  <div class="grid g3">
+    <div class="card reveal"><h3>Comparar JetStream 3 com a nota de um JetStream antigo</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Notas de versões diferentes não se comparam.</p></div>
+    <div class="card reveal"><h3>Comparar MotionMark de telas 60 Hz e 120 Hz</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Os autores avisam que não se compara.</p></div>
+    <div class="card reveal"><h3>Usar o melhor dos 3 resultados</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Use a mediana.</p></div>
+    <div class="card reveal"><h3>O d5 (sem -Sh) é a velocidade do disco</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. É o cache da RAM.</p></div>
+    <div class="card reveal"><h3>Clock maior = PC mais rápido</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Depende do IPC e dos núcleos.</p></div>
+    <div class="card reveal"><h3>Queda de clock sob carga longa indica limite térmico ou de energia</h3><span class="hint">revelar</span><p class="ans" style="color:var(--mint)">Certo. É o que o registrador mostra.</p></div>
+  </div>
+</section>
+
+<!-- 47 FIM -->
+<section class="slide divider" data-title="Encerramento" data-init="heat" style="--accent:var(--warm)">
+  <canvas class="bgheat" width="1280" height="720" style="position:absolute;inset:0;z-index:-1;opacity:.45"></canvas>
+  <div class="eyebrow">Pergunta-guia</div>
+  <h1 style="font-size:84px">O que torna um<br>computador rápido?</h1>
+  <h2 style="color:var(--warm)">Agora responda com os seus números.</h2>
+</section>
+
+</div>
+
+<div id="hud">
+  <button type="button" id="bPrev" aria-label="voltar">←</button>
+  <button type="button" id="bNext" aria-label="avançar">→</button>
+  <a href="../" id="bVolta" style="color:var(--mint);text-decoration:none;font:600 14px var(--f-mono);margin-right:6px">← roteiro</a>
+  <span id="count">1 / 47</span>
+  <span id="stitle"></span>
+  <button type="button" id="bOv" aria-label="visão geral">O</button>
+  <button type="button" id="bFs" aria-label="tela cheia">F</button>
+  <span id="timer"></span>
+</div>
+<div id="ov" role="dialog" aria-label="Visão geral dos slides"><div class="list"></div></div>
+
+<script>
+(function(){
+"use strict";
+var deck=document.getElementById('deck');
+var slides=Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+var cur=0, stops=[];
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function fit(){var s=Math.min(window.innerWidth/1280,(window.innerHeight-10)/720);deck.style.transform='translate(-50%,-50%) scale('+s+')';}
+window.addEventListener('resize',fit);fit();
+
+function maxStep(s){var m=0;s.querySelectorAll('[data-s]').forEach(function(e){m=Math.max(m,+e.dataset.s);});return m;}
+function setStep(s,k){s.dataset.k=k;s.querySelectorAll('[data-s]').forEach(function(e){e.classList.toggle('on',+e.dataset.s<=k);});runTypers(s);}
+
+/* digitação */
+function runTypers(s){
+  s.querySelectorAll('.type').forEach(function(el){
+    var ok=!el.dataset.s||(+el.dataset.s<=(+s.dataset.k||0));
+    if(!ok){if(el._t)clearInterval(el._t);el.textContent='';el.dataset.done='';return;}
+    if(el.dataset.done)return;
+    el.dataset.done='1';var txt=el.dataset.text,i=0;
+    if(reduce){el.textContent=txt;return;}
+    el.textContent='';
+    el._t=setInterval(function(){i++;el.textContent=txt.slice(0,i);if(i>=txt.length){clearInterval(el._t);}},38);
+  });
+}
+function resetTypers(s){s.querySelectorAll('.type').forEach(function(el){if(el._t)clearInterval(el._t);el.dataset.done='';el.textContent='';});}
+
+function go(i,k){
+  if(i<0||i>=slides.length)return;
+  var old=slides[cur];
+  stops.forEach(function(f){try{f();}catch(e){}});stops=[];
+  slides.forEach(function(s,j){s.classList.toggle('past',j<i);});
+  old.classList.remove('active');
+  if(old!==slides[i])resetTypers(old);
+  cur=i;var s=slides[i];s.classList.add('active');
+  setStep(s,k===undefined?0:k);
+  var init=s.dataset.init;if(init&&inits[init]){var stop=inits[init](s);if(stop)stops.push(stop);}
+  document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+  document.getElementById('stitle').textContent=s.dataset.title||'';
+  document.getElementById('bar').style.width=((i+1)/slides.length*100)+'%';
+  document.body.style.setProperty('--accent',getComputedStyle(s).getPropertyValue('--accent'));
+  try{history.replaceState(null,'','#s'+(i+1));}catch(e){}
+}
+function next(){var s=slides[cur],k=+s.dataset.k||0;if(k<maxStep(s))setStep(s,k+1);else go(cur+1,0);}
+function prev(){var s=slides[cur],k=+s.dataset.k||0;if(k>0)setStep(s,k-1);else if(cur>0)go(cur-1,maxStep(slides[cur-1]));}
+
+document.addEventListener('keydown',function(e){
+  var t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'))return;
+  var ov=document.getElementById('ov');
+  if(e.key==='Escape'&&ov.classList.contains('open')){ov.classList.remove('open');return;}
+  if(['ArrowRight','PageDown',' ','ArrowDown'].indexOf(e.key)>=0){e.preventDefault();next();}
+  else if(['ArrowLeft','PageUp','ArrowUp'].indexOf(e.key)>=0){e.preventDefault();prev();}
+  else if(e.key==='Home')go(0,0);
+  else if(e.key==='End')go(slides.length-1,0);
+  else if(e.key==='o'||e.key==='O')toggleOv();
+  else if(e.key==='f'||e.key==='F')fs();
+});
+document.getElementById('bNext').onclick=next;
+document.getElementById('bPrev').onclick=prev;
+document.getElementById('bOv').onclick=toggleOv;
+document.getElementById('bFs').onclick=fs;
+function fs(){try{if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}catch(e){}}
+var tx=null;
+document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}tx=null;});
+
+/* visão geral */
+var ovl=document.querySelector('#ov .list');
+slides.forEach(function(s,i){var b=document.createElement('button');b.type='button';b.innerHTML='<span>'+(i+1)+'</span>'+(s.dataset.title||'');b.onclick=function(){toggleOv();go(i,0);};ovl.appendChild(b);});
+function toggleOv(){document.getElementById('ov').classList.toggle('open');}
+
+/* cronômetro */
+var tInt=null,tEnd=0,tEl=document.getElementById('timer');
+document.querySelectorAll('.timerbtn').forEach(function(b){b.addEventListener('click',function(){
+  if(tInt){clearInterval(tInt);tInt=null;tEl.textContent='';tEl.classList.remove('end');return;}
+  tEnd=Date.now()+(+b.dataset.min)*60000;tEl.classList.remove('end');
+  tInt=setInterval(function(){var r=Math.max(0,tEnd-Date.now()),m=Math.floor(r/60000),sec=Math.floor(r%60000/1000);
+    tEl.textContent='⏱ '+m+':'+(sec<10?'0':'')+sec;if(r<=0){tEl.textContent='⏱ tempo!';tEl.classList.add('end');clearInterval(tInt);tInt=null;}},250);
+});});
+
+/* copiar */
+document.querySelectorAll('.copy').forEach(function(b){b.addEventListener('click',function(){
+  var txt=b.dataset.copy;var done=function(){var o=b.textContent;b.textContent='copiado';setTimeout(function(){b.textContent=o;},1400);};
+  try{navigator.clipboard.writeText(txt).then(done,function(){b.textContent='selecione e copie';});}catch(e){b.textContent='selecione e copie';}
+});});
+
+/* revelar e escolher */
+document.querySelectorAll('.reveal').forEach(function(c){c.addEventListener('click',function(){c.classList.toggle('open');});});
+document.querySelectorAll('.pick').forEach(function(c){function f(){document.querySelectorAll('.pick').forEach(function(o){o.classList.remove('sel');});c.classList.add('sel');}
+  c.addEventListener('click',f);c.addEventListener('keydown',function(e){if(e.key==='Enter'){f();}});});
+
+/* calculadoras */
+function nf(v,d){return v.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function calcCb(){var s=+document.getElementById('cbS').value,m=+document.getElementById('cbM').value,c=+document.getElementById('cbC').value;
+  if(!(s>0&&m>0&&c>0)){document.getElementById('cbR').textContent='—';return;}
+  var r=m/s;document.getElementById('cbR').textContent=nf(r,1)+'×';
+  var g=(r/c-1)*100;document.getElementById('cbT').textContent=r>c?('Acima dos '+c+' núcleos: o SMT acrescentou cerca de '+nf(g,0)+'%.'):('Abaixo dos '+c+' núcleos: algo limita o multi (calor, energia ou outra carga).');}
+['cbS','cbM','cbC'].forEach(function(id){document.getElementById(id).addEventListener('input',calcCb);});calcCb();
+function calcIpc(){var r=+document.getElementById('ipcR').value,m=+document.getElementById('ipcM').value;document.getElementById('ipcO').textContent=(r>0&&m>0)?nf(r/m,2):'—';}
+['ipcR','ipcM'].forEach(function(id){document.getElementById(id).addEventListener('input',calcIpc);});calcIpc();
+function calcDk(){var i=+document.getElementById('dkI').value,b=+document.getElementById('dkB').value;document.getElementById('dkO').textContent=(i>0&&b>0)?nf(i*b/1024,1)+' MiB/s':'—';}
+['dkI','dkB'].forEach(function(id){document.getElementById(id).addEventListener('input',calcDk);});calcDk();
+
+/* utilidades de gráfico */
+var C={ink:'#e6eee4',muted:'#9fb3a5',line:'#23392e',cool:'#4cc3ff',mint:'#c6ff5a',warm:'#e3914f',hot:'#ff6a4d'};
+function axes(g,W,H,p,xl,yl,ymax,yticks){
+  g.clearRect(0,0,W,H);g.font='14px "JetBrains Mono",monospace';g.fillStyle=C.muted;g.strokeStyle=C.line;g.lineWidth=1;
+  yticks.forEach(function(v){var y=H-p.b-(v/ymax)*(H-p.t-p.b);g.beginPath();g.moveTo(p.l,y);g.lineTo(W-p.r,y);g.stroke();g.fillText(String(v),6,y+5);});
+  g.fillText(yl,p.l,p.t-10);g.fillText(xl,W-p.r-g.measureText(xl).width,H-6);
+}
+function anim(dur,step,done){if(reduce){step(1);if(done)done();return function(){};}var t0=null,id;function f(t){if(!t0)t0=t;var k=Math.min(1,(t-t0)/dur);step(k);if(k<1)id=requestAnimationFrame(f);else if(done)done();}id=requestAnimationFrame(f);return function(){cancelAnimationFrame(id);};}
+
+var inits={
+  /* fundo da capa e do encerramento: placa de circuito com trilhas de cobre (desvios em 45°),
+     vias nas pontas e pulsos de energia correndo pelas trilhas, como nos divisores do portal */
+  heat:function(s){var cv=s.querySelector('.bgheat'),g=cv.getContext('2d'),W=1280,H=720,id,t0=null;
+    var semente=7;function rnd(){semente=(semente*16807)%2147483647;return semente/2147483647;}
+    var trilhas=[],i;
+    for(i=0;i<22;i++){var y=40+i*31+Math.round(rnd()*8),x=-20,pts=[[x,y]],dir=rnd()<.5?1:-1;
+      while(x<W+20){var seg=60+rnd()*220;x+=seg;pts.push([x,y]);if(rnd()<.55){var d=(18+Math.round(rnd()*2)*14)*dir;x+=Math.abs(d);y+=d;pts.push([x,y]);dir=-dir;}}
+      var len=0;for(var k=1;k<pts.length;k++){len+=Math.hypot(pts[k][0]-pts[k-1][0],pts[k][1]-pts[k-1][1]);}
+      trilhas.push({p:pts,len:len,v:90+rnd()*140,o:rnd()*len,brilho:i%3===0});}
+    function ponto(tr,dist){var d=((dist%tr.len)+tr.len)%tr.len;for(var k=1;k<tr.p.length;k++){var a=tr.p[k-1],c=tr.p[k],l=Math.hypot(c[0]-a[0],c[1]-a[1]);if(d<=l){var r=d/l;return[a[0]+(c[0]-a[0])*r,a[1]+(c[1]-a[1])*r];}d-=l;}return tr.p[tr.p.length-1];}
+    function fundo(){g.clearRect(0,0,W,H);
+      g.fillStyle='rgba(198,255,90,.05)';for(var x=10;x<W;x+=24)for(var y=10;y<H;y+=24)g.fillRect(x,y,1.5,1.5);
+      g.lineWidth=2;g.lineJoin='round';g.lineCap='round';
+      trilhas.forEach(function(tr){g.strokeStyle=tr.brilho?'rgba(227,145,79,.55)':'rgba(184,105,42,.32)';g.beginPath();tr.p.forEach(function(q,k){k?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]);});g.stroke();
+        tr.p.forEach(function(q,k){if(k>0&&k<tr.p.length-1&&k%3===0){g.beginPath();g.arc(q[0],q[1],3.5,0,7);g.strokeStyle='rgba(227,145,79,.6)';g.lineWidth=1.5;g.stroke();g.lineWidth=2;}});});}
+    function quadro(ts){if(!t0)t0=ts;var t=(ts-t0)/1000;fundo();
+      trilhas.forEach(function(tr){var cab=tr.o+t*tr.v;for(var j=0;j<14;j++){var q=ponto(tr,cab-j*5),al=(1-j/14);
+        g.fillStyle='rgba(198,255,90,'+(al*.9).toFixed(3)+')';g.beginPath();g.arc(q[0],q[1],j?2.2*al+0.6:3.2,0,7);g.fill();}
+        if(tr.brilho){var q0=ponto(tr,cab);g.fillStyle='rgba(198,255,90,.18)';g.beginPath();g.arc(q0[0],q0[1],10,0,7);g.fill();}});
+      if(!reduce)id=requestAnimationFrame(quadro);}
+    if(reduce){fundo();return function(){};}
+    id=requestAnimationFrame(quadro);return function(){cancelAnimationFrame(id);};},
+  cpugraph:function(s){var cv=s.querySelector('.cpug'),g=cv.getContext('2d'),d=[],id,n=0;for(var i=0;i<60;i++)d.push(10+Math.random()*8);
+    function draw(){g.clearRect(0,0,580,150);g.strokeStyle='#d6e6f5';for(var x=0;x<580;x+=58){g.beginPath();g.moveTo(x,0);g.lineTo(x,150);g.stroke();}for(var y=0;y<150;y+=30){g.beginPath();g.moveTo(0,y);g.lineTo(580,y);g.stroke();}
+      g.beginPath();g.moveTo(0,150);d.forEach(function(v,i){g.lineTo(i*(580/59),150-v*1.4);});g.lineTo(580,150);g.closePath();g.fillStyle='rgba(17,125,187,.15)';g.fill();
+      g.beginPath();d.forEach(function(v,i){var X=i*(580/59),Y=150-v*1.4;i?g.lineTo(X,Y):g.moveTo(X,Y);});g.strokeStyle='#117dbb';g.lineWidth=2;g.stroke();g.lineWidth=1;}
+    draw();if(reduce)return;id=setInterval(function(){n++;var v=Math.max(3,Math.min(60,d[d.length-1]+(Math.random()-0.5)*10));d.shift();d.push(v);draw();
+      document.getElementById('tmUse').textContent=Math.round(v)+'%';document.getElementById('tmSpd').textContent=nf(3.4+v/100,2)+' GHz';},700);
+    return function(){clearInterval(id);};},
+  buckets1:function(s){return buckets(s.querySelector('.buck'),12,46);},
+  buckets2:function(s){var cv=s.querySelector('.buck2'),stop=buckets(cv,1,52);var bs=s.querySelectorAll('.tabs button');
+    bs.forEach(function(b){b.onclick=function(){bs.forEach(function(o){o.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');stop();stop=buckets(cv,+b.dataset.mode,52);};});
+    bs.forEach(function(o){o.setAttribute('aria-pressed',o.dataset.mode==='1'?'true':'false');});
+    return function(){stop();};},
+  scaling:function(s){var cv=s.querySelector('.scal'),g=cv.getContext('2d'),W=760,H=420,p={l:60,r:20,t:40,b:46};
+    var xs=[1,2,4,6,8,12],ys=[7.2,14.1,27.5,39.8,44.0,49.6],ymax=55;
+    function X(v){return p.l+(v-1)/11*(W-p.l-p.r);}function Y(v){return H-p.b-v/ymax*(H-p.t-p.b);}
+    return anim(1400,function(k){axes(g,W,H,p,'threads','Rating (mil MIPS)',ymax,[0,10,20,30,40,50]);
+      g.fillStyle='rgba(255,200,87,.08)';g.fillRect(X(6),p.t,X(12)-X(6),H-p.t-p.b);g.fillStyle=C.warm;g.fillText('região do SMT',X(6)+10,p.t+18);
+      g.fillStyle=C.muted;xs.forEach(function(v){g.fillText(String(v),X(v)-4,H-p.b+22);});
+      var pos=k*(xs.length-1),full=Math.floor(pos);g.strokeStyle=C.mint;g.lineWidth=3;g.beginPath();g.moveTo(X(xs[0]),Y(ys[0]));
+      for(var i=1;i<=full;i++)g.lineTo(X(xs[i]),Y(ys[i]));
+      if(full<xs.length-1){var fr=pos-full;g.lineTo(X(xs[full]+(xs[full+1]-xs[full])*fr),Y(ys[full]+(ys[full+1]-ys[full])*fr));}
+      g.stroke();g.lineWidth=1;g.fillStyle=C.mint;for(var j=0;j<=full;j++){g.beginPath();g.arc(X(xs[j]),Y(ys[j]),5,0,7);g.fill();g.fillText(nf(ys[j],1),X(xs[j])-14,Y(ys[j])-12);}});},
+  bars:function(s){var cv=s.querySelector('.barsc'),g=cv.getContext('2d'),W=1130,H=330;var data=[['HD 7200 rpm',150,C.cool],['SSD SATA',550,C.warm],['SSD NVMe',3500,C.hot]];
+    return anim(1200,function(k){g.clearRect(0,0,W,H);g.font='600 20px "Instrument Sans",sans-serif';var lx=200,maxW=W-lx-160;
+      g.strokeStyle=C.line;[0,1000,2000,3000].forEach(function(v){var x=lx+v/3500*maxW;g.beginPath();g.moveTo(x,10);g.lineTo(x,H-30);g.stroke();g.fillStyle=C.muted;g.font='14px "JetBrains Mono",monospace';g.fillText(v+' MB/s',x-20,H-8);});
+      data.forEach(function(d,i){var y=30+i*90;g.fillStyle=C.ink;g.font='600 20px "Instrument Sans",sans-serif';g.fillText(d[0],0,y+34);var w=d[1]/3500*maxW*k;g.fillStyle=d[2];g.fillRect(lx,y,Math.max(2,w),52);
+        g.fillStyle=C.ink;g.font='700 22px "Bricolage Grotesque",sans-serif';g.fillText('~'+Math.round(d[1]*k).toLocaleString('pt-BR')+' MB/s',lx+w+12,y+34);});});},
+  throttle:function(s){var cv=s.querySelector('.thr'),g=cv.getContext('2d'),W=860,H=400,p={l:60,r:20,t:40,b:40},T=14,id,t0=null,pts=[];
+    function clk(t){if(t<2)return 0.8;if(t<3)return 0.8+(t-2)*3.4;if(t<6)return 4.2-Math.random()*0.05;if(t<12)return 3.3+Math.sin(t*6)*0.25+(Math.random()*0.06);return 0.9;}
+    function tmp(t){if(t<2)return 0.2;if(t<12)return Math.min(0.95,0.2+(t-2)*0.12);return Math.max(0.2,0.95-(t-12)*0.3);}
+    function draw(t){axes(g,W,H,p,'tempo','clock (GHz)',5,[0,1,2,3,4,5]);var by=H-p.b-2.9/5*(H-p.t-p.b);g.setLineDash([6,6]);g.strokeStyle=C.muted;g.beginPath();g.moveTo(p.l,by);g.lineTo(W-p.r,by);g.stroke();g.setLineDash([]);g.fillStyle=C.muted;g.fillText('base 2,9 GHz',W-p.r-120,by-8);
+      g.strokeStyle=C.warm;g.lineWidth=3;g.beginPath();pts.forEach(function(q,i){var x=p.l+q[0]/T*(W-p.l-p.r),y=H-p.b-q[1]/5*(H-p.t-p.b);i?g.lineTo(x,y):g.moveTo(x,y);});g.stroke();g.lineWidth=1;
+      g.fillStyle=C.muted;g.fillText(t<2?'repouso':(t<6?'turbo':(t<12?'calor: limite':'resfriando')),p.l+10,p.t+18);}
+    function f(ts){if(!t0)t0=ts;var t=((ts-t0)/1000)%T;if(t<0.05)pts=[];pts.push([t,clk(t)]);draw(t);
+      document.getElementById('thrC').textContent=nf(clk(t),2)+' GHz';document.getElementById('thrT').style.width=(tmp(t)*100)+'%';id=requestAnimationFrame(f);}
+    if(reduce){for(var t=0;t<T;t+=0.05)pts.push([t,clk(t)]);draw(8);return;}
+    id=requestAnimationFrame(f);return function(){cancelAnimationFrame(id);};},
+  logger:function(s){var el=s.querySelector('.logl'),n=0,id,lines=[];if(reduce){el.textContent='0  1380  4  41\n1  1410  5  41';return;}
+    id=setInterval(function(){var mhz=n<6?1380+Math.round(Math.random()*60):(n<14?4180-Math.round(Math.random()*40):3600+Math.round(Math.sin(n)*180));var u=n<6?4:100;var tc=Math.min(88,41+Math.max(0,n-5)*3);
+      lines.push((n<10?' ':'')+n+'   '+mhz+'   '+u+'   '+tc);if(lines.length>9)lines.shift();el.textContent=lines.join('\n');n++;if(n>40){n=0;lines=[];}},600);
+    return function(){clearInterval(id);};},
+  curves:function(s){var cv=s.querySelector('.curv'),g=cv.getContext('2d'),W=800,H=380,p={l:60,r:20,t:30,b:40},stop=function(){};
+    var info=[['Estável','Refrigeração dá conta. Típico de desktop.'],['Pico e queda','Limite de energia ou temperatura de longa duração. Típico de notebook.'],['Dente de serra','Throttling térmico. Investigue poeira, pasta térmica, ventoinha.'],['Abaixo da base','Plano de energia econômico, bateria ou refrigeração falhando.']];
+    function fn(c,t){if(t<60)return 1.4;if(c===0)return 4.1;if(c===1)return t<90?4.2:3.2;if(c===2)return (Math.floor((t-60)/40)%2===0)?4.1-((t-60)%40)/40*0.4:2.2+((t-60)%40)/40*0.6;return 2.3;}
+    function show(c){stop();document.getElementById('cvT').textContent=info[c][0];document.getElementById('cvD').textContent=info[c][1];
+      stop=anim(1100,function(k){axes(g,W,H,p,'segundos','MHz efetivo (mil)',5,[0,1,2,3,4,5]);var by=H-p.b-2.9/5*(H-p.t-p.b);g.setLineDash([6,6]);g.strokeStyle=C.muted;g.beginPath();g.moveTo(p.l,by);g.lineTo(W-p.r,by);g.stroke();g.setLineDash([]);
+        g.fillStyle=C.muted;[0,120,240,360,480,600,720].forEach(function(v){g.fillText(String(v),p.l+v/780*(W-p.l-p.r)-10,H-p.b+22);});
+        g.strokeStyle=C.hot;g.lineWidth=3;g.beginPath();var end=780*k;for(var t=0;t<=end;t+=2){var x=p.l+t/780*(W-p.l-p.r),v=t>720?1.4:fn(c,t),y=H-p.b-v/5*(H-p.t-p.b);t?g.lineTo(x,y):g.moveTo(x,y);}g.stroke();g.lineWidth=1;});}
+    var bs=s.querySelectorAll('.curvetabs button');bs.forEach(function(b){b.onclick=function(){bs.forEach(function(o){o.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');show(+b.dataset.c);};});
+    bs.forEach(function(o,i){o.setAttribute('aria-pressed',i===0?'true':'false');});show(0);return function(){stop();};}
+};
+function buckets(cv,threads,size){var g=cv.getContext('2d'),W=cv.width,H=cv.height,cols=Math.ceil(W/size),rows=Math.ceil(H/size),total=cols*rows,order=[],id,done=0,active=[];
+  for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)order.push([c,r]);
+  var cx=cols/2,cy=rows/2;order.sort(function(a,b){return (Math.abs(a[0]-cx)+Math.abs(a[1]-cy))-(Math.abs(b[0]-cx)+Math.abs(b[1]-cy));});
+  function paint(c,r,col){var hue=(c*17+r*29)%60;g.fillStyle=col||('hsl('+(20+hue)+',55%,'+(30+((c+r)%5)*6)+'%)');g.fillRect(c*size,r*size,size-1,size-1);}
+  g.fillStyle='#111214';g.fillRect(0,0,W,H);
+  if(reduce){order.forEach(function(q){paint(q[0],q[1]);});return function(){};}
+  id=setInterval(function(){active.forEach(function(q){paint(q[0],q[1]);});active=[];
+    if(done>=total){done=0;g.fillStyle='#111214';g.fillRect(0,0,W,H);return;}
+    for(var i=0;i<threads&&done<total;i++,done++){var q=order[done];active.push(q);g.strokeStyle='#ffc857';g.lineWidth=2;g.fillStyle='#1d1f24';g.fillRect(q[0]*size,q[1]*size,size-1,size-1);g.strokeRect(q[0]*size+2,q[1]*size+2,size-5,size-5);}
+  },threads===1?140:260);
+  return function(){clearInterval(id);};}
+
+/* início pelo hash */
+var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.max(1,+h[1]))-1:0,0);
+window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
+})();
+</script>
+</body>
+</html>

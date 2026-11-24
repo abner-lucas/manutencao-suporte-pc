@@ -710,3 +710,68 @@ a.cupom-item:hover .c-num { color: #c6ff5a; }
 .tecla-espaco { flex: 12 0 160px; cursor: default; }
 .tecla-espaco:hover { transform: none; }
 @media (min-width: 1081px) { .ordens-grade .cabeca { position: sticky; top: 120px; } }
+
+/* =====================================================================
+   DIVISORES: trilha de cobre + conector com o nome da próxima seção
+   ===================================================================== */
+.divisor {
+    max-width: 1240px; margin: 110px auto 0; padding: 0 16px; height: 60px;
+    display: grid; grid-template-columns: 10px minmax(0, 1fr) auto minmax(0, 1fr) 10px; align-items: center;
+}
+.divisor + .secao { padding-top: 70px; }
+.divisor + .palco { margin-top: 70px; }
+.divisor-trilha { width: 100%; height: 60px; overflow: visible; }
+.divisor-trilha path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.tr-base { stroke: var(--linha); stroke-width: 6; }
+/* a trilha "cresce" da esquerda para a direita (recorte); o pulso usa traço em px (vector-effect) */
+.divisor-trilha { clip-path: inset(-20px 100% -20px 0); transition: clip-path 1.3s var(--ease); }
+.divisor-d { transition-delay: .55s; }
+.divisor.ligado .divisor-trilha { clip-path: inset(-20px 0 -20px 0); }
+.tr-cobre { stroke: var(--cobre); stroke-width: 2.5; }
+.tr-pulso { stroke: #7fc400; stroke-width: 3.5; stroke-dasharray: 46 3000; stroke-dashoffset: 46; opacity: 0; filter: drop-shadow(0 0 4px #c6ff5a); }
+[data-tema="escuro"] .tr-pulso { stroke: var(--lima); }
+.divisor.ligado.na-tela .tr-pulso { opacity: 1; animation: pulso-trilha 2.8s linear 1.6s infinite; }
+.divisor.ligado.na-tela .divisor-d .tr-pulso { animation-delay: 2.35s; }
+@keyframes pulso-trilha { from { stroke-dashoffset: 46; } to { stroke-dashoffset: -1500; } }
+
+/* vias (furos metalizados) nas pontas */
+.divisor-via { width: 10px; height: 10px; border-radius: 50%; border: 2.5px solid var(--cobre); background: var(--fundo); align-self: start; margin-top: 9px; transform: scale(0); transition: transform .5s var(--ease); }
+.divisor-via-d { transition-delay: 1.5s; }
+.divisor.ligado .divisor-via { transform: scale(1); }
+
+/* conector: CI pequeno com pinos em cima e embaixo */
+.divisor-chip {
+    position: relative; display: flex; align-items: center; gap: 10px; margin-top: 32px; padding: 8px 14px 8px 12px;
+    background: var(--pcb); color: #e3eee0; border-radius: 8px; white-space: nowrap;
+    font: 500 12.5px/1 var(--f-mono); letter-spacing: .04em;
+    opacity: 0; transform: translateY(8px) scale(.94); transition: opacity .5s var(--ease) .45s, transform .6s var(--ease) .45s;
+}
+.divisor-chip::before, .divisor-chip::after {
+    content: ""; position: absolute; left: 10px; right: 10px; height: 5px;
+    background: repeating-linear-gradient(90deg, var(--cobre) 0 4px, transparent 4px 10px);
+}
+.divisor-chip::before { top: -5px; }
+.divisor-chip::after { bottom: -5px; }
+.divisor.ligado .divisor-chip { opacity: 1; transform: none; }
+.divisor-ref { color: var(--lima); font-weight: 700; }
+.divisor-n { color: #8fb39d; }
+.divisor-n::after { content: " →"; color: var(--cobre-claro); }
+.divisor-rot { font-family: var(--f-corpo); font-weight: 600; font-size: 14px; letter-spacing: 0; }
+.divisor-led { width: 7px; height: 7px; border-radius: 50%; background: #2a3a30; transition: background-color .3s 1.3s, box-shadow .3s 1.3s; }
+.divisor.ligado .divisor-led { background: var(--lima); box-shadow: 0 0 8px var(--lima); }
+.divisor.na-tela .divisor-led { animation: led 1.6s ease-in-out 1.6s infinite; }
+
+@media (max-width: 680px) {
+    .divisor { margin-top: 80px; height: 52px; padding: 0 10px; }
+    .divisor + .secao { padding-top: 54px; }
+    .divisor + .palco { margin-top: 54px; }
+    .divisor-n { display: none; }
+    .divisor-rot { font-size: 13px; }
+    .divisor-chip { padding: 7px 10px; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .divisor-trilha { clip-path: none; }
+    .divisor-chip, .divisor-via { opacity: 1; transform: none; }
+}
+
+.menu a.menu-disciplina { color: var(--cobre); font-weight: 600; }
