@@ -325,10 +325,16 @@
 
     /* som opcional: bipes do POST (Web Audio) */
     var audio = null;
+    function prepararAudio() {
+        try {
+            audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+            if (audio.state === 'suspended') audio.resume();
+        } catch (e) {}
+    }
     function bipe(dur, atraso, freq) {
         if (!som) return;
         try {
-            audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+            prepararAudio();
             var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + (atraso || 0);
             o.type = 'square'; o.frequency.value = freq || 880;
             g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.01);
@@ -336,15 +342,23 @@
             o.connect(g).connect(audio.destination); o.start(t); o.stop(t + dur + 0.05);
         } catch (e) {}
     }
-    var BIPES = { ok: [[0.12, 0]], 'sem-memoria': [[0.5, 0], [0.5, 0.7], [0.5, 1.4]], 'sem-video': [[0.6, 0], [0.15, 0.8], [0.15, 1.05], [0.15, 1.3]] };
+    var BIPES = {
+        ok: [[0.12, 0]],
+        quente: [[0.12, 0]],
+        'sem-boot': [[0.12, 0]],
+        'sem-memoria': [[0.5, 0], [0.5, 0.7], [0.5, 1.4]],
+        'sem-video': [[0.6, 0], [0.15, 0.8], [0.15, 1.05], [0.15, 1.3]]
+    };
     botaoSom.addEventListener('click', function () {
         som = !som;
         botaoSom.setAttribute('aria-pressed', String(som));
         botaoSom.textContent = som ? 'Som: ligado' : 'Som: desligado';
+        if (som) bipe(0.07, 0, 1046);
     });
 
     botaoLigar.addEventListener('click', function () {
         if (ligando) return;
+        if (som) prepararAudio();
         desligar();
         if (selecionada) selecionar(selecionada);
         var r = L.ligar(estado);
