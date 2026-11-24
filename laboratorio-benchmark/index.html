@@ -69,8 +69,8 @@
                     <h1 id="titulo-lab" class="d-titulo entra" style="--atraso: .12s">Laboratório de <em>Benchmark</em></h1>
                     <p class="lab-pergunta entra" style="--atraso: .22s">O que torna um computador rápido, e como <strong>provar</strong> isso com números?</p>
                     <p class="d-ementa entra" style="--atraso: .3s">
-                        A turma mede CPU, memória, navegador, disco e calor com ferramentas que rodam <strong>sem senha de administrador</strong>,
-                        e depois prova (ou derruba) hipóteses com os próprios números. Duplas por computador; quatro momentos: abertura,
+                        Medir CPU, memória, navegador, disco e calor com ferramentas que rodam <strong>sem senha de administrador</strong>,
+                        e depois provar (ou derrubar) hipóteses com os próprios números, em quatro momentos: abertura,
                         bateria básica, experimentos e fechamento com laudo.
                     </p>
                     <div class="d-acoes entra" style="--atraso: .4s">
@@ -112,7 +112,7 @@
                 <ol class="momentos">
                     <li style="--peso: 20"><b>Abertura</b><span>ficha técnica · protocolo</span></li>
                     <li style="--peso: 80"><b>Parte A</b><span>Estações 1 a 4: bateria básica</span></li>
-                    <li style="--peso: 60"><b>Parte B</b><span>Estação 5 · uma hipótese por dupla</span></li>
+                    <li style="--peso: 60"><b>Parte B</b><span>Estação 5 · uma hipótese para testar</span></li>
                     <li style="--peso: 40"><b>Parte C</b><span>planilha da turma · laudo</span></li>
                 </ol>
                 <div class="fluxo-estacoes" aria-label="Estações">
@@ -144,7 +144,7 @@
                             <li>Clique com o botão direito no <b>bench.zip</b> › <b>Extrair tudo…</b> e, como destino, digite <code>%USERPROFILE%</code>. A pasta fica em <code>C:\Users\<i>seu usuário</i>\bench</code>.</li>
                             <li>Abra a pasta: <kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>%USERPROFILE%\bench</code> e <kbd>Enter</kbd>.</li>
                             <li>Dê dois cliques em <b>preparar.bat</b> uma vez só. Ele descompacta o 7-Zip em <code>extra\x64</code> e avisa quando terminar.</li>
-                            <li>Copie a planilha <code>modelo-de-entrega\registro_benchmark.xlsx</code> para a pasta da sua dupla: é nela que vocês anotam tudo.</li>
+                            <li>Abra a planilha <code>modelo-de-entrega\registro_benchmark.xlsx</code>: é nela que você anota tudo.</li>
                         </ol>
                     </div>
 
@@ -163,7 +163,7 @@
                                 </ul>
                             </li>
                             <li class="pasta">modelo-de-entrega
-                                <ul><li class="xls"><b>registro_benchmark.xlsx</b><span>a planilha da dupla</span></li></ul>
+                                <ul><li class="xls"><b>registro_benchmark.xlsx</b><span>a planilha de registro</span></li></ul>
                             </li>
                         </ul>
                     </div>
@@ -188,7 +188,7 @@
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">P</span>
                     <h2 id="titulo-protocolo" data-palavras>Protocolo de <em>medição</em></h2>
-                    <p class="cabeca-lede">Um número de benchmark só vale se outra pessoa consegue repeti-lo. Estas regras ficam projetadas a aula toda.</p>
+                    <p class="cabeca-lede">Um número de benchmark só vale se outra pessoa consegue repeti-lo.</p>
                 </header>
                 <ol class="bootlog">
                     <li><span class="st" aria-hidden="true"></span><div><h3>Mesmas condições</h3><p>Feche navegador, mensageiros e Explorador de Arquivos. Notebook ligado na tomada.</p></div></li>
@@ -293,7 +293,7 @@
                         <div><dt>Tot</dt><dd>Média de compressão e descompressão.</dd></div>
                     </dl>
                     <div class="esperar">
-                        <p class="esperar-rot">três contas da dupla</p>
+                        <p class="esperar-rot">três contas para fazer</p>
                         <p><b>Razão:</b> Rating do <code>7za b</code> ÷ Rating do <code>7za b -mmt1</code>. Passou do número de núcleos físicos? O excedente é o ganho do SMT.</p>
                         <p><b>IPC do 7-Zip:</b> R/U (MIPS) ÷ clock efetivo (MHz) = instruções por ciclo nessa tarefa. Compare entre gerações de processador, não o clock.</p>
                         <p><b>Escalonamento:</b> gráfico threads × Rating. A nota quase dobra enquanto há núcleos físicos livres; no SMT o ganho cai.</p>
@@ -444,7 +444,7 @@ registrar</code></pre>
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">B</span>
                     <h2 id="titulo-hip" data-palavras>Prove ou <em>derrube</em></h2>
-                    <p class="cabeca-lede">Cada dupla escolhe uma hipótese, mede as condições A e B com três rodadas cada e conclui: <b>confirmada</b>, <b>derrubada</b> ou <b>inconclusiva</b>. Tudo na aba Experimento.</p>
+                    <p class="cabeca-lede">Escolha uma hipótese, meça as condições A e B com três rodadas cada e conclua: <b>confirmada</b>, <b>derrubada</b> ou <b>inconclusiva</b>. Tudo na aba Experimento.</p>
                 </header>
                 <table class="inventario hipoteses">
                     <caption class="sr-only">Hipóteses da Parte B</caption>
@@ -469,21 +469,21 @@ registrar</code></pre>
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">C</span>
                     <h2 id="titulo-entrega" data-palavras>Registro e <em>entrega</em></h2>
-                    <p class="cabeca-lede">Tudo vai para a planilha <code>registro_benchmark.xlsx</code> (na pasta <code>modelo-de-entrega</code> do kit): amarelo é para digitar (só o número, com vírgula); branco calcula sozinho. No fim, cada dupla entrega três arquivos.</p>
+                    <p class="cabeca-lede">Tudo vai para a planilha <code>registro_benchmark.xlsx</code> (na pasta <code>modelo-de-entrega</code> do kit): amarelo é para digitar (só o número, com vírgula); branco calcula sozinho. No fim, você entrega três arquivos.</p>
                 </header>
 
                 <div class="entrega-grade">
                     <ul class="arquivos-entrega">
-                        <li><span class="ext">xlsx</span><b>T2_D05_registro.xlsx</b><span>a planilha preenchida, com a aba Log CPU colada</span></li>
-                        <li><span class="ext">pdf</span><b>T2_D05_laudo.pdf</b><span>o laudo de uma página, salvo como PDF</span></li>
-                        <li><span class="ext">zip</span><b>T2_D05_evidencias.zip</b><span>prints PNG, d1.txt a d5.txt e log_cpu.csv</span></li>
+                        <li><span class="ext">xlsx</span><b>SeuNome_registro.xlsx</b><span>a planilha preenchida, com a aba Log CPU colada</span></li>
+                        <li><span class="ext">pdf</span><b>SeuNome_laudo.pdf</b><span>o laudo de uma página, salvo como PDF</span></li>
+                        <li><span class="ext">zip</span><b>SeuNome_evidencias.zip</b><span>prints PNG, d1.txt a d5.txt e log_cpu.csv</span></li>
                     </ul>
                     <div class="laudo">
                         <h3 class="sub">O laudo</h3>
                         <p class="laudo-pergunta">"Este computador serve para edição de vídeo leve e navegação com muitas abas? Qual é o primeiro upgrade que você recomenda?"</p>
                         <ol>
                             <li>Ficha técnica resumida</li>
-                            <li>Resultados da dupla × mediana da turma</li>
+                            <li>Seus resultados × mediana da turma</li>
                             <li>Gráfico do registrador com uma frase</li>
                             <li>O gargalo e a prova numérica</li>
                             <li>Upgrade recomendado, pelos números</li>
@@ -497,7 +497,7 @@ registrar</code></pre>
                         </dl>
                     </div>
                 </div>
-                <p class="lab-nota">Nome: T&lt;turma&gt;_D&lt;dupla&gt;_parte (exemplo: turma 2, dupla 5). O .zip sai de: selecionar os arquivos › botão direito › Enviar para › Pasta compactada, sem administrador.</p>
+                <p class="lab-nota">Troque <b>SeuNome</b> pelo seu nome, sem espaços e sem acentos. O .zip sai de: selecionar os arquivos › botão direito › Enviar para › Pasta compactada, sem administrador.</p>
             </div>
         </section>
 
