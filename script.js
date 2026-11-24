@@ -32,20 +32,27 @@
         botaoTema.setAttribute('aria-label', escuro ? 'Ativar modo claro' : 'Ativar modo escuro');
     }
     sincronizarTema();
+    var trocandoTema = false;
+    function liberarTema() { trocandoTema = false; requestAnimationFrame(function () { doc.classList.remove('sem-transicao'); }); }
     botaoTema.addEventListener('click', function () {
+        if (trocandoTema) return; // um clique só: ignora cliques durante a animação
+        trocandoTema = true;
         var trocar = function () {
+            doc.classList.add('sem-transicao');
             doc.dataset.tema = doc.dataset.tema === 'escuro' ? 'claro' : 'escuro';
             guardar('msc:tema', doc.dataset.tema);
             sincronizarTema();
         };
-        if (!document.startViewTransition || reduzido) { trocar(); return; }
+        if (!document.startViewTransition || reduzido) { trocar(); liberarTema(); return; }
         var r = botaoTema.getBoundingClientRect();
         var x = r.left + r.width / 2, y = r.top + r.height / 2;
         var raio = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-        document.startViewTransition(trocar).ready.then(function () {
+        var vt = document.startViewTransition(trocar);
+            vt.finished.then(liberarTema, liberarTema);
+            vt.ready.then(function () {
             doc.animate({ clipPath: ['circle(0 at ' + x + 'px ' + y + 'px)', 'circle(' + raio + 'px at ' + x + 'px ' + y + 'px)'] },
                 { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)', pseudoElement: '::view-transition-new(root)' });
-        });
+            }).catch(function () {});
     });
 
     /* ================= MENU MÓVEL ================= */

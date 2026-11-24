@@ -775,3 +775,6 @@ a.cupom-item:hover .c-num { color: #c6ff5a; }
 }
 
 .menu a.menu-disciplina { color: var(--cobre); font-weight: 600; }
+
+/* troca de tema: sem esmaecer cores, para o círculo revelar o tema final num clique só */
+.sem-transicao, .sem-transicao *, .sem-transicao *::before, .sem-transicao *::after { transition: none !important; }
