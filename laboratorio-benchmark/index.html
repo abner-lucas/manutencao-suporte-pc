@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.25j">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25j">
-    <link rel="stylesheet" href="lab.css?v=2026.11.25j">
+    <link rel="stylesheet" href="../style.css?v=2026.11.25k">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25k">
+    <link rel="stylesheet" href="lab.css?v=2026.11.25k">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -589,47 +589,27 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                     <p class="estacao-n" aria-hidden="true">E5</p>
                     <h2 id="titulo-e5">Calor e throttling</h2>
                     <p class="estacao-ferr">registrar · aba Log CPU · ≈ 20 min</p>
-                    <p class="estacao-conceito">Sob carga longa o processador esquenta e o clock cai. O registrar grava o clock a cada segundo; a planilha faz o gráfico e as contas.</p>
+                    <p class="estacao-conceito">Sob carga longa o processador esquenta e o clock cai. O registrar faz o teste sozinho e grava o clock a cada segundo; a planilha faz o gráfico e as contas.</p>
                 </header>
                 <div class="estacao-corpo">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Abra um <code>cmd</code> e rode, um de cada vez, na ordem:</p>
-                            <div class="cmd-seq">
-                                <div class="cmd" data-ordem="1º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench</code></pre></div>
-                                <div class="cmd" data-ordem="2º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>registrar</code></pre></div>
-                            </div>
-                            <p class="r-ve"><code>Gravando em ...\bench\log_cpu.csv</code> e uma linha nova por segundo com 4 números. O <b>primeiro número</b> de cada linha conta os segundos: ele é o relógio desta estação. Deixe essa janela aberta.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">Repouso: não mexa em nada até o primeiro número chegar a <b>60</b>.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">No segundo 60, abra um <b>segundo</b> <code>cmd</code> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>cmd</code>) e rode a carga:</p>
-                            <div class="cmd-seq">
-                                <div class="cmd" data-ordem="1º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\extra\x64</code></pre></div>
-                                <div class="cmd" data-ordem="2º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>7za b 100</code></pre></div>
-                            </div>
-                            <dl class="partes-cmd" aria-label="O que significa cada parte">
-                                <div><dt>b 100</dt><dd>repete o teste até 100 vezes: um número alto só para não acabar sozinho; quem para é você</dd></div>
-                            </dl>
-                            <p class="r-ve">O 7-Zip começa a repetir o teste e o processador vai a 100%. Mãos fora.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">Olhe a janela 1: quando o primeiro número chegar a <b>360</b> (5 minutos de carga), clique na janela 2 e aperte <kbd>Ctrl</kbd> + <kbd>C</kbd> para parar o 7-Zip.</p>
-                            <p class="r-ve">A janela 2 volta para a linha <code class="t">\x64&gt;</code>. A janela 1 continua gravando.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">Resfriamento: quando o primeiro número da janela 1 chegar a <b>480</b>, clique nela e aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code class="t">S</code> e <kbd>Enter</kbd>.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">Abra o log no Bloco de Notas: <kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Depois rode, um de cada vez, na ordem:</p>
+                            <p class="r-faca"><kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Depois rode, um de cada vez, na ordem:</p>
                             <div class="cmd-seq">
                                 <div class="cmd" data-ordem="1º" data-titulo="Prompt de Comando"><pre><code>cd %USERPROFILE%\bench</code></pre></div>
-                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>notepad log_cpu.csv</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>registrar</code></pre></div>
                             </div>
-                            <p class="r-ve">O Bloco de Notas abre com linhas assim: <code class="t">"Segundo";"MHz_efetivo";"Utilizacao";"Temp_C"</code> e depois uma linha por segundo.</p>
-                            <p class="r-faca">No Bloco de Notas, aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> (seleciona tudo) e <kbd>Ctrl</kbd> + <kbd>C</kbd> (copia).</p>
+                            <p class="r-ve">O teste corre sozinho por <b>8 minutos</b>: repouso, carga (o 7-Zip roda escondido) e resfriamento. Uma linha por segundo mostra a fase e quanto falta:</p>
+                            <figure class="saida saida-quebra">
+<pre>  12 s  repouso       faltam  48 s    1396 MHz   CPU   6%
+ 125 s  <span class="s-fraco">CARGA</span>         faltam 235 s    2480 MHz   CPU 100%
+ 400 s  resfriamento  faltam  80 s    1310 MHz   CPU   9%</pre>
+                                <figcaption>valores de exemplo · não mexa no computador até terminar</figcaption>
+                            </figure>
+                        </li>
+                        <li>
+                            <p class="r-faca">Espere até aparecer <b>Pronto!</b> em verde: o log abre sozinho no Bloco de Notas. Nele, aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> (seleciona tudo) e <kbd>Ctrl</kbd> + <kbd>C</kbd> (copia).</p>
+                            <p class="r-ve">O Bloco de Notas mostra <code class="t">"Segundo";"MHz_efetivo";"Utilizacao";"Temp_C"</code> e uma linha por segundo. Não abriu? No mesmo <code>cmd</code>, digite <code class="t">notepad log_cpu.csv</code> e <kbd>Enter</kbd>.</p>
                         </li>
                         <li>
                             <p class="r-faca">Na planilha, abra a aba <b>Log CPU</b>, clique na célula <b>A1</b> e aperte <kbd>Ctrl</kbd> + <kbd>V</kbd>.</p>
@@ -675,7 +655,7 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
 
                     <details class="entenda">
                         <summary>O registrar não funcionou?</summary>
-                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Anote o valor no caderno a cada 30 segundos durante os 5 minutos de <code class="t">7za b 100</code>.</p>
+                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Em outra janela do <code>cmd</code>, na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode <code class="t">7za b 100</code> e anote o valor no caderno a cada 30 segundos, por 5 minutos. Para parar, <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
                     </details>
                     <details class="entenda">
                         <summary>Sobre a temperatura</summary>
@@ -974,8 +954,8 @@ Avr:     62008  1232   4897  <span class="s-fim">60322</span>  |  ...   <span cl
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.25j"></script>
-    <script src="../comum.js?v=2026.11.25j"></script>
-    <script src="lab.js?v=2026.11.25j"></script>
+    <script src="../logica.js?v=2026.11.25k"></script>
+    <script src="../comum.js?v=2026.11.25k"></script>
+    <script src="lab.js?v=2026.11.25k"></script>
 </body>
 </html>

@@ -874,12 +874,12 @@ total: | 10200547328 |   9728  |  <span class="hl" data-s="1">486.40</span>  |  
       <div class="win-bar"><span>Prompt de Comando</span><span class="ctl"><button class="copy" type="button" data-copy="cd %USERPROFILE%\bench&#10;registrar">copiar</button></span></div>
 <pre style="height:330px;overflow:hidden" class="logpre"><span class="pr">C:\Users\aluno&gt;</span>cd %USERPROFILE%\bench
 <span class="pr">C:\Users\aluno\bench&gt;</span><span class="cm">registrar</span>
-Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
+Teste automatico: 480 s. Nao mexa no computador.
 <span class="logl"></span></pre>
     </div>
     <div class="col" style="width:360px">
       <div class="card"><span class="note">colunas</span><p style="color:var(--ink)">Segundo · MHz_efetivo · Utilizacao · Temp_C</p></div>
-      <div class="card"><span class="note">para parar</span><div class="row center" style="justify-content:flex-start"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>C</kbd></div></div>
+      <div class="card"><span class="note">quanto tempo</span><p style="color:var(--ink)">8 minutos. Para sozinho e abre o log.</p></div>
       <div class="card" style="border-color:var(--hot)"><span class="note">confira</span><p>MHz_efetivo acompanha a Velocidade do Gerenciador?</p></div>
     </div>
   </div>
@@ -887,17 +887,17 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
 
 <!-- 38 ROTEIRO ESTRESSE -->
 <section class="slide" data-title="Roteiro do estresse" style="--accent:var(--hot)">
-  <div class="eyebrow">8 minutos · o relógio é o 1º número do registrar</div>
+  <div class="eyebrow">8 minutos · automático · só digite registrar</div>
   <h2>Repouso, carga, resfriamento</h2>
   <div class="row" style="gap:6px;margin-top:20px;align-items:stretch;height:130px">
-    <div class="node" data-s="1" style="width:calc(1136px*1/8);border-color:var(--cool)"><b>0 → 60</b>repouso</div>
-    <div class="node" data-s="2" style="width:calc(1136px*5/8);border-color:var(--hot);background:linear-gradient(90deg,color-mix(in srgb,var(--hot) 15%,var(--panel)),color-mix(in srgb,var(--hot) 35%,var(--panel)))"><b>60 → 360 · carga</b><code>7za b 100</code> na pasta <code>bench\extra\x64</code></div>
-    <div class="node" data-s="3" style="width:calc(1136px*2/8);border-color:var(--cool)"><b>360 → 480</b>resfria</div>
+    <div class="node" data-s="1" style="width:calc(1136px*1/8);border-color:var(--cool)"><b>0 → 60 s</b>repouso</div>
+    <div class="node" data-s="1" style="width:calc(1136px*5/8);border-color:var(--hot);background:linear-gradient(90deg,color-mix(in srgb,var(--hot) 15%,var(--panel)),color-mix(in srgb,var(--hot) 35%,var(--panel)))"><b>60 → 360 s · carga</b>o 7-Zip liga e desliga sozinho</div>
+    <div class="node" data-s="1" style="width:calc(1136px*2/8);border-color:var(--cool)"><b>360 → 480 s</b>resfria</div>
   </div>
   <div class="grid g3" style="margin-top:10px">
-    <div class="card" data-s="1"><span class="pin">1</span><p><code>registrar</code> na janela 1. PC parado até o segundo 60.</p></div>
-    <div class="card" data-s="2"><span class="pin">2</span><p>No segundo 60, na janela 2: <code>7za b 100</code>. No 360: Ctrl + C na janela 2.</p></div>
-    <div class="card" data-s="3"><span class="pin">3</span><p>No segundo 480: Ctrl + C na janela 1. Se perguntar (S/N), digite S.</p></div>
+    <div class="card" data-s="2"><span class="pin">1</span><p><code>cd %USERPROFILE%\bench</code> e depois <code>registrar</code>.</p></div>
+    <div class="card" data-s="3"><span class="pin">2</span><p>Mãos fora por 8 minutos. A tela mostra a fase e quanto falta.</p></div>
+    <div class="card" data-s="4"><span class="pin">3</span><p>No fim, o log abre no Bloco de Notas: Ctrl + A, Ctrl + C.</p></div>
   </div>
   <p class="note" data-s="4" style="margin-top:auto">O PC desligou sozinho? Pare e trate como chamado de manutenção.</p>
 </section>
@@ -923,7 +923,7 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
     </div>
     <div class="col grow">
       <ol class="col" style="padding-left:0;list-style:none;gap:14px;font-size:19px">
-        <li data-s="1"><span class="pin">1</span>cmd › <code>cd %USERPROFILE%\bench</code> › <code>notepad log_cpu.csv</code> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">A</kbd> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">C</kbd></li>
+        <li data-s="1"><span class="pin">1</span>No Bloco de Notas que abriu sozinho › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">A</kbd> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">C</kbd></li>
         <li data-s="2"><span class="pin">2</span>Planilha › aba <b>Log CPU</b> › clique em <b>A1</b> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">V</kbd></li>
         <li data-s="3"><span class="pin">3</span>Coluna A selecionada › <b>Dados</b> › <b>Texto para Colunas</b> › Delimitado › <b>Ponto e vírgula</b> › Concluir. O gráfico aparece sozinho</li>
       </ol>
@@ -1225,9 +1225,13 @@ var inits={
       document.getElementById('thrC').textContent=nf(clk(t),2)+' GHz';document.getElementById('thrT').style.width=(tmp(t)*100)+'%';id=requestAnimationFrame(f);}
     if(reduce){for(var t=0;t<T;t+=0.05)pts.push([t,clk(t)]);draw(8);return;}
     id=requestAnimationFrame(f);return function(){cancelAnimationFrame(id);};},
-  logger:function(s){var el=s.querySelector('.logl'),n=0,id,lines=[];if(reduce){el.textContent='0  1380  4  41\n1  1410  5  41';return;}
-    id=setInterval(function(){var mhz=n<6?1380+Math.round(Math.random()*60):(n<14?4180-Math.round(Math.random()*40):3600+Math.round(Math.sin(n)*180));var u=n<6?4:100;var tc=Math.min(88,41+Math.max(0,n-5)*3);
-      lines.push((n<10?' ':'')+n+'   '+mhz+'   '+u+'   '+tc);if(lines.length>9)lines.shift();el.textContent=lines.join('\n');n++;if(n>40){n=0;lines=[];}},600);
+  logger:function(s){var el=s.querySelector('.logl'),n=0,id,lines=[];
+    function pad(v,k){v=String(v);while(v.length<k)v=' '+v;return v;}
+    function linha(t){var f,fa,mhz,u;if(t<60){f='repouso     ';fa=60-t;mhz=1380+Math.round(Math.random()*60);u=5;}else if(t<360){f='CARGA       ';fa=360-t;mhz=(t<150?4150:3500)+Math.round(Math.random()*120);u=100;}else{f='resfriamento';fa=480-t;mhz=1350+Math.round(Math.random()*80);u=6;}
+      return pad(t,4)+' s  '+f+' faltam '+pad(fa,3)+' s  '+pad(mhz,5)+' MHz  CPU '+pad(u,3)+'%';}
+    if(reduce){el.textContent=[linha(12),linha(125),linha(400)].join('\n');return;}
+    id=setInterval(function(){var t=n*12;if(t>=480){lines.push('Pronto! O log abre no Bloco de Notas.');n=-3;}else if(n>=0)lines.push(linha(t));
+      if(lines.length>9)lines.shift();el.textContent=lines.join('\n');n++;if(n===0)lines=[];},500);
     return function(){clearInterval(id);};},
   curves:function(s){var cv=s.querySelector('.curv'),g=cv.getContext('2d'),W=800,H=380,p={l:60,r:20,t:30,b:40},stop=function(){};
     var info=[['Estável','Refrigeração dá conta. Típico de desktop.'],['Pico e queda','Limite de energia ou temperatura de longa duração. Típico de notebook.'],['Dente de serra','Throttling térmico. Investigue poeira, pasta térmica, ventoinha.'],['Abaixo da base','Plano de energia econômico, bateria ou refrigeração falhando.']];
@@ -1256,7 +1260,7 @@ var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.ma
 window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
 })();
 </script>
-<script src="../../logica.js?v=2026.11.25j"></script>
-<script src="guia.js?v=2026.11.25j"></script>
+<script src="../../logica.js?v=2026.11.25k"></script>
+<script src="guia.js?v=2026.11.25k"></script>
 </body>
 </html>
