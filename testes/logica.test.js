@@ -158,3 +158,25 @@ test('diferença percentual', () => {
     assert.equal(L.diferencaPct(100, 110).toFixed(1), '10.0');
     assert.equal(L.diferencaPct(0, 5), null);
 });
+
+test('siglas: toda entrada tem definição curta e longa', () => {
+    for (const s of L.SIGLAS) {
+        assert.ok(s.curta.length <= 32, s.sigla + ': curta longa demais');
+        assert.ok(s.def.length > 20, s.sigla);
+        assert.ok(['sigla', 'coluna', 'termo'].includes(s.tipo), s.sigla);
+    }
+});
+
+test('siglas: acha na ordem e com a palavra inteira', () => {
+    const r = L.encontrarSiglas('A nota em MIPS vem da linha Tot; o IPC usa o R/U. Speed em KiB/s.').map(s => s.sigla);
+    assert.deepEqual(r, ['MIPS', 'Tot', 'IPC', 'R/U', 'KiB/s']);
+    assert.equal(L.encontrarSiglas('MHz_efetivo').length, 0);          // nome de coluna do CSV não conta
+    assert.equal(L.encontrarSiglas('TotalIO e RAMPA').length, 0);       // pedaço de palavra não conta
+    assert.deepEqual(L.encontrarSiglas('5 MB/s').map(s => s.sigla), ['MB/s · MiB/s']); // MB/s não conta como MB
+    assert.deepEqual(L.encontrarSiglas('arquivo de 1 GB').map(s => s.sigla), ['KB · MB · GB']);
+});
+
+test('siglas: filtro por tipo', () => {
+    const r = L.encontrarSiglas('clock da CPU e threads', ['sigla']).map(s => s.sigla);
+    assert.deepEqual(r, ['CPU']);
+});

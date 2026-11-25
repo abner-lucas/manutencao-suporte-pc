@@ -443,6 +443,77 @@
         return (b - a) / a * 100;
     }
 
+    /* =====================================================================
+     * 6. SIGLAS E TERMOS (laboratório de benchmark: página e slides)
+     * tipo: 'sigla' | 'coluna' (nome de coluna na saída de um programa) | 'termo'
+     * padroes: expressões regulares (sem barras); a busca exige que a palavra
+     * esteja inteira (sem letra, número ou _ grudados antes ou depois).
+     * ===================================================================== */
+    var SIGLAS = congelar([
+        ['CPU', 'sigla', ['CPU'], 'o processador', 'Unidade Central de Processamento: o processador, que executa os programas.'],
+        ['RAM', 'sigla', ['RAM'], 'memória de trabalho', 'Memória de acesso aleatório: guarda o que está aberto agora e se apaga ao desligar.'],
+        ['GPU', 'sigla', ['GPU'], 'processador de vídeo', 'Unidade de processamento gráfico: o chip que desenha a imagem (placa de vídeo ou vídeo integrado).'],
+        ['SSD', 'sigla', ['SSD'], 'disco sem peças móveis', 'Unidade de estado sólido: armazenamento em memória flash, muito mais rápido que o HD.'],
+        ['HD', 'sigla', ['HDD', 'HD'], 'disco rígido (pratos girando)', 'Disco rígido (HD ou HDD): pratos magnéticos girando e uma cabeça de leitura. Barato, mas lento com arquivos pequenos.'],
+        ['NVMe', 'sigla', ['NVMe'], 'SSD ligado direto à placa', 'Protocolo dos SSDs mais rápidos, ligados direto ao barramento PCIe da placa-mãe.'],
+        ['SATA', 'sigla', ['SATA'], 'cabo/padrão de disco', 'Padrão de conexão de discos (HD e SSD comuns). Limita o SSD a cerca de 550 MB/s.'],
+        ['GHz · MHz', 'sigla', ['GHz', 'MHz'], 'ciclos por segundo (clock)', 'Giga-hertz e mega-hertz: bilhões e milhões de ciclos por segundo. É o clock, o ritmo do processador. 1 GHz = 1.000 MHz.'],
+        ['MT/s', 'sigla', ['MT/s'], 'velocidade da RAM', 'Milhões de transferências por segundo: a velocidade da memória RAM.'],
+        ['SMT', 'sigla', ['SMT'], '1 núcleo rodando 2 threads', 'Multithreading simultâneo: cada núcleo físico roda 2 threads ao mesmo tempo (na Intel se chama Hyper-Threading).'],
+        ['MIPS', 'sigla', ['MIPS'], 'milhões de instruções/s', 'Milhões de instruções por segundo: a unidade da nota do 7-Zip. Quanto maior, mais rápido.'],
+        ['IPC', 'sigla', ['IPC'], 'instruções por ciclo', 'Instruções por ciclo: quanto trabalho o processador faz a cada tique do clock. Explica por que clock maior nem sempre é mais rápido.'],
+        ['KiB/s', 'sigla', ['KiB/s'], 'kibibytes por segundo', 'Kibibytes por segundo. 1 KiB = 1.024 bytes.'],
+        ['MB/s · MiB/s', 'sigla', ['MiB/s', 'MB/s'], 'megabytes por segundo', 'Megabytes por segundo: quanto dado passa por segundo (vazão). 1 MiB = 1.048.576 bytes.'],
+        ['IOPS', 'sigla', ['IOPS'], 'operações por segundo', 'Operações de entrada e saída por segundo: quantos pedidos pequenos o disco atende. É o que acelera abrir programas.'],
+        ['I/O', 'sigla', ['I/O'], 'entrada e saída', 'Input/Output: entrada e saída de dados. No DiskSpd, a coluna "I/O per s" é o IOPS.'],
+        ['ms', 'sigla', ['ms'], 'milissegundo', 'Milissegundo: um milésimo de segundo.'],
+        ['KB · MB · GB', 'sigla', ['KB', 'MB(?!/)', 'GB'], 'kilo, mega e gigabyte', 'Unidades de tamanho: 1 KB ≈ mil bytes, 1 MB ≈ 1 milhão, 1 GB ≈ 1 bilhão.'],
+        ['Hz', 'sigla', ['Hz'], 'vezes por segundo (tela)', 'Hertz: vezes por segundo. Na tela, quantas imagens por segundo o monitor mostra (60 Hz, 120 Hz).'],
+        ['CMD', 'sigla', ['CMD', 'cmd'], 'Prompt de Comando', 'Prompt de Comando do Windows: a janela preta onde se digitam comandos. Abra com ⊞ + R, digite cmd e aperte Enter.'],
+        ['CSV', 'sigla', ['CSV', 'csv'], 'tabela em texto', 'Arquivo de texto com uma linha por registro e colunas separadas por ponto e vírgula. Abre no Excel.'],
+        ['ACPI', 'sigla', ['ACPI'], 'sensor de energia da placa', 'Padrão de energia e temperatura da placa-mãe. A temperatura ACPI não é a do núcleo do processador.'],
+        ['AVX2', 'sigla', ['AVX2'], 'instruções de cálculo em lote', 'Conjunto de instruções de cálculo em lote dos processadores mais novos. O Cinebench exige.'],
+        ['L2 · L3', 'sigla', ['L2', 'L3'], 'cache dentro da CPU', 'Memória cache de nível 2 e 3: memória pequena e muito rápida dentro do processador.'],
+        ['DIMM', 'sigla', ['DIMM'], 'pente de memória', 'Módulo de memória de computador de mesa (o "pente" de RAM).'],
+        ['PCIe', 'sigla', ['PCIe'], 'barramento da placa-mãe', 'PCI Express: o barramento dos slots de expansão e dos SSDs NVMe.'],
+        ['USB', 'sigla', ['USB'], 'porta USB', 'Porta universal. A USB 3.0 transfere cerca de 10 vezes mais rápido que a USB 2.0.'],
+        ['PNG', 'sigla', ['PNG'], 'formato de imagem (print)', 'Formato de imagem usado para salvar os prints de tela.'],
+        ['%USERPROFILE%', 'sigla', ['%USERPROFILE%'], 'sua pasta de usuário', 'Atalho do Windows para a sua pasta de usuário (C:\\Users\\seu-nome). Funciona no Executar e no CMD.'],
+        ['E1 … E5', 'sigla', ['E[1-5]'], 'estação 1 a 5', 'Estação: cada parte do laboratório. E1 CPU no navegador, E2 7-Zip, E3 navegador, E4 disco, E5 calor.'],
+        ['Rating', 'coluna', ['Rating'], 'nota total do 7-Zip', 'Coluna do 7-Zip: a nota total em MIPS. Na linha Tot, é o último número.'],
+        ['R/U', 'coluna', ['R/U'], 'nota de 1 thread (7-Zip)', 'Coluna do 7-Zip: nota média de cada thread (Rating dividido pelo uso). Na linha Tot, é o número do meio.'],
+        ['Usage', 'coluna', ['Usage'], 'uso da CPU (7-Zip)', 'Coluna do 7-Zip: quanto da CPU foi usado. 100% = um thread inteiro; com 8 threads, perto de 800%.'],
+        ['Tot', 'coluna', ['Tot'], 'linha do total (7-Zip)', 'Última linha da saída do 7-Zip: a média de compressão e descompressão. É dela que saem os números da planilha.'],
+        ['Dict', 'coluna', ['Dict'], 'tamanho dos dados (7-Zip)', 'Coluna do 7-Zip: tamanho do bloco comprimido de cada vez (22 = 4 MB, 23 = 8 MB, 24 = 16 MB).'],
+        ['AvgLat', 'coluna', ['AvgLat'], 'latência média (DiskSpd)', 'Coluna do DiskSpd: tempo médio de cada operação, em milissegundos (ms).'],
+        ['99th', 'coluna', ['99th'], '99% abaixo deste tempo', 'Linha do DiskSpd: 99% das operações terminaram abaixo desse tempo. Mostra os "engasgos" do disco.'],
+        ['Thread', 'termo', ['threads?', 'Threads?'], 'tarefa em execução', 'Uma tarefa que o processador executa. No Gerenciador de Tarefas aparece como "processadores lógicos".'],
+        ['Núcleo', 'termo', ['núcleos?', 'Núcleos?'], 'processador independente', 'Unidade de processamento independente dentro da CPU. Um processador de 6 núcleos faz 6 trabalhos ao mesmo tempo.'],
+        ['Clock', 'termo', ['clock', 'Clock'], 'ritmo do processador', 'O ritmo do processador, em GHz. O clock base é o nominal; sob carga ele sobe (turbo) ou cai (throttling).'],
+        ['Turbo', 'termo', ['turbo', 'Turbo'], 'clock acima do base', 'Aceleração automática acima do clock base, enquanto há folga de temperatura e energia.'],
+        ['Throttling', 'termo', ['throttling', 'Throttling'], 'clock cai por calor', 'O processador reduz o clock sozinho para não passar do limite de temperatura ou de energia.'],
+        ['Cache', 'termo', ['cache', 'Cache'], 'memória rápida intermediária', 'Memória rápida que guarda dados usados há pouco. No disco, o Windows usa a RAM como cache.'],
+        ['Mediana', 'termo', ['mediana', 'Mediana'], 'valor do meio', 'O valor do meio depois de ordenar as 3 rodadas. Não é a média nem o melhor resultado.'],
+        ['Benchmark', 'termo', ['benchmark', 'Benchmark'], 'teste padronizado', 'Teste padronizado que mede o desempenho e dá uma nota comparável entre máquinas.'],
+        ['JavaScript', 'termo', ['JavaScript'], 'linguagem dos sites', 'A linguagem de programação que roda nos sites.'],
+        ['WebAssembly', 'termo', ['WebAssembly'], 'código rápido no navegador', 'Formato de código compilado que roda no navegador quase na velocidade de um programa instalado.']
+    ].map(function (x) {
+        var fonte = '(?<![\\p{L}\\p{N}_])(?:' + x[2].join('|') + ')(?![\\p{L}\\p{N}_])';
+        return congelar({ sigla: x[0], tipo: x[1], padroes: congelar(x[2]), curta: x[3], def: x[4], fonte: fonte });
+    }));
+
+    /** Siglas e termos presentes no texto, na ordem em que aparecem pela primeira vez. */
+    function encontrarSiglas(texto, tipos) {
+        texto = String(texto || '');
+        var achados = [];
+        SIGLAS.forEach(function (s) {
+            if (tipos && tipos.indexOf(s.tipo) === -1) return;
+            var m = new RegExp(s.fonte, 'u').exec(texto);
+            if (m) achados.push({ s: s, pos: m.index });
+        });
+        return achados.sort(function (a, b) { return a.pos - b.pos; }).map(function (a) { return a.s; });
+    }
+
     return {
         normalizar: normalizar,
         COMPONENTES: COMPONENTES, NOMES_SLOT: NOMES_SLOT, estadoInicial: estadoInicial, instalar: instalar, ligar: ligar, faltando: faltando,
@@ -450,6 +521,7 @@
         LIMITE_MBR_GB: LIMITE_MBR_GB, capacidadeReal: capacidadeReal, discoInicial: discoInicial, adicionarParticao: adicionarParticao,
         removerUltima: removerUltima, analisarDisco: analisarDisco,
         TERMOS: TERMOS, CATEGORIAS: CATEGORIAS, buscarTermos: buscarTermos,
-        mediana: mediana, diferencaPct: diferencaPct
+        mediana: mediana, diferencaPct: diferencaPct,
+        SIGLAS: SIGLAS, encontrarSiglas: encontrarSiglas
     };
 });

@@ -159,4 +159,82 @@
             });
         });
     });
+
+    /* ================= SIGLAS: glossário + balão ao passar o mouse ou tocar =================
+     * Lista em logica.js (SIGLAS). Em cada seção, a primeira vez que uma sigla aparece
+     * ela ganha sublinhado pontilhado e um balão com o significado.
+     */
+    (function () {
+        var NOMES = { sigla: 'Siglas', coluna: 'Colunas e linhas da saída dos programas', termo: 'Termos' };
+        var gl = $('#glossario');
+        if (gl) {
+            ['sigla', 'coluna', 'termo'].forEach(function (tipo) {
+                gl.appendChild(el('h3', { texto: NOMES[tipo] }));
+                L.SIGLAS.filter(function (s) { return s.tipo === tipo; }).forEach(function (s) {
+                    gl.appendChild(el('div', {}, [el('dt', { texto: s.sigla }), el('dd', { texto: s.def })]));
+                });
+            });
+        }
+
+        var dica = el('div', { classe: 'dica', role: 'tooltip', id: 'dica-sigla' });
+        document.body.appendChild(dica);
+        var PULAR = 'pre, script, style, abbr, button, summary, .glossario, .cabeca-n, .estacao-n, .medidor, .divisor, kbd, .cel, .arvore, h1, h2';
+
+        $$('main > section').forEach(function (sec) {
+            var vistas = {};
+            var walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, {
+                acceptNode: function (n) {
+                    if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    return n.parentElement.closest(PULAR) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            var nos = [];
+            while (walker.nextNode()) nos.push(walker.currentNode);
+            nos.forEach(function (no) {
+                // marca, da esquerda para a direita, cada sigla que ainda não apareceu nesta seção
+                while (no) {
+                    var achadas = L.encontrarSiglas(no.nodeValue).filter(function (s) { return !vistas[s.sigla]; });
+                    if (!achadas.length) return;
+                    var s = achadas[0];
+                    var m = new RegExp(s.fonte, 'u').exec(no.nodeValue);
+                    if (!m) return;
+                    vistas[s.sigla] = true;
+                    var depois = no.splitText(m.index);
+                    var resto = depois.splitText(m[0].length);
+                    var ab = el('abbr', { classe: 'sigla', tabindex: '0', title: s.def, 'data-sigla': s.sigla, 'aria-describedby': 'dica-sigla' });
+                    ab.textContent = depois.nodeValue;
+                    depois.parentNode.replaceChild(ab, depois);
+                    no = resto;
+                }
+            });
+        });
+
+        var aberta = null;
+        function mostrar(ab) {
+            var s = L.SIGLAS.filter(function (x) { return x.sigla === ab.dataset.sigla; })[0];
+            if (!s) return;
+            ab.removeAttribute('title'); // evita o balão nativo duplicado
+            dica.textContent = '';
+            dica.appendChild(el('b', { texto: s.sigla }));
+            dica.appendChild(document.createTextNode(s.def));
+            dica.classList.add('on');
+            var r = ab.getBoundingClientRect(), d = dica.getBoundingClientRect();
+            var x = Math.min(Math.max(12, r.left + r.width / 2 - d.width / 2), innerWidth - d.width - 12);
+            var y = r.top - d.height - 8;
+            if (y < 8) y = r.bottom + 8;
+            dica.style.transform = 'translate(' + Math.round(x) + 'px,' + Math.round(y) + 'px)';
+            aberta = ab;
+        }
+        function esconder() { dica.classList.remove('on'); aberta = null; }
+        document.addEventListener('mouseover', function (e) { var ab = e.target.closest && e.target.closest('abbr.sigla'); if (ab) mostrar(ab); });
+        document.addEventListener('mouseout', function (e) { if (e.target.closest && e.target.closest('abbr.sigla')) esconder(); });
+        document.addEventListener('focusin', function (e) { if (e.target.matches && e.target.matches('abbr.sigla')) mostrar(e.target); });
+        document.addEventListener('focusout', function (e) { if (e.target.matches && e.target.matches('abbr.sigla')) esconder(); });
+        document.addEventListener('click', function (e) {
+            var ab = e.target.closest && e.target.closest('abbr.sigla');
+            if (ab) { if (aberta === ab) esconder(); else mostrar(ab); } else if (aberta) esconder();
+        });
+        addEventListener('scroll', function () { if (aberta) esconder(); }, { passive: true });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') esconder(); });
+    })();
 })();

@@ -235,28 +235,36 @@ canvas{display:block}
 </section>
 
 <!-- 6 KIT -->
+<section class="slide" data-title="Siglas que vão aparecer" style="--accent:var(--mint)">
+  <div class="eyebrow">Consulte quando aparecer uma sigla · a linha do alto de cada slide repete as daquele slide</div>
+  <h2>Siglas que vão aparecer</h2>
+  <dl class="glosslide" id="glosslide"></dl>
+</section>
+
 <section class="slide" data-title="O kit na pasta bench">
-  <div class="eyebrow">Antes de começar</div>
-  <h2>O kit já está na sua pasta</h2>
-  <div class="row" style="gap:40px">
-    <div class="win" style="width:640px">
-      <div class="win-bar"><span>bench</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
+  <div class="eyebrow">Antes de começar · portal › laboratório › Baixar bench.zip</div>
+  <h2>Coloque o kit na sua pasta</h2>
+  <div class="row" style="gap:36px">
+    <div class="win" style="width:600px;align-self:flex-start">
+      <div class="win-bar"><span>C:\Users\aluno</span><span class="ctl"><span>—</span><span>☐</span><span>✕</span></span></div>
       <div class="win-body mono" style="font-size:17px;line-height:1.9">
-        <div style="color:#5b6272">C:\Users\aluno\bench</div>
-        <div class="field" data-s="1">🌐 navegador: browserbench.org <span class="lbl" style="margin-left:auto">Estações 1 e 3</span></div>
-        <div class="field" data-s="2">📁 extra\x64\7za.exe <span class="lbl" style="margin-left:auto">Estação 2</span></div>
-        <div class="field" data-s="3">📁 DiskSpd\amd64\diskspd.exe <span class="lbl" style="margin-left:auto">Estação 4</span></div>
-        <div class="field" data-s="4">⚙ registrar.bat <span class="lbl" style="margin-left:auto">Estação 5</span></div>
-        <div class="field" style="opacity:.6">⚙ registrador.ps1 <span class="lbl" style="margin-left:auto">não mexer</span></div>
+        <div class="field" data-s="4">📁 bench <span class="lbl" style="margin-left:auto">programas</span></div>
+        <div style="padding-left:28px;color:#5b6272">7zr.exe · 7z2606-extra.7z · DiskSpd</div>
+        <div class="field" data-s="5" style="padding-left:28px">⚙ preparar.bat <span class="lbl" style="margin-left:auto">rode 1 vez</span></div>
+        <div style="padding-left:28px;color:#5b6272">registrar.bat · registrador.ps1</div>
+        <div class="field" data-s="6">📁 modelo-de-entrega <span class="lbl" style="margin-left:auto">planilha</span></div>
       </div>
     </div>
-    <div class="col grow" style="justify-content:center">
-      <p class="big">Chegue lá em 2 teclas:</p>
-      <div class="row center" style="justify-content:flex-start"><kbd>⊞</kbd><span class="plus">+</span><kbd>R</kbd></div>
-      <div class="term" style="width:100%"><pre><span class="pr">Abrir:</span> <span class="type" data-text="%USERPROFILE%\bench"></span><span class="cursor"></span></pre></div>
-      <p class="note">⊞ = tecla Windows · Enter abre a pasta</p>
-    </div>
+    <ol class="col grow" style="padding-left:0;list-style:none;gap:14px;font-size:19px">
+      <li data-s="1"><span class="pin">1</span>Dois cliques no <b>bench.zip</b> (em Downloads)</li>
+      <li data-s="2"><span class="pin">2</span><kbd class="sm">Ctrl</kbd> + <kbd class="sm">A</kbd> e <kbd class="sm">Ctrl</kbd> + <kbd class="sm">C</kbd>: copia as 2 pastas</li>
+      <li data-s="3"><span class="pin">3</span><kbd class="sm">⊞</kbd> + <kbd class="sm">R</kbd> › <code>%USERPROFILE%</code> › Enter: abre sua pasta</li>
+      <li data-s="4"><span class="pin">4</span><kbd class="sm">Ctrl</kbd> + <kbd class="sm">V</kbd>: aparecem <b>bench</b> e <b>modelo-de-entrega</b></li>
+      <li data-s="5"><span class="pin">5</span>Em bench, dois cliques em <b>preparar.bat</b>: mostra <code>Pronto</code></li>
+      <li data-s="6"><span class="pin">6</span>Abra <b>registro_benchmark.xlsx</b> e deixe aberta</li>
+    </ol>
   </div>
+  <p class="note" style="margin-top:auto">Não use "Extrair tudo" com %USERPROFILE%: aquela janela não entende o atalho. Copiar e colar funciona.</p>
 </section>
 
 <!-- 7 DIVISOR ABERTURA -->
@@ -290,7 +298,7 @@ canvas{display:block}
     <div class="arrow" data-s="4"></div>
     <div class="col center" data-s="4"><kbd>Enter</kbd><span class="note">ou clique OK</span></div>
   </div>
-  <p data-s="5" class="big" style="margin-top:auto">Depois: aba <b>Desempenho</b> (ícone de gráfico) → <b>CPU</b>.</p>
+  <p data-s="5" class="big" style="margin-top:auto">Abre o Gerenciador de Tarefas. Se vier pequeno: <b>Mais detalhes</b>. Depois: <b>Desempenho</b> (ícone de gráfico) › <b>CPU</b>.</p>
 </section>
 
 <!-- 9 TM CPU -->
@@ -395,17 +403,19 @@ canvas{display:block}
 
 <!-- 12 FICHA -->
 <section class="slide" data-title="Modelo da ficha">
-  <div class="eyebrow">No caderno ou na planilha</div>
-  <h2>Ficha da máquina</h2>
+  <div class="eyebrow">Planilha › aba Ficha › coluna B (amarela)</div>
+  <h2>Onde anotar cada dado</h2>
   <table>
-    <tr><th>Item</th><th>Onde</th><th>Sua máquina</th></tr>
-    <tr data-s="1"><td>Processador</td><td class="mono">taskmgr › CPU</td><td>______________________</td></tr>
-    <tr data-s="1"><td>Núcleos / threads / base</td><td class="mono">taskmgr › CPU</td><td>____ / ____ / ____ GHz</td></tr>
-    <tr data-s="2"><td>RAM / velocidade / slots</td><td class="mono">taskmgr › Memória</td><td>____ GB / ____ MT/s / ____</td></tr>
-    <tr data-s="2"><td>Tipo de disco</td><td class="mono">taskmgr › Disco</td><td>______________________</td></tr>
-    <tr data-s="3"><td>Placa de vídeo</td><td class="mono">dxdiag › Exibir</td><td>______________________</td></tr>
-    <tr data-s="3"><td>Navegador e versão</td><td class="mono">menu › Ajuda › Sobre</td><td>______________________</td></tr>
+    <tr><th>Item</th><th>Onde ver</th><th>Célula</th></tr>
+    <tr data-s="1"><td>Processador · núcleos · lógicos · base · cache</td><td class="mono">taskmgr › Desempenho › CPU</td><td class="mono">B8 · B9 · B10 · B11 · B12</td></tr>
+    <tr data-s="2"><td>RAM · velocidade · slots usados</td><td class="mono">taskmgr › Memória</td><td class="mono">B13 · B14 · B15</td></tr>
+    <tr data-s="2"><td>Tipo de disco</td><td class="mono">taskmgr › Disco 0 (C:) › Tipo</td><td class="mono">B16</td></tr>
+    <tr data-s="3"><td>Placa de vídeo</td><td class="mono">dxdiag › aba Exibir › Nome</td><td class="mono">B17</td></tr>
+    <tr data-s="3"><td>Versão do Windows</td><td class="mono">msinfo32 › Resumo do Sistema</td><td class="mono">B18</td></tr>
+    <tr data-s="4"><td>Nome do computador</td><td class="mono">cmd › systeminfo › Nome do host</td><td class="mono">B7</td></tr>
+    <tr data-s="4"><td>Navegadores e versões</td><td class="mono">menu ⋯ › Ajuda › Sobre</td><td class="mono">B19 · B20</td></tr>
   </table>
+  <p class="note" style="margin-top:auto">B4 a B6: turma, seu nome e a data.</p>
 </section>
 
 <!-- 13 DIVISOR E1 -->
@@ -495,7 +505,7 @@ canvas{display:block}
       </div>
     </div>
     <div class="col grow">
-      <div class="eyebrow">Demonstração do professor · como a indústria testa CPU</div>
+      <div class="eyebrow">Demonstração · como a indústria testa CPU</div>
       <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
         <li data-s="1"><span class="pin">1</span>Menu <b>File</b></li>
         <li data-s="2"><span class="pin">2</span>Marque <b>Advanced Benchmark</b></li>
@@ -555,7 +565,7 @@ canvas{display:block}
       <div class="card" data-s="4"><h3><code>-mmt2</code> · <code>-mmt4</code></h3><p>2 e 4 threads</p></div>
     </div>
   </div>
-  <p class="big" data-s="5" style="margin-top:auto;color:var(--warm)">De cada um, anote a última linha: <code>Tot:</code></p>
+  <p class="big" data-s="5" style="margin-top:auto;color:var(--warm)">Cada um leva ~1 min. Da linha <code>Tot:</code>, anote o <b>último número</b> (Rating). Do <code>7za b</code>, anote também o <b>do meio</b> (R/U).</p>
 </section>
 
 <!-- 20 7ZIP SAIDA -->
@@ -756,7 +766,7 @@ canvas{display:block}
 <span class="pr">&gt;</span><span class="type cm" data-s="6" data-text="diskspd -c1G -d20 -b1M -L teste.dat > d5.txt"></span>              <span class="dim">SEM -Sh</span>
 <span class="pr">&gt;</span><span class="type" data-s="7" data-text="del teste.dat"></span>                                              <span class="dim">não pule</span></pre>
   </div>
-  <p class="note" data-s="2">O primeiro teste demora mais: o Windows cria o arquivo de 1 GB antes.</p>
+  <p class="note" data-s="2">Cada linha leva ~20 s e não mostra nada: o resultado vai para d1.txt a d5.txt. O primeiro demora mais (cria o arquivo de 1 GB).</p>
 </section>
 
 <!-- 31 DISKSPD SAIDA -->
@@ -890,35 +900,37 @@ Gravando em C:\Users\aluno\Desktop\log_cpu.csv  (Ctrl+C para parar)
   <div class="grid g3" style="margin-top:10px">
     <div class="card" data-s="1"><span class="pin">1</span><p><code>registrar</code> rodando em uma janela do CMD, PC parado.</p></div>
     <div class="card" data-s="2"><span class="pin">2</span><p>Em outra janela do CMD: <code>7za b 60</code>. Mãos fora.</p></div>
-    <div class="card" data-s="3"><span class="pin">3</span><p>Espere esfriar e aperte Ctrl + C.</p></div>
+    <div class="card" data-s="3"><span class="pin">3</span><p>Espere 2 min e aperte Ctrl + C na janela do registrar. Se perguntar (S/N), digite S.</p></div>
   </div>
   <p class="note" data-s="4" style="margin-top:auto">O PC desligou sozinho? Pare e trate como chamado de manutenção.</p>
 </section>
 
 <!-- 39 GRAFICO EXCEL -->
 <section class="slide" data-title="Fazer o gráfico" style="--accent:var(--hot)">
-  <div class="eyebrow">Área de Trabalho › log_cpu.csv</div>
-  <h2>Do CSV ao gráfico</h2>
+  <div class="eyebrow">Área de Trabalho › log_cpu.csv → planilha › aba Log CPU</div>
+  <h2>Cole o log na planilha</h2>
   <div class="row" style="gap:28px">
     <div class="win" style="width:700px">
-      <div class="win-bar"><span>log_cpu.csv - Planilha</span><span class="ctl"><span>✕</span></span></div>
-      <div style="display:flex;gap:16px;padding:8px 12px;font-size:14px;background:#fff;border-bottom:1px solid #ddd"><span>Página Inicial</span><span class="field" data-s="2"><span class="pin">2</span><b>Inserir</b></span><span>Dados</span></div>
+      <div class="win-bar"><span>registro_benchmark.xlsx</span><span class="ctl"><span>✕</span></span></div>
       <table style="font-size:15px;color:#222;background:#fff">
-        <tr style="background:#f0f2f5"><td style="width:36px"></td><td class="field" data-s="1" style="font-weight:600"><span class="pin">1</span>A · Segundo</td><td class="field" data-s="1" style="font-weight:600">B · MHz_efetivo</td><td>C · Utilizacao</td><td>D · Temp_C</td></tr>
+        <tr style="background:#f0f2f5"><td style="width:36px"></td><td style="font-weight:600">A</td><td style="font-weight:600">B</td><td>C</td><td>D</td></tr>
+        <tr><td>1</td><td class="field" data-s="2" style="font-weight:600;background:#fff2b3"><span class="pin">2</span>Segundo</td><td>MHz_efetivo</td><td>Utilizacao</td><td>Temp_C</td></tr>
         <tr><td>2</td><td>0</td><td>1380</td><td>4</td><td>41</td></tr>
         <tr><td>3</td><td>1</td><td>1410</td><td>5</td><td>41</td></tr>
         <tr><td>4</td><td>61</td><td>4180</td><td>100</td><td>63</td></tr>
-        <tr><td>5</td><td>62</td><td>4175</td><td>100</td><td>66</td></tr>
-        <tr><td>6</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+        <tr><td>5</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
       </table>
+      <div style="display:flex;gap:2px;padding:6px 8px;background:#e6e8ee;font-size:13px">
+        <span style="padding:4px 10px;background:#fff">Leia-me</span><span style="padding:4px 10px;background:#fff">Ficha</span><span class="field" data-s="3" style="padding:4px 10px;background:#fff">Medicoes</span><span style="padding:4px 10px;background:#fff">Experimento</span><span class="field" data-s="2" style="padding:4px 10px;background:#fff;font-weight:600;border-bottom:2px solid #1f7a45">Log CPU</span>
+      </div>
     </div>
     <div class="col grow">
       <ol class="col" style="padding-left:0;list-style:none;gap:14px;font-size:19px">
-        <li data-s="1"><span class="pin">1</span>Selecione as colunas A e B</li>
-        <li data-s="2"><span class="pin">2</span><b>Inserir</b> › Gráfico de <b>Linhas</b></li>
-        <li data-s="3"><span class="pin">3</span>Título: modelo da CPU + data</li>
+        <li data-s="1"><span class="pin">1</span>Dois cliques em <b>log_cpu.csv</b> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">A</kbd> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">C</kbd></li>
+        <li data-s="2"><span class="pin">2</span>Planilha › aba <b>Log CPU</b> › clique em <b>A1</b> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">V</kbd></li>
+        <li data-s="3"><span class="pin">3</span>O gráfico aparece sozinho. Na aba <b>Medicoes</b>, G29 a G32 se preenchem</li>
       </ol>
-      <p class="note" style="margin-top:auto">Valores ilustrativos. O CSV usa ponto e vírgula: abre direto no Excel em português.</p>
+      <p class="note" style="margin-top:auto">Tudo numa coluna só? Dados › Texto para Colunas › Delimitado › Ponto e vírgula › Concluir.</p>
     </div>
   </div>
 </section>
@@ -1038,7 +1050,6 @@ Gravando em C:\Users\aluno\Desktop\log_cpu.csv  (Ctrl+C para parar)
     <div class="card reveal"><h3>Comparar JetStream 3 com a nota de um JetStream antigo</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Notas de versões diferentes não se comparam.</p></div>
     <div class="card reveal"><h3>Comparar MotionMark de telas 60 Hz e 120 Hz</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Os autores avisam que não se compara.</p></div>
     <div class="card reveal"><h3>Usar o melhor dos 3 resultados</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Use a mediana.</p></div>
-    <div class="card reveal"><h3>O d5 (sem -Sh) é a velocidade do disco</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. É o cache da RAM.</p></div>
     <div class="card reveal"><h3>Clock maior = PC mais rápido</h3><span class="hint">revelar</span><p class="ans" style="color:var(--hot)">Errado. Depende do IPC e dos núcleos.</p></div>
     <div class="card reveal"><h3>Queda de clock sob carga longa indica limite térmico ou de energia</h3><span class="hint">revelar</span><p class="ans" style="color:var(--mint)">Certo. É o que o registrador mostra.</p></div>
   </div>
@@ -1270,5 +1281,7 @@ var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.ma
 window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
 })();
 </script>
+<script src="../../logica.js?v=2026.11.24g"></script>
+<script src="guia.js?v=2026.11.24g"></script>
 </body>
 </html>
