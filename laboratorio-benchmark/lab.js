@@ -178,7 +178,7 @@
 
         var dica = el('div', { classe: 'dica', role: 'tooltip', id: 'dica-sigla' });
         document.body.appendChild(dica);
-        var PULAR = 'pre, script, style, abbr, button, summary, .glossario, .cabeca-n, .estacao-n, .medidor, .divisor, kbd, .cel, .arvore, h1, h2, .mm-ref';
+        var PULAR = 'pre, script, style, abbr, button, summary, .glossario, .cabeca-n, .estacao-n, .medidor, .divisor, kbd, .cel, .arvore, h1, h2, .mm-ref, .sp-ref';
 
         $$('main > section').forEach(function (sec) {
             var walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, {

@@ -677,11 +677,11 @@ canvas{display:block}
         <span style="color:#777">←  →  ⟳</span>
         <div class="field" data-s="1" style="flex:1;background:#f1f3f4;border-radius:999px;padding:6px 14px;font:500 15px var(--f-mono)"><span class="pin">1</span><span class="type" data-s="1" data-text="browserbench.org/Speedometer3.1"></span></div>
       </div>
-      <div style="height:330px;background:linear-gradient(160deg,#eef3fb,#fff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
-        <div style="font:700 34px var(--f-disp);color:#1b2a44">Speedometer 3.1</div>
+      <div style="height:330px;background:#2e3237;color:#eee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
+        <div style="font:italic 500 30px var(--f-body);color:#eee">spee<span style="color:#e2483d">dom</span>eter 3.1</div>
         <div class="field" data-s="2" style="background:#1b6ef3;color:#fff;padding:12px 30px;border-radius:8px;font-size:18px;font-weight:600"><span class="pin">2</span>Start Test</div>
-        <div class="field" data-s="3" style="font:800 44px var(--f-disp);color:#1b2a44"><span class="pin">3</span>18,4 <span style="font-size:22px;color:#6b7690">± 0,6</span></div>
-        <div class="field" data-s="4" style="color:#1b6ef3;font-size:16px;text-decoration:underline"><span class="pin">4</span>Details</div>
+        <div class="field" data-s="3" style="flex-direction:column;gap:0;color:#eee"><span style="font-size:16px">Score</span><span style="font:400 56px/1 var(--f-body)"><span class="pin">3</span>21.8</span><span style="font-size:20px;color:#8a8d91">± 2.4</span></div>
+        <div class="field" data-s="4" style="border:2px solid #eee;border-radius:8px;padding:4px 26px;font-size:16px;color:#eee"><span class="pin">4</span>Details</div>
       </div>
     </div>
     <div class="col grow">
@@ -689,7 +689,7 @@ canvas{display:block}
       <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
         <li data-s="1"><span class="pin">1</span>Acesse o endereço</li>
         <li data-s="2"><span class="pin">2</span><b>Start Test</b> e solte o mouse</li>
-        <li data-s="3"><span class="pin">3</span>Anote a nota e o ±</li>
+        <li data-s="3"><span class="pin">3</span>Anote o número grande abaixo de <b>Score</b>, com vírgula (sem o ±)</li>
         <li data-s="4"><span class="pin">4</span><b>Details</b>: tempo de cada tarefa</li>
       </ol>
       <p class="note" style="margin-top:auto">Ilustração. Nota maior = mais rápido.</p>
@@ -1256,7 +1256,7 @@ var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.ma
 window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
 })();
 </script>
-<script src="../../logica.js?v=2026.11.25d"></script>
-<script src="guia.js?v=2026.11.25d"></script>
+<script src="../../logica.js?v=2026.11.25e"></script>
+<script src="guia.js?v=2026.11.25e"></script>
 </body>
 </html>

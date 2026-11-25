@@ -345,3 +345,12 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .mm-frase b { background: #fff2b3; padding: 0 3px; }
 .mm-ref figcaption { justify-content: flex-start; }
 .mm-ref figcaption { display: block; line-height: 1.6; }
+
+/* referência da tela final do Speedometer */
+.sp-ref { background: #2e3237; border-color: #50555b; text-align: center; color: #eee; }
+.sp-score { margin: 0; font-size: 18px; }
+.sp-nota { margin: 2px 0 0; font: 400 52px/1 var(--f-corpo); color: #eee; }
+.sp-mais { margin: 2px 0 8px; font-size: 18px; color: #8a8d91; }
+.sp-det { display: inline-block; margin: 0 0 8px; padding: 2px 22px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
+.sp-ref figcaption { display: block; color: #c9ccce; line-height: 1.6; }
+.sp-ref figcaption b { color: #fff; }
