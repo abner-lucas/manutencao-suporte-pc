@@ -336,3 +336,4 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .jt-score { margin: 2px 0 0; font-size: 15px; color: #555; }
 .saida-clara figcaption { justify-content: center; color: #4b5b51; }
 .saida-clara figcaption b { color: #13201a; }
+.saida-quebra pre { white-space: pre-wrap; word-break: break-word; }

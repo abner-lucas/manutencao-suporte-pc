@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.24p">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24p">
-    <link rel="stylesheet" href="lab.css?v=2026.11.24p">
+    <link rel="stylesheet" href="../style.css?v=2026.11.25b">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25b">
+    <link rel="stylesheet" href="lab.css?v=2026.11.25b">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -368,7 +368,8 @@
                     <ol class="roteiro">
                         <li>
                             <p class="r-faca"><kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>.</p>
-                            <p class="r-ve">A janela preta do Prompt de Comando.</p>
+                            <p class="r-ve">A janela preta do Prompt de Comando, com a linha <code class="t">C:\Users\seu-usuário&gt;</code>.</p>
+                            <p class="r-ve">Use o <b>Prompt de Comando</b>, não o PowerShell. Se a linha começar com <code class="t">PS C:\</code> (como quando se abre o "Terminal" pelo Explorador), digite <code class="t">cmd</code> e <kbd>Enter</kbd> para trocar.</p>
                         </li>
                         <li>
                             <p class="r-faca">Digite (ou cole com o botão direito) e aperte <kbd>Enter</kbd>:</p>
@@ -486,8 +487,9 @@
                 <div class="estacao-corpo">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Abra o <code>cmd</code>, digite e aperte <kbd>Enter</kbd> para entrar na pasta do DiskSpd:</p>
+                            <p class="r-faca"><kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Depois digite e aperte <kbd>Enter</kbd> para entrar na pasta do DiskSpd:</p>
                             <div class="cmd" data-titulo="Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\DiskSpd\amd64</code></pre></div>
+                            <p class="r-ve">A linha agora termina em <code class="t">amd64&gt;</code>. Use o <b>Prompt de Comando</b>, não o PowerShell. Se a linha começar com <code class="t">PS C:\</code> (como quando se abre o "Terminal" pelo Explorador), digite <code class="t">cmd</code> e <kbd>Enter</kbd> para trocar.</p>
                         </li>
                         <li>
                             <p class="r-faca">Rode os cinco, um de cada vez, na ordem. Cole um, aperte <kbd>Enter</kbd> e espere a linha <code class="t">amd64&gt;</code> voltar antes do próximo.</p>
@@ -498,7 +500,12 @@
                                 <div class="cmd" data-ordem="4º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat &gt; d4.txt</code></pre></div>
                                 <div class="cmd" data-ordem="5º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b1M -L teste.dat &gt; d5.txt</code></pre></div>
                             </div>
-                            <p class="r-ve">Nada aparece na tela por cerca de 20 segundos: o resultado vai direto para os arquivos d1.txt a d5.txt. O primeiro demora mais, porque cria o arquivo de teste de 1 GB.</p>
+                            <p class="r-ve">Aparecem só estas duas linhas, e o resultado vai direto para os arquivos d1.txt a d5.txt. Espere a linha <code class="t">amd64&gt;</code> voltar (cerca de 20 segundos; o primeiro demora mais, porque cria o arquivo de teste de 1 GB).</p>
+                            <figure class="saida saida-quebra">
+<pre><span class="s-fraco">WARNING: Error adjusting token privileges for SeManageVolumePrivilege (error code: 1300)
+WARNING: Could not set privileges for setting valid file size; will use a slower method of preparing the file</span></pre>
+                                <figcaption>é normal: sem administrador, o DiskSpd só prepara o arquivo de teste de um jeito mais lento · o teste funciona</figcaption>
+                            </figure>
                         </li>
                         <li>
                             <p class="r-faca">Digite e aperte <kbd>Enter</kbd> para abrir o resultado no Bloco de Notas:</p>
@@ -506,8 +513,8 @@
                             <p class="r-faca">No Bloco de Notas, aperte <kbd>Ctrl</kbd> + <kbd>F</kbd> e procure <code>Total IO</code>.</p>
                             <p class="r-ve">Uma tabela. Use a linha que começa com <b>total:</b>.</p>
                             <figure class="saida">
-<pre>  thread |  bytes  | I/Os | <span class="s-fim">MiB/s</span>  | <span class="s-meio">I/O per s</span> | <span class="s-fraco">AvgLat</span>
-  total: | 1020... | 9728 | <span class="s-fim">486.40</span> |  <span class="s-meio">486.40</span>   | <span class="s-fraco">4.106</span></pre>
+<pre>thread |    bytes    |  I/Os  |  <span class="s-fim">MiB/s</span>  | <span class="s-meio">I/O per s</span> | <span class="s-fraco">AvgLat</span>
+total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span class="s-meio">4153.72</span>  |  <span class="s-fraco">0.479</span></pre>
                                 <figcaption><span class="s-fim">MiB/s</span> vazão · <span class="s-meio">I/O per s</span> IOPS · <span class="s-fraco">AvgLat</span> latência em ms · troque o ponto por vírgula na planilha</figcaption>
                             </figure>
                         </li>
@@ -795,8 +802,8 @@
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.24p"></script>
-    <script src="../comum.js?v=2026.11.24p"></script>
-    <script src="lab.js?v=2026.11.24p"></script>
+    <script src="../logica.js?v=2026.11.25b"></script>
+    <script src="../comum.js?v=2026.11.25b"></script>
+    <script src="lab.js?v=2026.11.25b"></script>
 </body>
 </html>
