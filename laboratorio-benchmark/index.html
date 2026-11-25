@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.25g">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25g">
-    <link rel="stylesheet" href="lab.css?v=2026.11.25g">
+    <link rel="stylesheet" href="../style.css?v=2026.11.25h">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25h">
+    <link rel="stylesheet" href="lab.css?v=2026.11.25h">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -623,13 +623,22 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                             <p class="r-faca">Resfriamento: quando o primeiro número da janela 1 chegar a <b>480</b>, clique nela e aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code class="t">S</code> e <kbd>Enter</kbd>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Na pasta <b>bench</b> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>%USERPROFILE%\bench</code>, <kbd>Enter</kbd>), dê dois cliques em <b>log_cpu.csv</b>. Aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> e <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
+                            <p class="r-faca">Abra o log no Bloco de Notas: <kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Depois rode, um de cada vez, na ordem:</p>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Prompt de Comando"><pre><code>cd %USERPROFILE%\bench</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>notepad log_cpu.csv</code></pre></div>
+                            </div>
+                            <p class="r-ve">O Bloco de Notas abre com linhas assim: <code class="t">"Segundo";"MHz_efetivo";"Utilizacao";"Temp_C"</code> e depois uma linha por segundo.</p>
+                            <p class="r-faca">No Bloco de Notas, aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> (seleciona tudo) e <kbd>Ctrl</kbd> + <kbd>C</kbd> (copia).</p>
                         </li>
                         <li>
                             <p class="r-faca">Na planilha, abra a aba <b>Log CPU</b>, clique na célula <b>A1</b> e aperte <kbd>Ctrl</kbd> + <kbd>V</kbd>.</p>
-                            <p class="r-ve">O gráfico do clock aparece sozinho. Na aba Medicoes, <b>G28 a G31</b> se preenchem: clock em repouso, no pico, sob carga e a queda em %.</p>
+                            <p class="r-ve">Tudo cai na coluna A, com os valores grudados por ponto e vírgula.</p>
                             <p class="r-anote"><span class="cel">Log CPU › A1</span> colar aqui</p>
-                            <p class="r-ve">Ficou tudo numa coluna só (A)? Com a coluna A selecionada: <b>Dados</b> › <b>Texto para Colunas</b> › <b>Delimitado</b> › marque <b>Ponto e vírgula</b> › <b>Concluir</b>.</p>
+                        </li>
+                        <li>
+                            <p class="r-faca">Separe as colunas: clique na letra <b>A</b> (seleciona a coluna inteira) › <b>Dados</b> › <b>Texto para Colunas</b> › marque <b>Delimitado</b> › <b>Avançar</b> › marque <b>Ponto e vírgula</b> › <b>Concluir</b>. Se perguntar se quer substituir os dados, clique em <b>OK</b>.</p>
+                            <p class="r-ve">Os números se espalham pelas colunas A, B, C e D (Segundo, MHz_efetivo, Utilizacao, Temp_C). O gráfico do clock aparece sozinho e, na aba Medicoes, <b>G28 a G31</b> se preenchem: clock em repouso, no pico, sob carga e a queda em %.</p>
                         </li>
                         <li>
                             <p class="r-faca">Compare o seu gráfico com as curvas abaixo. Na aba Medicoes, clique em <b>G32</b>, abra a setinha e escolha o formato.</p>
@@ -827,8 +836,8 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.25g"></script>
-    <script src="../comum.js?v=2026.11.25g"></script>
-    <script src="lab.js?v=2026.11.25g"></script>
+    <script src="../logica.js?v=2026.11.25h"></script>
+    <script src="../comum.js?v=2026.11.25h"></script>
+    <script src="lab.js?v=2026.11.25h"></script>
 </body>
 </html>
