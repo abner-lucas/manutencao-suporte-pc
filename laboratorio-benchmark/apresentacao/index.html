@@ -701,15 +701,15 @@ canvas{display:block}
 </section>
 
 <!-- 26 EXPERIMENTO WEB -->
-<section class="slide" data-title="Experimento: navegador × celular" style="--accent:var(--violet)">
+<section class="slide" data-title="Experimento: navegador × navegador" style="--accent:var(--violet)">
   <div class="eyebrow">Experimento rápido</div>
-  <h2>O que pesa mais: navegador ou máquina?</h2>
+  <h2>O navegador muda a nota?</h2>
   <table>
-    <tr><th>Speedometer</th><th>Edge (PC do lab)</th><th>Chrome (PC do lab)</th><th>Celular do aluno</th></tr>
-    <tr data-s="1"><td>Rodada 1</td><td></td><td></td><td></td></tr>
-    <tr data-s="1"><td>Rodada 2</td><td></td><td></td><td></td></tr>
-    <tr data-s="1"><td>Rodada 3</td><td></td><td></td><td></td></tr>
-    <tr data-s="2"><td><b>Mediana</b></td><td></td><td></td><td></td></tr>
+    <tr><th>Speedometer</th><th>Navegador 1 (ex.: Edge)</th><th>Navegador 2 (ex.: Chrome)</th></tr>
+    <tr data-s="1"><td>Rodada 1</td><td></td><td></td></tr>
+    <tr data-s="1"><td>Rodada 2</td><td></td><td></td></tr>
+    <tr data-s="1"><td>Rodada 3</td><td></td><td></td></tr>
+    <tr data-s="2"><td><b>Mediana</b></td><td></td><td></td></tr>
   </table>
   <p class="big" data-s="3" style="margin-top:auto">A diferença entre navegadores é maior ou menor que a diferença entre máquinas?</p>
 </section>
@@ -928,7 +928,7 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
       <ol class="col" style="padding-left:0;list-style:none;gap:14px;font-size:19px">
         <li data-s="1"><span class="pin">1</span>Dois cliques em <b>log_cpu.csv</b> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">A</kbd> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">C</kbd></li>
         <li data-s="2"><span class="pin">2</span>Planilha › aba <b>Log CPU</b> › clique em <b>A1</b> › <kbd class="sm">Ctrl</kbd>+<kbd class="sm">V</kbd></li>
-        <li data-s="3"><span class="pin">3</span>O gráfico aparece sozinho. Na aba <b>Medicoes</b>, G29 a G32 se preenchem</li>
+        <li data-s="3"><span class="pin">3</span>O gráfico aparece sozinho. Na aba <b>Medicoes</b>, G28 a G31 se preenchem</li>
       </ol>
       <p class="note" style="margin-top:auto">Tudo numa coluna só? Dados › Texto para Colunas › Delimitado › Ponto e vírgula › Concluir.</p>
     </div>
@@ -1281,7 +1281,7 @@ var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.ma
 window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
 })();
 </script>
-<script src="../../logica.js?v=2026.11.24k"></script>
-<script src="guia.js?v=2026.11.24k"></script>
+<script src="../../logica.js?v=2026.11.24m"></script>
+<script src="guia.js?v=2026.11.24m"></script>
 </body>
 </html>

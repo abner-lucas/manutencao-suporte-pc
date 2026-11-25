@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.24k">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24k">
-    <link rel="stylesheet" href="lab.css?v=2026.11.24k">
+    <link rel="stylesheet" href="../style.css?v=2026.11.24m">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24m">
+    <link rel="stylesheet" href="lab.css?v=2026.11.24m">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -402,7 +402,7 @@
                             <p class="r-anote"><span class="cel">E8 a E12</span> rodada 2 <span class="cel">F8 a F12</span> rodada 3</p>
                         </li>
                         <li>
-                            <p class="r-ve">Na aba Medicoes, <b>G36</b> mostra sozinho quantas vezes "todos os threads" rende mais que 1 thread. Compare com os núcleos da Ficha (B9).</p>
+                            <p class="r-ve">Na aba Medicoes, <b>G35</b> mostra sozinho quantas vezes "todos os threads" rende mais que 1 thread. Compare com os núcleos da Ficha (B9).</p>
                         </li>
                     </ol>
                     <details class="entenda">
@@ -411,7 +411,7 @@
                             <div><dt>Dict 22, 23, 24</dt><dd>Tamanho dos dados: 4, 8 e 16 MB. O maior não cabe no cache e depende da RAM.</dd></div>
                             <div><dt>Speed</dt><dd>Velocidade em KiB/s. Descomprimir é muito mais rápido.</dd></div>
                             <div><dt>Usage</dt><dd>Uso da CPU: 100% por thread. Com 8 threads, perto de 800%.</dd></div>
-                            <div><dt>R/U</dt><dd>Nota de um thread. Comparada com o clock, vira o IPC (G37).</dd></div>
+                            <div><dt>R/U</dt><dd>Nota de um thread. Comparada com o clock, vira o IPC (G36).</dd></div>
                             <div><dt>Rating</dt><dd>Nota total em MIPS.</dd></div>
                             <div><dt>Tot</dt><dd>Média de comprimir e descomprimir: a linha que vai para a planilha.</dd></div>
                         </dl>
@@ -424,14 +424,14 @@
 
         <div class="divisor" data-ref="E3" data-n="05" data-rotulo="estação 3 · navegador" aria-hidden="true"></div>
 
-        <!-- ============ ESTAÇÃO 3 (Medicoes, linhas 14 a 18) ============ -->
+        <!-- ============ ESTAÇÃO 3 (Medicoes, linhas 14 a 17) ============ -->
         <section id="estacao-3" class="secao d-secao estacao" style="--cor: #b48cff" aria-labelledby="titulo-e3">
             <div class="secao-inner estacao-grade">
                 <header class="estacao-cabeca">
                     <p class="estacao-n" aria-hidden="true">E3</p>
                     <h2 id="titulo-e3">Navegador e gráficos</h2>
-                    <p class="estacao-ferr">Speedometer 3.1 · MotionMark 1.3 · aba Medicoes, linhas 14 a 18 · ≈ 20 min</p>
-                    <p class="estacao-conceito">O mesmo computador dá notas diferentes em navegadores diferentes. Aqui você compara navegadores, e pode comparar com o celular.</p>
+                    <p class="estacao-ferr">Speedometer 3.1 · MotionMark 1.3 · aba Medicoes, linhas 14 a 17 · ≈ 20 min</p>
+                    <p class="estacao-conceito">O mesmo computador dá notas diferentes em navegadores diferentes. Aqui você compara dois navegadores no mesmo computador.</p>
                 </header>
                 <div class="estacao-corpo">
                     <ol class="roteiro">
@@ -448,17 +448,13 @@
                             <p class="r-anote"><span class="cel">D15</span> <span class="cel">E15</span> <span class="cel">F15</span></p>
                         </li>
                         <li>
-                            <p class="r-faca">Se puder, rode no celular: acesse o mesmo link no navegador do celular.</p>
-                            <p class="r-anote"><span class="cel">D16</span> <span class="cel">E16</span> <span class="cel">F16</span></p>
-                        </li>
-                        <li>
-                            <p class="r-faca">De volta ao computador, acesse <a class="link-site" href="https://browserbench.org/MotionMark1.3/" target="_blank" rel="noopener noreferrer">browserbench.org/MotionMark1.3<span class="sr-only"> (abre em nova aba)</span></a> e clique em <b>Run Benchmark</b>.</p>
+                            <p class="r-faca">Acesse <a class="link-site" href="https://browserbench.org/MotionMark1.3/" target="_blank" rel="noopener noreferrer">browserbench.org/MotionMark1.3<span class="sr-only"> (abre em nova aba)</span></a> e clique em <b>Run Benchmark</b>.</p>
                             <p class="r-ve">Animações cada vez mais pesadas por alguns minutos. No fim, a nota.</p>
-                            <p class="r-anote"><span class="cel">D17</span> <span class="cel">E17</span> <span class="cel">F17</span> nota</p>
+                            <p class="r-anote"><span class="cel">D16</span> <span class="cel">E16</span> <span class="cel">F16</span> nota</p>
                         </li>
                         <li>
-                            <p class="r-faca">Descubra a taxa da tela: <b>Configurações</b> (<kbd>⊞</kbd> + <kbd>I</kbd>) › <b>Sistema</b> › <b>Vídeo</b> › <b>Vídeo avançado</b> › <b>Taxa de atualização</b>.</p>
-                            <p class="r-anote"><span class="cel">D18</span> Hz da tela (ex.: 60)</p>
+                            <p class="r-faca">Descubra a taxa da tela: <b>Configurações</b> (<kbd>⊞</kbd> + <kbd>I</kbd>) › <b>Sistema</b> › <b>Vídeo</b> (em alguns: <b>Tela</b>) › <b>Vídeo avançado</b> (em alguns: <b>Exibição avançada</b>) › <b>Taxa de atualização</b>.</p>
+                            <p class="r-anote"><span class="cel">D17</span> Hz da tela (ex.: 60)</p>
                         </li>
                     </ol>
                     <details class="entenda">
@@ -473,13 +469,13 @@
 
         <div class="divisor" data-ref="E4" data-n="06" data-rotulo="estação 4 · disco" aria-hidden="true"></div>
 
-        <!-- ============ ESTAÇÃO 4 (Medicoes, linhas 20 a 26) ============ -->
+        <!-- ============ ESTAÇÃO 4 (Medicoes, linhas 19 a 25) ============ -->
         <section id="estacao-4" class="secao d-secao estacao" style="--cor: #e3914f" aria-labelledby="titulo-e4">
             <div class="secao-inner estacao-grade">
                 <header class="estacao-cabeca">
                     <p class="estacao-n" aria-hidden="true">E4</p>
                     <h2 id="titulo-e4">Disco</h2>
-                    <p class="estacao-ferr">DiskSpd · aba Medicoes, linhas 20 a 26 · ≈ 20 min</p>
+                    <p class="estacao-ferr">DiskSpd · aba Medicoes, linhas 19 a 25 · ≈ 20 min</p>
                     <p class="estacao-conceito">Disco tem três números: <b>MB/s</b>, para copiar arquivos grandes; <b>IOPS</b> e <b>latência</b>, para ligar o Windows e abrir programas, que leem milhares de arquivos pequenos.</p>
                 </header>
                 <div class="estacao-corpo">
@@ -516,19 +512,19 @@
                                 <caption class="sr-only">Onde anotar cada resultado do DiskSpd</caption>
                                 <thead><tr><th scope="col">Arquivo</th><th scope="col">Teste</th><th scope="col">Coluna do total:</th><th scope="col">Anote em</th></tr></thead>
                                 <tbody>
-                                    <tr><td><code>d1.txt</code></td><td>ler arquivo grande</td><td>MiB/s</td><td><span class="cel">D20</span></td></tr>
-                                    <tr><td><code>d2.txt</code></td><td>gravar arquivo grande</td><td>MiB/s</td><td><span class="cel">D21</span></td></tr>
-                                    <tr><td><code>d3.txt</code></td><td>ler arquivos pequenos</td><td>I/O per s · AvgLat</td><td><span class="cel">D22</span> <span class="cel">D23</span></td></tr>
-                                    <tr><td><code>d3.txt</code></td><td>procure <code>99th</code> › coluna Total (ms)</td><td>latência 99%</td><td><span class="cel">D24</span></td></tr>
-                                    <tr><td><code>d4.txt</code></td><td>arquivos pequenos, carga pesada</td><td>I/O per s</td><td><span class="cel">D25</span></td></tr>
-                                    <tr><td><code>d5.txt</code></td><td>igual ao d1, com cache</td><td>MiB/s</td><td><span class="cel">D26</span></td></tr>
+                                    <tr><td><code>d1.txt</code></td><td>ler arquivo grande</td><td>MiB/s</td><td><span class="cel">D19</span></td></tr>
+                                    <tr><td><code>d2.txt</code></td><td>gravar arquivo grande</td><td>MiB/s</td><td><span class="cel">D20</span></td></tr>
+                                    <tr><td><code>d3.txt</code></td><td>ler arquivos pequenos</td><td>I/O per s · AvgLat</td><td><span class="cel">D21</span> <span class="cel">D22</span></td></tr>
+                                    <tr><td><code>d3.txt</code></td><td>procure <code>99th</code> › coluna Total (ms)</td><td>latência 99%</td><td><span class="cel">D23</span></td></tr>
+                                    <tr><td><code>d4.txt</code></td><td>arquivos pequenos, carga pesada</td><td>I/O per s</td><td><span class="cel">D24</span></td></tr>
+                                    <tr><td><code>d5.txt</code></td><td>igual ao d1, com cache</td><td>MiB/s</td><td><span class="cel">D25</span></td></tr>
                                 </tbody>
                             </table>
                         </li>
                         <li>
                             <p class="r-faca">Rode de novo <b>d1, d3, d4 e d5</b> duas vezes (rodadas 2 e 3, colunas E e F). O d2 grava no disco: rode só uma vez. No fim, apague o arquivo de teste:</p>
                             <div class="cmd" data-titulo="Prompt de Comando"><pre><code>del teste.dat</code></pre></div>
-                            <p class="r-ve">Na aba Medicoes, <b>G38</b> confere a conta IOPS × 4 KB: deve bater com o MiB/s do d3.</p>
+                            <p class="r-ve">Na aba Medicoes, <b>G37</b> confere a conta IOPS × 4 KB: deve bater com o MiB/s do d3.</p>
                         </li>
                     </ol>
                     <details class="entenda">
@@ -553,7 +549,7 @@
 
         <div class="divisor" data-ref="E5" data-n="07" data-rotulo="estação 5 · calor" aria-hidden="true"></div>
 
-        <!-- ============ ESTAÇÃO 5 (aba Log CPU; resultados em Medicoes G29 a G33) ============ -->
+        <!-- ============ ESTAÇÃO 5 (aba Log CPU; resultados em Medicoes G28 a G32) ============ -->
         <section id="estacao-5" class="secao d-secao estacao" style="--cor: #ff6a4d" aria-labelledby="titulo-e5">
             <div class="secao-inner estacao-grade">
                 <header class="estacao-cabeca">
@@ -594,13 +590,13 @@
                         </li>
                         <li>
                             <p class="r-faca">Na planilha, abra a aba <b>Log CPU</b>, clique na célula <b>A1</b> e aperte <kbd>Ctrl</kbd> + <kbd>V</kbd>.</p>
-                            <p class="r-ve">O gráfico do clock aparece sozinho. Na aba Medicoes, <b>G29 a G32</b> se preenchem: clock em repouso, no pico, sob carga e a queda em %.</p>
+                            <p class="r-ve">O gráfico do clock aparece sozinho. Na aba Medicoes, <b>G28 a G31</b> se preenchem: clock em repouso, no pico, sob carga e a queda em %.</p>
                             <p class="r-anote"><span class="cel">Log CPU › A1</span> colar aqui</p>
                             <p class="r-ve">Ficou tudo numa coluna só (A)? Com a coluna A selecionada: <b>Dados</b> › <b>Texto para Colunas</b> › <b>Delimitado</b> › marque <b>Ponto e vírgula</b> › <b>Concluir</b>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Compare o seu gráfico com as curvas abaixo. Na aba Medicoes, clique em <b>G33</b>, abra a setinha e escolha o formato.</p>
-                            <p class="r-anote"><span class="cel">Medicoes › G33</span> formato da curva</p>
+                            <p class="r-faca">Compare o seu gráfico com as curvas abaixo. Na aba Medicoes, clique em <b>G32</b>, abra a setinha e escolha o formato.</p>
+                            <p class="r-anote"><span class="cel">Medicoes › G32</span> formato da curva</p>
                         </li>
                     </ol>
 
@@ -750,7 +746,7 @@
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">AZ</span>
                     <h2 id="titulo-siglas" data-palavras>Siglas e <em>termos</em></h2>
-                    <p class="cabeca-lede">Ao longo da página, passe o mouse ou toque numa sigla sublinhada para ver o que ela significa. A lista completa está aqui.</p>
+                    <p class="cabeca-lede">Ao longo da página, passe o mouse ou toque em qualquer sigla sublinhada para ver o que ela significa. A lista completa está aqui.</p>
                 </header>
                 <div class="glossario" id="glossario"></div>
             </div>
@@ -818,8 +814,8 @@
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.24k"></script>
-    <script src="../comum.js?v=2026.11.24k"></script>
-    <script src="lab.js?v=2026.11.24k"></script>
+    <script src="../logica.js?v=2026.11.24m"></script>
+    <script src="../comum.js?v=2026.11.24m"></script>
+    <script src="lab.js?v=2026.11.24m"></script>
 </body>
 </html>

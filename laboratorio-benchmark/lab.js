@@ -161,7 +161,7 @@
     });
 
     /* ================= SIGLAS: glossário + balão ao passar o mouse ou tocar =================
-     * Lista em logica.js (SIGLAS). Em cada seção, a primeira vez que uma sigla aparece
+     * Lista em logica.js (SIGLAS). Toda vez que uma sigla aparece
      * ela ganha sublinhado pontilhado e um balão com o significado.
      */
     (function () {
@@ -181,7 +181,6 @@
         var PULAR = 'pre, script, style, abbr, button, summary, .glossario, .cabeca-n, .estacao-n, .medidor, .divisor, kbd, .cel, .arvore, h1, h2';
 
         $$('main > section').forEach(function (sec) {
-            var vistas = {};
             var walker = document.createTreeWalker(sec, NodeFilter.SHOW_TEXT, {
                 acceptNode: function (n) {
                     if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
@@ -191,14 +190,13 @@
             var nos = [];
             while (walker.nextNode()) nos.push(walker.currentNode);
             nos.forEach(function (no) {
-                // marca, da esquerda para a direita, cada sigla que ainda não apareceu nesta seção
+                // marca, da esquerda para a direita, todas as siglas do trecho (inclusive as repetidas)
                 while (no) {
-                    var achadas = L.encontrarSiglas(no.nodeValue).filter(function (s) { return !vistas[s.sigla]; });
+                    var achadas = L.encontrarSiglas(no.nodeValue);
                     if (!achadas.length) return;
                     var s = achadas[0];
                     var m = new RegExp(s.fonte, 'u').exec(no.nodeValue);
                     if (!m) return;
-                    vistas[s.sigla] = true;
                     var depois = no.splitText(m.index);
                     var resto = depois.splitText(m[0].length);
                     var ab = el('abbr', { classe: 'sigla', tabindex: '0', title: s.def, 'data-sigla': s.sigla, 'aria-describedby': 'dica-sigla' });
