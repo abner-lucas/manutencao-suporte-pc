@@ -186,6 +186,7 @@ dl.colunas dd { margin: 4px 0 0; font-size: 14px; color: var(--tinta-2); }
 }
 @media (max-width: 680px) {
     .momentos { flex-direction: column; }
+    .momentos li { flex: none; }
     .ferramentas li { grid-template-columns: 1fr auto; }
     .ferramentas span { grid-column: 1 / -1; grid-row: 2; }
     .testes-web, .duas { grid-template-columns: 1fr; }
@@ -393,3 +394,8 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 /* referência: média grossa verde, igual ao gráfico da planilha */
 .curvas-grafico .curva { stroke: #7fc400; filter: drop-shadow(0 0 5px rgba(127,196,0,.45)); }
 .curvas-grafico .curva-crua { stroke: rgba(200,210,190,.35); }
+@media (max-width: 680px) {
+    .planilha-mini .pm-abas { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .planilha-mini .pm-abas { padding: 6px 6px 0; font-size: 11.5px; }
+    .planilha-mini .pm-abas span { flex: 1 0 auto; padding: 6px 6px; text-align: center; white-space: nowrap; }
+}
