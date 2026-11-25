@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.25f">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25f">
-    <link rel="stylesheet" href="lab.css?v=2026.11.25f">
+    <link rel="stylesheet" href="../style.css?v=2026.11.25g">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25g">
+    <link rel="stylesheet" href="lab.css?v=2026.11.25g">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -599,24 +599,28 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                                 <div class="cmd" data-ordem="1º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench</code></pre></div>
                                 <div class="cmd" data-ordem="2º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>registrar</code></pre></div>
                             </div>
-                            <p class="r-ve"><code>Gravando em ...\bench\log_cpu.csv</code> e uma linha nova por segundo com 4 números. Deixe essa janela aberta.</p>
+                            <p class="r-ve"><code>Gravando em ...\bench\log_cpu.csv</code> e uma linha nova por segundo com 4 números. O <b>primeiro número</b> de cada linha conta os segundos: ele é o relógio desta estação. Deixe essa janela aberta.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Espere <b>1 minuto</b> sem mexer em nada (repouso).</p>
+                            <p class="r-faca">Repouso: não mexa em nada até o primeiro número chegar a <b>60</b>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Abra um <b>segundo</b> <code>cmd</code> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>cmd</code>) e rode a carga:</p>
+                            <p class="r-faca">No segundo 60, abra um <b>segundo</b> <code>cmd</code> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>cmd</code>) e rode a carga:</p>
                             <div class="cmd-seq">
                                 <div class="cmd" data-ordem="1º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\extra\x64</code></pre></div>
-                                <div class="cmd" data-ordem="2º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>7za b 60</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>7za b 100</code></pre></div>
                             </div>
                             <dl class="partes-cmd" aria-label="O que significa cada parte">
-                                <div><dt>b 60</dt><dd>repete o teste 60 vezes seguidas: é a carga longa que esquenta o processador</dd></div>
+                                <div><dt>b 100</dt><dd>repete o teste até 100 vezes: um número alto só para não acabar sozinho; quem para é você</dd></div>
                             </dl>
-                            <p class="r-ve">O 7-Zip repete o teste 60 vezes, por cerca de 10 minutos. Mãos fora.</p>
+                            <p class="r-ve">O 7-Zip começa a repetir o teste e o processador vai a 100%. Mãos fora.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Quando a janela 2 terminar, espere <b>2 minutos</b>. Na janela 1, aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code class="t">S</code> e <kbd>Enter</kbd>.</p>
+                            <p class="r-faca">Olhe a janela 1: quando o primeiro número chegar a <b>360</b> (5 minutos de carga), clique na janela 2 e aperte <kbd>Ctrl</kbd> + <kbd>C</kbd> para parar o 7-Zip.</p>
+                            <p class="r-ve">A janela 2 volta para a linha <code class="t">\x64&gt;</code>. A janela 1 continua gravando.</p>
+                        </li>
+                        <li>
+                            <p class="r-faca">Resfriamento: quando o primeiro número da janela 1 chegar a <b>480</b>, clique nela e aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code class="t">S</code> e <kbd>Enter</kbd>.</p>
                         </li>
                         <li>
                             <p class="r-faca">Na pasta <b>bench</b> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>%USERPROFILE%\bench</code>, <kbd>Enter</kbd>), dê dois cliques em <b>log_cpu.csv</b>. Aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> e <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
@@ -651,7 +655,7 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
 
                     <details class="entenda">
                         <summary>O registrar não funcionou?</summary>
-                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Anote o valor no caderno a cada 30 segundos durante o <code class="t">7za b 60</code>.</p>
+                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Anote o valor no caderno a cada 30 segundos durante os 5 minutos de <code class="t">7za b 100</code>.</p>
                     </details>
                     <details class="entenda">
                         <summary>Sobre a temperatura</summary>
@@ -704,7 +708,7 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                         <tr><td>Segundo plano rouba desempenho</td><td>Tudo fechado → um vídeo tocando em outra janela</td><td>7-Zip ou Speedometer</td></tr>
                         <tr><td>Mais threads nem sempre rendem</td><td><code class="t">-mmt1</code> → <code class="t">-mmt8</code> (use os valores da Estação 2)</td><td>7-Zip</td></tr>
                         <tr><td>O pendrive é o gargalo</td><td>Disco interno → pendrive: troque <code>teste.dat</code> por <code>E:\teste.dat</code> (a letra do pendrive)</td><td>DiskSpd (comando do d1)</td></tr>
-                        <tr><td>A primeira medição engana</td><td>Primeira linha de resultado do <code class="t">7za b 60</code> → linha <b>Avr:</b> (média)</td><td>7-Zip</td></tr>
+                        <tr><td>A primeira medição engana</td><td>Rode <code class="t">7za b 5</code>: a primeira linha de resultado → a linha <b>Avr:</b> (média das 5)</td><td>7-Zip</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -823,8 +827,8 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.25f"></script>
-    <script src="../comum.js?v=2026.11.25f"></script>
-    <script src="lab.js?v=2026.11.25f"></script>
+    <script src="../logica.js?v=2026.11.25g"></script>
+    <script src="../comum.js?v=2026.11.25g"></script>
+    <script src="lab.js?v=2026.11.25g"></script>
 </body>
 </html>
