@@ -472,7 +472,7 @@
         ['CMD', 'sigla', ['CMD', 'cmd'], 'Prompt de Comando', 'Prompt de Comando do Windows: a janela preta onde se digitam comandos. Abra com ⊞ + R, digite cmd e aperte Enter.'],
         ['CSV', 'sigla', ['CSV', 'csv'], 'tabela em texto', 'Arquivo de texto com uma linha por registro e colunas separadas por ponto e vírgula. Abre no Excel.'],
         ['ACPI', 'sigla', ['ACPI'], 'sensor de energia da placa', 'Padrão de energia e temperatura da placa-mãe. A temperatura ACPI não é a do núcleo do processador.'],
-        ['AVX2', 'sigla', ['AVX2'], 'instruções de cálculo em lote', 'Conjunto de instruções de cálculo em lote dos processadores mais novos. O Cinebench exige.'],
+        ['AVX2', 'sigla', ['AVX2'], 'instruções de cálculo em lote', 'Conjunto de instruções de cálculo em lote dos processadores mais novos. Alguns programas de teste exigem.'],
         ['L2 · L3', 'sigla', ['L2', 'L3'], 'cache dentro da CPU', 'Memória cache de nível 2 e 3: memória pequena e muito rápida dentro do processador.'],
         ['DIMM', 'sigla', ['DIMM'], 'pente de memória', 'Módulo de memória de computador de mesa (o "pente" de RAM).'],
         ['PCIe', 'sigla', ['PCIe'], 'barramento da placa-mãe', 'PCI Express: o barramento dos slots de expansão e dos SSDs NVMe.'],

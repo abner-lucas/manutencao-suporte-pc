@@ -311,3 +311,8 @@ abbr.sigla:focus-visible { outline: 2px solid var(--cobre-claro); outline-offset
     .anotar-tab td { border: 0; padding: 0; }
     .anotar-tab td:nth-child(3) { grid-column: 1 / 3; color: var(--tinta-3); font-size: 13px; }
 }
+
+/* endereços de sites nos passos: link clicável */
+.link-site { font: 600 15px var(--f-mono); color: var(--cobre); text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
+.link-site:hover { color: var(--tinta); }
+.link-site::after { content: " ↗"; font-family: var(--f-corpo); }
