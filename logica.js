@@ -477,7 +477,6 @@
         ['DIMM', 'sigla', ['DIMM'], 'pente de memória', 'Módulo de memória de computador de mesa (o "pente" de RAM).'],
         ['PCIe', 'sigla', ['PCIe'], 'barramento da placa-mãe', 'PCI Express: o barramento dos slots de expansão e dos SSDs NVMe.'],
         ['USB', 'sigla', ['USB'], 'porta USB', 'Porta universal. A USB 3.0 transfere cerca de 10 vezes mais rápido que a USB 2.0.'],
-        ['PNG', 'sigla', ['PNG'], 'formato de imagem (print)', 'Formato de imagem usado para salvar os prints de tela.'],
         ['%USERPROFILE%', 'sigla', ['%USERPROFILE%'], 'sua pasta de usuário', 'Atalho do Windows para a sua pasta de usuário (C:\\Users\\seu-nome). Funciona no Executar e no CMD.'],
         ['E1 … E5', 'sigla', ['E[1-5]'], 'estação 1 a 5', 'Estação: cada parte do laboratório. E1 CPU no navegador, E2 7-Zip, E3 navegador, E4 disco, E5 calor.'],
         ['Rating', 'coluna', ['Rating'], 'nota total do 7-Zip', 'Coluna do 7-Zip: a nota total em MIPS. Na linha Tot, é o último número.'],

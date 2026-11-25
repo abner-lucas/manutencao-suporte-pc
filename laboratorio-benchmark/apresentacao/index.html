@@ -164,7 +164,7 @@ canvas{display:block}
     <div class="row center" data-s="1" style="justify-content:flex-start"><div style="width:180px" class="mono">Abertura</div><div style="height:46px;width:calc(20px*5);background:var(--cool);border-radius:8px"></div><span class="note">20 min · ficha técnica</span></div>
     <div class="row center" data-s="2" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte A</div><div style="height:46px;width:calc(80px*5);background:var(--mint);border-radius:8px"></div><span class="note">80 min · Estações 1 a 4</span></div>
     <div class="row center" data-s="3" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte B</div><div style="height:46px;width:calc(60px*5);background:var(--hot);border-radius:8px"></div><span class="note">60 min · Estação 5 + experimento</span></div>
-    <div class="row center" data-s="4" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte C</div><div style="height:46px;width:calc(40px*5);background:var(--violet);border-radius:8px"></div><span class="note">40 min · planilha e laudo</span></div>
+    <div class="row center" data-s="4" style="justify-content:flex-start"><div style="width:180px" class="mono">Parte C</div><div style="height:46px;width:calc(40px*5);background:var(--violet);border-radius:8px"></div><span class="note">40 min · planilha da turma e entrega</span></div>
   </div>
   <div class="flow" style="margin-top:auto" data-s="5">
     <div class="node"><b>1 · CPU</b>JetStream 3</div><div class="arrow"></div>
@@ -229,7 +229,6 @@ canvas{display:block}
         <li data-s="4"><span class="pin">4</span><b>Log CPU</b>: colar o log_cpu.csv em A1</li>
         <li data-s="5"><span class="pin">5</span><b>Experimento</b>: a hipótese da Parte B</li>
       </ol>
-      <div class="card" data-s="6"><div class="row center" style="justify-content:flex-start;gap:8px"><kbd class="sm">⊞</kbd><span class="plus" style="font-size:20px">+</span><kbd class="sm">Shift</kbd><span class="plus" style="font-size:20px">+</span><kbd class="sm">S</kbd></div><p>Print de cada resultado, salvo como PNG.</p></div>
     </div>
   </div>
 </section>
@@ -436,30 +435,28 @@ canvas{display:block}
         <span style="color:#777">←  →  ⟳</span>
         <div class="field" data-s="1" style="flex:1;background:#f1f3f4;border-radius:999px;padding:6px 14px;font:500 15px var(--f-mono)"><span class="pin">1</span><span class="type" data-s="1" data-text="browserbench.org/JetStream3.0"></span></div>
       </div>
-      <div style="height:360px;background:linear-gradient(160deg,#f4f1ff,#fff);display:flex;flex-direction:column;align-items:center;gap:14px;padding-top:24px">
-        <div style="font:700 34px var(--f-disp);color:#2a1d52">JetStream 3</div>
-        <div class="field" data-s="2" style="background:#6a3df0;color:#fff;padding:10px 28px;border-radius:8px;font-size:18px;font-weight:600"><span class="pin">2</span>Start Test</div>
-        <div class="field" data-s="3" style="font:800 46px var(--f-disp);color:#2a1d52"><span class="pin">3</span>112,5</div>
-        <div class="field" data-s="4" style="display:grid;grid-template-columns:repeat(3,150px);gap:8px;font-size:13px;color:#2a1d52">
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px"><span class="pin" style="width:20px;height:20px;font-size:11px">4</span>subteste A · 98</span>
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste B · 131</span>
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste C · 87</span>
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste D · 144</span>
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">subteste E · 102</span>
-          <span style="background:#ece6ff;padding:6px 8px;border-radius:6px">…</span>
+      <div style="height:360px;background:linear-gradient(180deg,#e8f6fd,#fff 45%);display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:16px">
+        <div style="font:italic 800 40px var(--f-disp);color:#2aa3dc;letter-spacing:-.02em">JetStream<span style="color:#7fd3f7">3</span></div>
+        <div class="field" data-s="2" style="background:#2aa3dc;color:#fff;padding:8px 24px;border-radius:8px;font-size:17px;font-weight:600"><span class="pin">2</span>Start Test</div>
+        <div class="field" data-s="3" style="flex-direction:column;gap:0;color:#2aa3dc"><span style="font:500 44px/1 var(--f-body)"><span class="pin">3</span>254.43</span><span style="font-size:15px;color:#555">Score</span></div>
+        <div class="field" data-s="4" style="display:grid;grid-template-columns:repeat(4,170px);gap:6px 14px;font-size:13px;color:#444;margin-top:8px">
+          <span><span class="pin" style="width:20px;height:20px;font-size:11px">4</span>babylonjs-startup-es6<br><b style="font:500 20px var(--f-body);color:#2aa3dc">28.82</b></span>
+          <span>babylonjs-scene-es6<br><b style="font:500 20px var(--f-body);color:#2aa3dc">74.93</b></span>
+          <span>Babylon<br><b style="font:500 20px var(--f-body);color:#2aa3dc">1267.99</b></span>
+          <span>babel-wtb<br><b style="font:500 20px var(--f-body);color:#2aa3dc">176.40</b></span>
         </div>
       </div>
     </div>
     <div class="col grow">
       <div class="eyebrow">Estação 1 · alunos</div>
       <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
-        <li data-s="1"><span class="pin">1</span>Digite o endereço</li>
+        <li data-s="1"><span class="pin">1</span>Acesse o endereço</li>
         <li data-s="2"><span class="pin">2</span><b>Start Test</b> e solte o mouse</li>
-        <li data-s="3"><span class="pin">3</span>Anote a nota final</li>
-        <li data-s="4"><span class="pin">4</span>Veja os subtestes: onde a máquina sofre?</li>
-        <li data-s="5" style="color:var(--warm)">Anote na planilha + print. Repita 3 vezes.</li>
+        <li data-s="3"><span class="pin">3</span>O número acima de <b>Score</b> é a nota: anote com vírgula</li>
+        <li data-s="4"><span class="pin">4</span>Os blocos de baixo são os subtestes: veja onde a nota é menor</li>
+        <li data-s="5" style="color:var(--warm)">Anote na planilha. Repita 3 vezes.</li>
       </ol>
-      <p class="note" style="margin-top:auto">Ilustração. Nota maior = mais rápido. Nomes e notas dos subtestes são de exemplo.</p>
+      <p class="note" style="margin-top:auto">Tela de referência, valores de exemplo. Nota maior = mais rápido.</p>
     </div>
   </div>
 </section>
@@ -690,7 +687,7 @@ canvas{display:block}
     <div class="col grow">
       <div class="eyebrow">Passos</div>
       <ol class="col" style="padding-left:0;list-style:none;gap:12px;font-size:19px">
-        <li data-s="1"><span class="pin">1</span>Digite o endereço</li>
+        <li data-s="1"><span class="pin">1</span>Acesse o endereço</li>
         <li data-s="2"><span class="pin">2</span><b>Start Test</b> e solte o mouse</li>
         <li data-s="3"><span class="pin">3</span>Anote a nota e o ±</li>
         <li data-s="4"><span class="pin">4</span><b>Details</b>: tempo de cada tarefa</li>
@@ -961,7 +958,7 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
   <h2>Temp_C parada ou vazia?</h2>
   <div class="grid g2">
     <div class="card" data-s="1"><h3>Ela não é o sensor do núcleo</h3><p>É a zona térmica da placa (ACPI). Em muitas máquinas quase não muda.</p></div>
-    <div class="card" data-s="2" style="border-color:var(--hot)"><h3>Não conclua "não esquentou"</h3><p>Registre no laudo como limitação. A prova do calor é a queda do clock.</p></div>
+    <div class="card" data-s="2" style="border-color:var(--hot)"><h3>Não conclua "não esquentou"</h3><p>É uma limitação da medição. A prova do calor é a queda do clock.</p></div>
   </div>
 </section>
 
@@ -984,7 +981,7 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
   <div class="stn">C</div>
   <div class="eyebrow">Parte C · 40 min</div>
   <h1>Juntar os<br>números</h1>
-  <p class="big">Planilha da turma, leitura coletiva, laudo.</p>
+  <p class="big">Planilha da turma, leitura coletiva e entrega.</p>
   <button class="timerbtn" data-min="15">▶ cronômetro 15:00</button>
 </section>
 
@@ -1004,42 +1001,20 @@ Gravando em C:\Users\aluno\bench\log_cpu.csv  (Ctrl+C para parar)
   <div class="card" data-s="5" style="margin-top:auto;border-color:var(--violet)"><p class="big">Máquinas iguais com mais de 5% a 10% de diferença? Algo está errado nelas.</p></div>
 </section>
 
-<!-- 45 LAUDO -->
-<section class="slide" data-title="O laudo" style="--accent:var(--violet)">
-  <div class="eyebrow">Entrega · 1 página</div>
-  <h2>"Este PC serve para edição de vídeo leve?"</h2>
-  <div class="row" style="gap:30px">
-    <ol class="col grow" style="padding-left:0;list-style:none;gap:10px;font-size:20px">
-      <li data-s="1"><span class="pin" style="background:var(--violet)">1</span>Ficha técnica resumida</li>
-      <li data-s="1"><span class="pin" style="background:var(--violet)">2</span>Seus resultados × mediana da turma</li>
-      <li data-s="2"><span class="pin" style="background:var(--violet)">3</span>Gráfico do registrador + 1 frase</li>
-      <li data-s="2"><span class="pin" style="background:var(--violet)">4</span>O gargalo e a prova numérica</li>
-      <li data-s="3"><span class="pin" style="background:var(--violet)">5</span>Upgrade recomendado, pelos números</li>
-      <li data-s="3"><span class="pin" style="background:var(--violet)">6</span>O que não deu para medir sem administrador</li>
-    </ol>
-    <div class="card" style="width:400px" data-s="4">
-      <span class="note">nota</span>
-      <table style="font-size:16px"><tr><td>Protocolo seguido</td><td><b>3</b></td></tr><tr><td>Leitura correta das saídas</td><td><b>3</b></td></tr><tr><td>Gargalo coerente</td><td><b>2</b></td></tr><tr><td>Recomendação e limitações</td><td><b>2</b></td></tr></table>
-    </div>
-  </div>
-</section>
+
 
 <!-- 45b ENTREGA -->
 <section class="slide" data-title="O que entregar" style="--accent:var(--violet)">
-  <div class="eyebrow">Entrega · 3 arquivos · nome SeuNome_parte</div>
-  <h2>O que entregar</h2>
-  <div class="grid g3">
-    <div class="card" data-s="1"><span class="tag">planilha</span><h3 class="mono" style="font-size:20px">SeuNome_registro.xlsx</h3><p>A planilha preenchida, com a aba Log CPU colada.</p></div>
-    <div class="card" data-s="2"><span class="tag">laudo</span><h3 class="mono" style="font-size:20px">SeuNome_laudo.pdf</h3><p>1 página. Word ou Google Docs › Salvar como PDF.</p></div>
-    <div class="card" data-s="3"><span class="tag">evidências</span><h3 class="mono" style="font-size:20px">SeuNome_evidencias.zip</h3><p>Prints PNG, d1.txt a d5.txt, log_cpu.csv.</p></div>
+  <div class="eyebrow">Entrega · 1 arquivo · tarefa no SIGAA</div>
+  <h2>Entregue só a planilha</h2>
+  <div class="card" data-s="1" style="align-self:flex-start;min-width:620px"><span class="tag">planilha</span><h3 class="mono" style="font-size:26px">SeuNome_registro.xlsx</h3><p>Ficha, Medicoes, Log CPU colado e Experimento preenchidos.</p></div>
+  <div class="flow" data-s="2" style="margin-top:14px">
+    <div class="node"><b>Arquivo</b>› Salvar como</div><div class="arrow"></div>
+    <div class="node"><b>SIGAA</b>turma virtual</div><div class="arrow"></div>
+    <div class="node"><b>Tarefa</b>Registro do Laboratório de Benchmark</div><div class="arrow"></div>
+    <div class="node" style="border-color:var(--violet)"><b>Anexar</b>› Enviar</div>
   </div>
-  <div class="flow" data-s="4" style="margin-top:10px">
-    <div class="node"><b>Selecione</b>os arquivos</div><div class="arrow"></div>
-    <div class="node"><b>Botão direito</b></div><div class="arrow"></div>
-    <div class="node"><b>Enviar para</b></div><div class="arrow"></div>
-    <div class="node" style="border-color:var(--violet)"><b>Pasta compactada</b>vira .zip</div>
-  </div>
-  <p class="note" data-s="4" style="margin-top:auto">Troque SeuNome pelo seu nome, sem espaços e sem acentos. Envie pela plataforma da turma.</p>
+  <p class="note" data-s="2" style="margin-top:auto">Troque SeuNome pelo seu nome, sem espaços e sem acentos. Ex.: MariaSilva_registro.xlsx</p>
 </section>
 
 <!-- 46 ERROS -->
@@ -1281,7 +1256,7 @@ var h=(location.hash||'').match(/^#s(\d+)$/);go(h?Math.min(slides.length,Math.ma
 window.addEventListener('hashchange',function(){var m=(location.hash||'').match(/^#s(\d+)$/);if(m&&(+m[1]-1)!==cur)go(+m[1]-1,0);});
 })();
 </script>
-<script src="../../logica.js?v=2026.11.24m"></script>
-<script src="guia.js?v=2026.11.24m"></script>
+<script src="../../logica.js?v=2026.11.24p"></script>
+<script src="guia.js?v=2026.11.24p"></script>
 </body>
 </html>

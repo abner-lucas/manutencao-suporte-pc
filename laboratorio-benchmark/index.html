@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laboratório de Benchmark · Manutenção e Suporte de Computadores</title>
-    <meta name="description" content="Aula prática de benchmark sem administrador: CPU, memória, navegador, disco e calor medidos com ferramentas portáteis e web, com roteiro, comandos, kit, registro e laudo.">
+    <meta name="description" content="Aula prática de benchmark sem administrador: CPU, memória, navegador, disco e calor medidos com ferramentas portáteis e web, com roteiro, comandos, kit e planilha de registro.">
     <meta name="theme-color" content="#eceee6" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#08100c" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d3326'/%3E%3Cpath d='M6 22a10 10 0 0 1 20 0' fill='none' stroke='%23c6ff5a' stroke-width='2.4' stroke-linecap='round'/%3E%3Cpath d='M16 22l6-7' stroke='%23e3914f' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.24m">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24m">
-    <link rel="stylesheet" href="lab.css?v=2026.11.24m">
+    <link rel="stylesheet" href="../style.css?v=2026.11.24p">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24p">
+    <link rel="stylesheet" href="lab.css?v=2026.11.24p">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -72,7 +72,7 @@
                     <p class="d-ementa entra" style="--atraso: .3s">
                         Medir CPU, memória, navegador, disco e calor com ferramentas que rodam <strong>sem senha de administrador</strong>,
                         e depois provar (ou derrubar) hipóteses com os próprios números, em quatro momentos: abertura,
-                        bateria básica, experimentos e fechamento com laudo.
+                        bateria básica, experimentos e fechamento com a planilha preenchida.
                     </p>
                     <div class="d-acoes entra" style="--atraso: .4s">
                         <a class="botao botao-cheio" href="apresentacao/">Abrir a apresentação <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M11 5l5 5-5 5" /></svg></a>
@@ -108,13 +108,13 @@
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">00</span>
                     <h2 id="titulo-momentos" data-palavras>Quatro <em>momentos</em></h2>
-                    <p class="cabeca-lede">Primeiro você conhece a máquina, depois mede, testa uma hipótese e fecha com o laudo.</p>
+                    <p class="cabeca-lede">Primeiro você conhece a máquina, depois mede, testa uma hipótese e entrega a planilha preenchida.</p>
                 </header>
                 <ol class="momentos">
                     <li style="--peso: 20"><b>Abertura</b><span>ficha técnica · protocolo</span></li>
                     <li style="--peso: 80"><b>Parte A</b><span>Estações 1 a 4: bateria básica</span></li>
                     <li style="--peso: 60"><b>Parte B</b><span>Estação 5 · uma hipótese para testar</span></li>
-                    <li style="--peso: 40"><b>Parte C</b><span>planilha da turma · laudo</span></li>
+                    <li style="--peso: 40"><b>Parte C</b><span>planilha da turma · entrega</span></li>
                 </ol>
                 <div class="fluxo-estacoes" aria-label="Estações">
                     <a href="#estacao-1"><b>1</b>CPU<small>JetStream 3</small></a>
@@ -324,24 +324,29 @@
                         </li>
                         <li>
                             <p class="r-faca">Acesse <a class="link-site" href="https://browserbench.org/JetStream3.0/" target="_blank" rel="noopener noreferrer">browserbench.org/JetStream3.0<span class="sr-only"> (abre em nova aba)</span></a>.</p>
-                            <p class="r-ve">A página do JetStream 3 com o botão <b>Start Test</b>.</p>
+                            <p class="r-ve">O título <b>JetStream3</b> em azul, um texto em inglês e, abaixo, o botão <b>Start Test</b>.</p>
                         </li>
                         <li>
                             <p class="r-faca">Clique em <b>Start Test</b> e tire a mão do mouse. Não troque de aba.</p>
-                            <p class="r-ve">Os nomes dos subtestes vão ganhando números, um por um. Leva alguns minutos.</p>
+                            <p class="r-ve">Embaixo aparecem vários blocos, um por subteste (<code>babylonjs-startup-es6</code>, <code>Babylon</code>, <code>babel-wtb</code>…). Cada um ganha um número azul quando termina. Leva alguns minutos.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Quando parar, olhe o número grande no topo da página: é a <b>nota final</b>. Tire um print: <kbd>⊞</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>, arraste sobre a nota e salve como PNG.</p>
+                            <p class="r-faca">Quando todos os blocos tiverem número, olhe o <b>número grande no centro</b>, logo acima da palavra <b>Score</b>: é a nota final.</p>
+                            <figure class="saida saida-clara">
+                                <p class="jt-nota">254.43</p>
+                                <p class="jt-score">Score</p>
+                                <figcaption>exemplo · anote com vírgula: <b>254,43</b> · os números dos blocos de baixo não vão para a planilha</figcaption>
+                            </figure>
                             <p class="r-anote"><span class="cel">Medicoes › D6</span> nota da rodada 1</p>
                         </li>
                         <li>
-                            <p class="r-faca">Aperte <kbd>F5</kbd> para recarregar e repita mais duas vezes.</p>
+                            <p class="r-faca">Aperte <kbd>F5</kbd> para recarregar a página, clique de novo em <b>Start Test</b> e repita mais duas vezes.</p>
                             <p class="r-anote"><span class="cel">E6</span> rodada 2 <span class="cel">F6</span> rodada 3 <span class="cel cel-auto">G6</span> mediana aparece sozinha</p>
                         </li>
                     </ol>
                     <details class="entenda">
                         <summary>Entenda os números</summary>
-                        <p>Cada subteste tem três notas: <b>inicialização</b> (a primeira rodada), <b>pior caso</b> (os engasgos) e <b>caso médio</b> (o ritmo normal). A nota final combina todas. Os subtestes com nota baixa mostram onde a máquina sofre.</p>
+                        <p>Cada bloco de baixo é um subteste, com sua própria nota e uma linha de pontos (cada ponto é uma repetição). Cada subteste tem três notas: <b>inicialização</b> (a primeira rodada), <b>pior caso</b> (os engasgos) e <b>caso médio</b> (o ritmo normal). A nota final combina todas. Os subtestes com nota baixa mostram onde a máquina sofre.</p>
                         <p>O JetStream não mostra a diferença entre 1 núcleo e todos. Isso sai do 7-Zip, na Estação 2.</p>
                     </details>
                 </div>
@@ -622,7 +627,7 @@
                     </details>
                     <details class="entenda">
                         <summary>Sobre a temperatura</summary>
-                        <p>A coluna Temp_C vem do sensor ACPI da placa, não do núcleo: em muitas máquinas fica parada ou vazia. Escreva isso no laudo como limitação, nunca como "não esquentou". A prova do calor é a queda do clock. Se a máquina desligar sozinha, pare o teste e avise.</p>
+                        <p>A coluna Temp_C vem do sensor ACPI da placa, não do núcleo: em muitas máquinas fica parada ou vazia. Considere isso uma limitação da medição, nunca um sinal de que "não esquentou". A prova do calor é a queda do clock. Se a máquina desligar sozinha, pare o teste e avise.</p>
                     </details>
                 </div>
             </div>
@@ -677,62 +682,38 @@
             </div>
         </section>
 
-        <div class="divisor" data-ref="C" data-n="09" data-rotulo="registro e entrega" aria-hidden="true"></div>
+        <div class="divisor" data-ref="C" data-n="09" data-rotulo="entrega no SIGAA" aria-hidden="true"></div>
 
-        <!-- ============ ENTREGA ============ -->
+        <!-- ============ ENTREGA: só a planilha, na tarefa do SIGAA ============ -->
         <section id="entrega" class="secao d-secao" aria-labelledby="titulo-entrega">
             <div class="secao-inner">
                 <header class="cabeca">
                     <span class="cabeca-n" aria-hidden="true">C</span>
-                    <h2 id="titulo-entrega" data-palavras>Registro e <em>entrega</em></h2>
-                    <p class="cabeca-lede">No fim, você entrega três arquivos. Troque <b>SeuNome</b> pelo seu nome, sem espaços e sem acentos.</p>
+                    <h2 id="titulo-entrega" data-palavras>Entrega no <em>SIGAA</em></h2>
+                    <p class="cabeca-lede">Você entrega um arquivo só: a planilha preenchida.</p>
                 </header>
 
                 <div class="entrega-grade">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Na planilha: <b>Arquivo</b> › <b>Salvar como</b> › nome <code>SeuNome_registro.xlsx</code>.</p>
+                            <p class="r-faca">Confira se a planilha está completa: aba <b>Ficha</b>, aba <b>Medicoes</b> (rodadas nas colunas D, E e F), aba <b>Log CPU</b> colada e aba <b>Experimento</b>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Escreva o laudo (1 página) no Word ou no Google Docs e salve em PDF: <b>Arquivo</b> › <b>Salvar como</b> › tipo <b>PDF</b> › <code>SeuNome_laudo.pdf</code>.</p>
+                            <p class="r-faca">Na planilha: <b>Arquivo</b> › <b>Salvar como</b>. No nome, digite <code>SeuNome_registro.xlsx</code>, trocando <b>SeuNome</b> pelo seu nome, sem espaços e sem acentos.</p>
+                            <p class="r-ve">Exemplo: <code>MariaSilva_registro.xlsx</code>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Crie uma pasta e junte nela: os prints PNG, os arquivos <code>d1.txt</code> a <code>d5.txt</code> (em <code>bench\DiskSpd\amd64</code>) e o <code>log_cpu.csv</code> (na pasta <code>bench</code>).</p>
+                            <p class="r-faca">Entre no <b>SIGAA</b> › turma virtual da disciplina › tarefa <b>Registro do Laboratório de Benchmark</b>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Clique com o botão direito na pasta › <b>Enviar para</b> › <b>Pasta compactada</b>. Renomeie para <code>SeuNome_evidencias.zip</code>.</p>
-                        </li>
-                        <li>
-                            <p class="r-faca">Envie os três arquivos pela plataforma da turma.</p>
+                            <p class="r-faca">Anexe o arquivo <b>SeuNome_registro.xlsx</b> e clique em <b>Enviar</b>.</p>
+                            <p class="r-ve">A tarefa aparece como enviada.</p>
                         </li>
                     </ol>
                     <div>
                         <ul class="arquivos-entrega">
-                            <li><span class="ext">xlsx</span><b>SeuNome_registro.xlsx</b><span>a planilha preenchida, com a aba Log CPU colada</span></li>
-                            <li><span class="ext">pdf</span><b>SeuNome_laudo.pdf</b><span>o laudo de uma página</span></li>
-                            <li><span class="ext">zip</span><b>SeuNome_evidencias.zip</b><span>prints PNG, d1.txt a d5.txt e log_cpu.csv</span></li>
+                            <li><span class="ext">xlsx</span><b>SeuNome_registro.xlsx</b><span>a planilha preenchida, com a aba Log CPU colada · enviar na tarefa “Registro do Laboratório de Benchmark” do SIGAA</span></li>
                         </ul>
-                    </div>
-                </div>
-
-                <div class="laudo">
-                    <h3 class="sub">O laudo</h3>
-                    <p class="laudo-pergunta">"Este computador serve para edição de vídeo leve e navegação com muitas abas? Qual é o primeiro upgrade que você recomenda?"</p>
-                    <div class="laudo-grade">
-                        <ol>
-                            <li>Ficha técnica resumida (aba Ficha)</li>
-                            <li>Seus resultados × mediana da turma (coluna G da aba Medicoes)</li>
-                            <li>O gráfico da aba Log CPU, com uma frase</li>
-                            <li>O gargalo e o número que prova</li>
-                            <li>O upgrade recomendado, pelos números</li>
-                            <li>O que não deu para medir sem administrador</li>
-                        </ol>
-                        <dl class="rubrica">
-                            <div><dt>Protocolo seguido (3 rodadas, mediana, ficha)</dt><dd>3</dd></div>
-                            <div><dt>Leitura correta das saídas</dt><dd>3</dd></div>
-                            <div><dt>Gargalo coerente com a evidência</dt><dd>2</dd></div>
-                            <div><dt>Recomendação e limitações justificadas</dt><dd>2</dd></div>
-                        </dl>
                     </div>
                 </div>
             </div>
@@ -814,8 +795,8 @@
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.24m"></script>
-    <script src="../comum.js?v=2026.11.24m"></script>
-    <script src="lab.js?v=2026.11.24m"></script>
+    <script src="../logica.js?v=2026.11.24p"></script>
+    <script src="../comum.js?v=2026.11.24p"></script>
+    <script src="lab.js?v=2026.11.24p"></script>
 </body>
 </html>

@@ -10,7 +10,7 @@ Avisos, ordens de serviço, laboratórios interativos, plano da disciplina e o L
 |---|---|---|
 | **Portal** | `/` | Vista explodida do gabinete, bancada de montagem com POST, avisos, ordens de serviço, diagnóstico e particionador, teclado de termos, inventário e trilha da ementa |
 | **Plano da disciplina** | `/disciplina/` | Ementa, mapa das unidades, aulas com tópicos e materiais, instrumentos de avaliação e bibliografia. É um plano de **referência**: sem datas nem carga horária |
-| **Laboratório de Benchmark** | `/laboratorio-benchmark/` | Roteiro completo da aula prática sem administrador: kit, pré-teste, protocolo, 5 estações com comandos, hipóteses, entrega, laudo e quiz |
+| **Laboratório de Benchmark** | `/laboratorio-benchmark/` | Roteiro completo da aula prática sem administrador: kit, protocolo, 5 estações passo a passo com comandos, hipóteses, entrega da planilha no SIGAA, siglas e quiz |
 | **Apresentação do laboratório** | `/laboratorio-benchmark/apresentacao/` | Os slides da aula (setas para avançar, **O** visão geral, **F** tela cheia) |
 
 ## Estrutura

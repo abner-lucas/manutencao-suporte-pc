@@ -329,3 +329,10 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .partes-cmd dt { flex: none; min-width: 64px; }
 .partes-cmd dt { font: 700 13.5px var(--f-mono); background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5px; }
 .partes-cmd dd { margin: 0; color: var(--tinta-2); }
+
+/* tela de referência clara (ex.: nota do JetStream) */
+.saida-clara { background: #f4fbff; border-color: #bfe3f5; text-align: center; }
+.jt-nota { margin: 0; font: 500 42px/1 var(--f-corpo); color: #2aa3dc; }
+.jt-score { margin: 2px 0 0; font-size: 15px; color: #555; }
+.saida-clara figcaption { justify-content: center; color: #4b5b51; }
+.saida-clara figcaption b { color: #13201a; }
