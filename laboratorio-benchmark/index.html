@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.25h">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25h">
-    <link rel="stylesheet" href="lab.css?v=2026.11.25h">
+    <link rel="stylesheet" href="../style.css?v=2026.11.25j">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.25j">
+    <link rel="stylesheet" href="lab.css?v=2026.11.25j">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -641,8 +641,18 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                             <p class="r-ve">Os números se espalham pelas colunas A, B, C e D (Segundo, MHz_efetivo, Utilizacao, Temp_C). O gráfico do clock aparece sozinho e, na aba Medicoes, <b>G28 a G31</b> se preenchem: clock em repouso, no pico, sob carga e a queda em %.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Compare o seu gráfico com as curvas abaixo. Na aba Medicoes, clique em <b>G32</b>, abra a setinha e escolha o formato.</p>
-                            <p class="r-anote"><span class="cel">Medicoes › G32</span> formato da curva</p>
+                            <p class="r-faca">Preencha na aba <b>Ficha</b> a célula <b>B11</b> (velocidade base, ex.: 2,40). Ela desenha a linha do clock base no gráfico.</p>
+                            <p class="r-ve">O gráfico da aba Log CPU tem três linhas: a <b>fina e clara</b> (cada medida, oscila muito), a <b>verde grossa</b> (média móvel: é ela que mostra o formato) e a <b>vermelha tracejada</b> (clock base). Olhe a verde grossa entre os segundos 60 e 360, que é a carga.</p>
+                        </li>
+                        <li>
+                            <p class="r-faca">Na aba Medicoes, veja a sugestão em <b>G33</b> e confira no gráfico com as regras abaixo. Depois clique em <b>G32</b>, abra a setinha e escolha o formato.</p>
+                            <ul class="hip-regra">
+                                <li><b>Abaixo da base</b>: a verde grossa fica abaixo da vermelha tracejada durante a carga.</li>
+                                <li><b>Dente de serra</b>: durante a carga, a verde grossa sobe e despenca várias vezes, com quedas grandes.</li>
+                                <li><b>Pico e queda</b>: no começo da carga a verde fica alta e depois desce e se firma num nível mais baixo (G31 mostra 10% ou mais).</li>
+                                <li><b>Estável</b>: a verde fica num nível só, perto ou acima da tracejada (G31 abaixo de 10%).</li>
+                            </ul>
+                            <p class="r-anote"><span class="cel">Ficha › B11</span> velocidade base <span class="cel">Medicoes › G32</span> formato da curva</p>
                         </li>
                     </ol>
 
@@ -656,7 +666,8 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                         <svg class="curvas-grafico" viewBox="0 0 600 220" role="img" aria-labelledby="curva-desc">
                             <line x1="40" y1="20" x2="40" y2="190" class="eixo" /><line x1="40" y1="190" x2="590" y2="190" class="eixo" />
                             <line x1="40" y1="110" x2="590" y2="110" class="base" /><text x="586" y="104" text-anchor="end" class="base-txt">clock base</text>
-                            <text x="44" y="210" class="eixo-txt">repouso</text><text x="300" y="210" class="eixo-txt">carga longa</text><text x="586" y="210" text-anchor="end" class="eixo-txt">resfria</text>
+                            <text x="44" y="210" class="eixo-txt">0 s · repouso</text><text x="300" y="210" text-anchor="middle" class="eixo-txt">60 a 360 s · carga</text><text x="586" y="210" text-anchor="end" class="eixo-txt">resfria · 480 s</text>
+                            <path id="curva-crua" class="curva-crua" d="" />
                             <path id="curva" class="curva" d="" />
                         </svg>
                         <p id="curva-desc" class="curvas-desc" aria-live="polite"></p>
@@ -688,38 +699,165 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
                 <div class="estacao-corpo">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Na aba <b>Experimento</b>, clique em <b>B3</b>, abra a setinha e escolha uma hipótese da tabela abaixo.</p>
-                            <p class="r-anote"><span class="cel">B3</span> hipótese <span class="cel">B4</span> ferramenta <span class="cel">B5</span> condição A <span class="cel">B6</span> condição B <span class="cel">B7</span> unidade (pontos, MIPS, MiB/s…)</p>
+                            <p class="r-faca">Abra a aba <b>Experimento</b>. Clique em <b>B3</b>, abra a setinha e escolha uma hipótese.</p>
+                            <p class="r-anote"><span class="cel">B3</span> hipótese escolhida</p>
                         </li>
                         <li>
-                            <p class="r-faca">Meça 3 rodadas na <b>condição A</b>.</p>
-                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span></p>
+                            <p class="r-faca">Abra abaixo o quadro da hipótese escolhida e siga os passos dele: ele diz o que fazer e o que digitar em cada célula.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Mude <b>só</b> o que a hipótese pede (coluna "como mudar") e meça mais 3 rodadas na <b>condição B</b>.</p>
-                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span></p>
-                        </li>
-                        <li>
-                            <p class="r-ve"><b>B13</b> mostra sozinho a diferença entre B e A, em %.</p>
-                            <p class="r-faca">Em <b>B14</b>, escolha <b>Confirmada</b>, <b>Derrubada</b> ou <b>Inconclusiva</b> (diferença menor que 5% é ruído: inconclusiva). Em <b>B15</b>, explique com os números.</p>
-                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> justificativa</p>
+                            <p class="r-ve"><b>B13</b> mostra sozinho a diferença de B em relação a A, em %. O quadro da hipótese diz qual conclusão escolher em <b>B14</b>.</p>
                         </li>
                     </ol>
                 </div>
             </div>
-            <div class="secao-inner">
-                <table class="inventario hipoteses">
-                    <caption class="sr-only">Hipóteses e como mudar a variável</caption>
-                    <thead><tr><th scope="col">Hipótese</th><th scope="col">Como mudar (A → B)</th><th scope="col">Meça com</th></tr></thead>
-                    <tbody>
-                        <tr><td>Modo de energia muda o desempenho</td><td><kbd>⊞</kbd> + <kbd>I</kbd> › Sistema › Energia › Modo de energia: <b>Melhor eficiência</b> → <b>Melhor desempenho</b></td><td>7-Zip (<code class="t">7za b</code>)</td></tr>
-                        <tr><td>Notebook perde na bateria</td><td>Na tomada → tire o carregador</td><td>7-Zip (<code class="t">7za b</code>)</td></tr>
-                        <tr><td>Segundo plano rouba desempenho</td><td>Tudo fechado → um vídeo tocando em outra janela</td><td>7-Zip ou Speedometer</td></tr>
-                        <tr><td>Mais threads nem sempre rendem</td><td><code class="t">-mmt1</code> → <code class="t">-mmt8</code> (use os valores da Estação 2)</td><td>7-Zip</td></tr>
-                        <tr><td>O pendrive é o gargalo</td><td>Disco interno → pendrive: troque <code>teste.dat</code> por <code>E:\teste.dat</code> (a letra do pendrive)</td><td>DiskSpd (comando do d1)</td></tr>
-                        <tr><td>A primeira medição engana</td><td>Rode <code class="t">7za b 5</code>: a primeira linha de resultado → a linha <b>Avr:</b> (média das 5)</td><td>7-Zip</td></tr>
-                    </tbody>
-                </table>
+            <div class="secao-inner hip-lista">
+                <!--
+                    COMO EDITAR UMA HIPÓTESE: cada <details class="hip"> é uma opção da lista de B3 da aba Experimento.
+                    O título (<summary>) deve ser igual ao texto da lista. Dentro: o que preencher em B4 a B7, os passos e a regra da conclusão.
+                -->
+                <details class="hip">
+                    <summary>Modo de energia muda o desempenho</summary>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>7-Zip (7za b)</dd></div>
+                        <div><dt>B5</dt><dd>Modo Melhor eficiência</dd></div>
+                        <div><dt>B6</dt><dd>Modo Melhor desempenho</dd></div>
+                        <div><dt>B7</dt><dd>MIPS</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca"><kbd>⊞</kbd> + <kbd>I</kbd> › <b>Sistema</b> › <b>Energia</b> (ou <b>Energia e bateria</b>) › <b>Modo de energia</b> › escolha <b>Melhor eficiência</b>.</p>
+                            <p class="r-ve">Se a opção estiver bloqueada, escolha outra hipótese em B3.</p></li>
+                        <li><p class="r-faca">No <code>cmd</code>, na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b</code></pre></div>
+                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span> o último número da linha Tot: de cada vez</p></li>
+                        <li><p class="r-faca">Volte em <b>Modo de energia</b> e escolha <b>Melhor desempenho</b>. Rode <code class="t">7za b</code> mais 3 vezes.</p>
+                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span></p></li>
+                        <li><p class="r-faca">Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>+5% ou mais</b> → Confirmada</li><li><b>entre −5% e +5%</b> → Inconclusiva</li><li><b>−5% ou menos</b> → Derrubada</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> ex.: "A mediana passou de 40.000 para 46.000 MIPS (+15%)."</p></li>
+                    </ol>
+                </details>
+
+                <details class="hip">
+                    <summary>Notebook perde na bateria</summary>
+                    <p class="hip-nota">Só para notebook.</p>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>7-Zip (7za b)</dd></div>
+                        <div><dt>B5</dt><dd>Na tomada</dd></div>
+                        <div><dt>B6</dt><dd>Na bateria</dd></div>
+                        <div><dt>B7</dt><dd>MIPS</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca">Com o carregador ligado, no <code>cmd</code> na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b</code></pre></div>
+                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span> o último número da linha Tot:</p></li>
+                        <li><p class="r-faca">Tire o carregador da tomada, espere 1 minuto e rode <code class="t">7za b</code> mais 3 vezes. Depois ligue o carregador de novo.</p>
+                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span></p></li>
+                        <li><p class="r-faca">Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>−5% ou menos</b> → Confirmada (perdeu na bateria)</li><li><b>entre −5% e +5%</b> → Inconclusiva</li><li><b>+5% ou mais</b> → Derrubada</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> justificativa com as duas medianas</p></li>
+                    </ol>
+                </details>
+
+                <details class="hip">
+                    <summary>Segundo plano rouba desempenho</summary>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>7-Zip (7za b)</dd></div>
+                        <div><dt>B5</dt><dd>Tudo fechado</dd></div>
+                        <div><dt>B6</dt><dd>Vídeo tocando em outra janela</dd></div>
+                        <div><dt>B7</dt><dd>MIPS</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca">Feche tudo, menos o <code>cmd</code>. Na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b</code></pre></div>
+                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span> o último número da linha Tot:</p></li>
+                        <li><p class="r-faca">Abra o navegador, coloque um vídeo do YouTube para tocar e deixe a janela aberta ao lado. Volte ao <code>cmd</code> e rode <code class="t">7za b</code> mais 3 vezes, com o vídeo tocando.</p>
+                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span></p></li>
+                        <li><p class="r-faca">Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>−5% ou menos</b> → Confirmada (o vídeo roubou desempenho)</li><li><b>entre −5% e +5%</b> → Inconclusiva</li><li><b>+5% ou mais</b> → Derrubada</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> justificativa com as duas medianas</p></li>
+                    </ol>
+                </details>
+
+                <details class="hip">
+                    <summary>Mais threads nem sempre rendem</summary>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>7-Zip (7za b -mmt)</dd></div>
+                        <div><dt>B5</dt><dd>4 threads (-mmt4)</dd></div>
+                        <div><dt>B6</dt><dd>8 threads (-mmt8)</dd></div>
+                        <div><dt>B7</dt><dd>MIPS</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca">No <code>cmd</code>, na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b -mmt4</code></pre></div>
+                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span> o último número da linha Tot:</p></li>
+                        <li><p class="r-faca">Agora com o dobro de threads, mais 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b -mmt8</code></pre></div>
+                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span></p></li>
+                        <li><p class="r-faca">O dobro de threads deveria dar perto de <b>+100%</b>. Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>menos de +50%</b> → Confirmada (rendeu bem menos que o dobro)</li><li><b>+50% ou mais</b> → Derrubada (quase dobrou)</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> compare com os núcleos da Ficha (B9): passou do número de núcleos físicos?</p></li>
+                    </ol>
+                </details>
+
+                <details class="hip">
+                    <summary>O pendrive é o gargalo</summary>
+                    <p class="hip-nota">Precisa de um pendrive. Descubra a letra dele no Explorador de Arquivos (ex.: E:). Nos comandos abaixo, troque <b>E:</b> pela sua letra.</p>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>DiskSpd</dd></div>
+                        <div><dt>B5</dt><dd>Disco interno</dd></div>
+                        <div><dt>B6</dt><dd>Pendrive</dd></div>
+                        <div><dt>B7</dt><dd>MiB/s</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca">No <code>cmd</code>, na pasta <code class="t">%USERPROFILE%\bench\DiskSpd\amd64</code>, rode 3 vezes (leitura no disco interno):</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>diskspd -c256M -d20 -b1M -Sh -L teste.dat &gt; pA.txt</code></pre></div>
+                            <p class="r-faca">Depois de cada vez, abra o resultado:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>notepad pA.txt</code></pre></div>
+                            <p class="r-anote"><span class="cel">B10</span> <span class="cel">C10</span> <span class="cel">D10</span> o MiB/s da linha total:</p></li>
+                        <li><p class="r-faca">Agora no pendrive, mais 3 vezes:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>diskspd -c256M -d20 -b1M -Sh -L E:\teste.dat &gt; pB.txt</code></pre></div>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>notepad pB.txt</code></pre></div>
+                            <p class="r-anote"><span class="cel">B11</span> <span class="cel">C11</span> <span class="cel">D11</span> o MiB/s da linha total:</p></li>
+                        <li><p class="r-faca">Apague os arquivos de teste, um de cada vez:</p>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Prompt de Comando"><pre><code>del teste.dat</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>del E:\teste.dat</code></pre></div>
+                            </div></li>
+                        <li><p class="r-faca">Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>−5% ou menos</b> → Confirmada (o pendrive é mais lento)</li><li><b>entre −5% e +5%</b> → Inconclusiva</li><li><b>+5% ou mais</b> → Derrubada</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> justificativa com as duas medianas</p></li>
+                    </ol>
+                </details>
+
+                <details class="hip">
+                    <summary>A primeira medição engana</summary>
+                    <dl class="hip-celulas">
+                        <div><dt>B4</dt><dd>7-Zip (7za b 5 -md22)</dd></div>
+                        <div><dt>B5</dt><dd>Primeira passada</dd></div>
+                        <div><dt>B6</dt><dd>Média das 5 passadas</dd></div>
+                        <div><dt>B7</dt><dd>MIPS</dd></div>
+                    </dl>
+                    <ol class="roteiro">
+                        <li><p class="r-faca">No <code>cmd</code>, na pasta <code class="t">%USERPROFILE%\bench\extra\x64</code>, rode:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b 5 -md22</code></pre></div>
+                            <dl class="partes-cmd"><div><dt>5</dt><dd>5 passadas seguidas</dd></div><div><dt>-md22</dt><dd>só o tamanho de dados de 4 MB: cada passada vira uma linha <code class="t">22:</code></dd></div></dl>
+                            <p class="r-ve">Cinco linhas que começam com <b>22:</b>, uma por passada, e no fim a linha <b>Avr:</b> (a média). Use o 4º número de cada linha, o <b>Rating</b> da parte Compressing:</p>
+                            <figure class="saida">
+<pre>22:      61524  1205   4969  <span class="s-fraco">59851</span>  |  ...   <span class="s-fraco">← 1ª passada</span>
+22:      62492  1260   4826  60793  |  ...
+...
+Avr:     62008  1232   4897  <span class="s-fim">60322</span>  |  ...   <span class="s-fim">← média</span></pre>
+                                <figcaption>valores de exemplo</figcaption>
+                            </figure>
+                            <p class="r-anote"><span class="cel">B10</span> Rating da 1ª linha 22: <span class="cel">B11</span> Rating da linha Avr:</p></li>
+                        <li><p class="r-faca">Rode <code class="t">7za b 5 -md22</code> mais 2 vezes, da mesma forma.</p>
+                            <p class="r-anote"><span class="cel">C10</span> <span class="cel">D10</span> 1ª passada <span class="cel">C11</span> <span class="cel">D11</span> média</p></li>
+                        <li><p class="r-faca">Conclusão pelo valor de <b>B13</b>:</p>
+                            <ul class="hip-regra"><li><b>diferença de 5% ou mais</b> (para mais ou para menos) → Confirmada (a 1ª passada fugiu da média)</li><li><b>diferença menor que 5%</b> → Derrubada (a 1ª passada já era confiável)</li></ul>
+                            <p class="r-anote"><span class="cel">B14</span> conclusão <span class="cel">B15</span> justificativa com os números</p></li>
+                    </ol>
+                </details>
             </div>
         </section>
 
@@ -836,8 +974,8 @@ total:   87107305472 |  83072 | <span class="s-fim">4153.72</span> |  <span clas
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.25h"></script>
-    <script src="../comum.js?v=2026.11.25h"></script>
-    <script src="lab.js?v=2026.11.25h"></script>
+    <script src="../logica.js?v=2026.11.25j"></script>
+    <script src="../comum.js?v=2026.11.25j"></script>
+    <script src="lab.js?v=2026.11.25j"></script>
 </body>
 </html>

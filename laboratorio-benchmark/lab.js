@@ -91,31 +91,43 @@
 
     /* ================= CURVAS DE CLOCK ================= */
     var CURVAS = [
-        ['Estável', 'sobe ao iniciar a carga e fica estável: a refrigeração dá conta. Típico de desktop.'],
-        ['Pico e queda', 'pico nos primeiros segundos, depois cai e estabiliza mais baixo: limite de energia ou de temperatura de longa duração. Típico de notebook.'],
-        ['Dente de serra', 'sobe e despenca repetidamente: throttling térmico. Investigue poeira, pasta térmica e ventoinha.'],
-        ['Abaixo da base', 'fica abaixo do clock base o tempo todo: plano de energia econômico, bateria ou refrigeração falhando.']
+        ['Estável', 'a verde grossa fica num nível só durante a carga, perto ou acima da base: a refrigeração dá conta.'],
+        ['Pico e queda', 'alta no começo da carga, depois desce e se firma mais baixo: limite de energia ou de temperatura. Comum em notebook.'],
+        ['Dente de serra', 'sobe e despenca várias vezes durante a carga: throttling térmico. Investigue poeira, pasta térmica e ventoinha.'],
+        ['Abaixo da base', 'a verde grossa fica abaixo da tracejada durante a carga: modo de energia econômico, bateria ou refrigeração falhando.']
     ];
     var curva = $('#curva'), desc = $('#curva-desc');
-    function y(ghz) { return 190 - ghz / 5 * 170; }  // eixo: 0 a 5 GHz; base em 2,9 GHz ≈ y 110 (ajustado abaixo)
-    function pontos(c) {
-        var p = [], X0 = 40, X1 = 590;
-        for (var t = 0; t <= 100; t += 1) {
-            var g;
-            if (t < 12 || t > 88) g = 1.2;
-            else if (c === 0) g = 4.1;
-            else if (c === 1) g = t < 26 ? 4.3 : 3.3;
-            else if (c === 2) g = (Math.floor((t - 12) / 9) % 2 === 0) ? 4.1 - ((t - 12) % 9) / 9 * 0.5 : 2.3 + ((t - 12) % 9) / 9 * 0.6;
-            else g = 2.1;
-            p.push((X0 + t / 100 * (X1 - X0)).toFixed(1) + ' ' + y(g).toFixed(1));
-        }
-        return 'M' + p.join(' L');
+    // eixo de 0 a 5 GHz; base em 2,4 GHz; tempo de 0 a 480 s (carga de 60 a 360 s), como no roteiro
+    function y(ghz) { return 190 - ghz / 5 * 170; }
+    function x(s) { return 40 + s / 480 * 550; }
+    var semente = 7;
+    function ruido() { semente = (semente * 16807) % 2147483647; return semente / 2147483647 - 0.5; }
+    function nivel(c, s) {
+        if (s < 60 || s > 360) return 1.3;
+        if (c === 0) return 2.6;
+        if (c === 1) return s < 120 ? 3.1 : 2.55;
+        if (c === 2) { var f = ((s - 60) % 60) / 60; return f < 0.6 ? 2.7 : 1.6; }
+        return 1.9;
     }
-    // a linha tracejada do clock base fica em 2,9 GHz
-    var base = $('.curvas-grafico .base'), baseTxt = $('.curvas-grafico .base-txt');
-    base.setAttribute('y1', y(2.9)); base.setAttribute('y2', y(2.9)); baseTxt.setAttribute('y', y(2.9) - 6);
+    function caminhos(c) {
+        semente = 7 + c;
+        var crua = [], media = [], k = 4;
+        var vals = [];
+        for (var s = 0; s <= 480; s += 3) vals.push([s, nivel(c, s) + ruido() * 0.55]);
+        vals.forEach(function (v, i) {
+            crua.push(x(v[0]).toFixed(1) + ' ' + y(v[1]).toFixed(1));
+            var a = Math.max(0, i - k), b = Math.min(vals.length - 1, i + k), soma = 0;
+            for (var t = a; t <= b; t++) soma += vals[t][1];
+            media.push(x(v[0]).toFixed(1) + ' ' + y(soma / (b - a + 1)).toFixed(1));
+        });
+        return { crua: 'M' + crua.join(' L'), media: 'M' + media.join(' L') };
+    }
+    var base = $('.curvas-grafico .base'), baseTxt = $('.curvas-grafico .base-txt'), crua = $('#curva-crua');
+    base.setAttribute('y1', y(2.4)); base.setAttribute('y2', y(2.4)); baseTxt.setAttribute('y', y(2.4) - 6);
     function mostrarCurva(c) {
-        curva.setAttribute('d', pontos(c));
+        var cam = caminhos(c);
+        curva.setAttribute('d', cam.media);
+        if (crua) crua.setAttribute('d', cam.crua);
         var len = curva.getTotalLength ? Math.ceil(curva.getTotalLength()) : 2000;
         curva.style.setProperty('--len', len);
         curva.classList.remove('desenhando'); void curva.getBBox(); if (!C.reduzido) curva.classList.add('desenhando');

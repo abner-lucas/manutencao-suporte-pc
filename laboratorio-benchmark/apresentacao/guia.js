@@ -33,8 +33,8 @@
         'Forma 2: registrar': 'Nada a digitar agora: o log vai para a aba Log CPU no fim',
         'Roteiro do estresse': 'Nada a digitar agora: o log vai para a aba Log CPU no fim',
         'Fazer o gráfico': 'Log CPU › A1 › Ctrl + V',
-        'Ler a curva': 'Medicoes › G32 › escolha o formato na lista',
-        'Parte B · escolha a hipótese': 'Experimento › B3 hipótese · B10 a D10 condição A · B11 a D11 condição B · B14 conclusão',
+        'Ler a curva': 'Ficha › B11 base · Medicoes › G33 sugere · G32 escolha o formato',
+        'Parte B · escolha a hipótese': 'Experimento › B3 hipótese · siga o quadro dela na página do laboratório',
         'O que entregar': 'Arquivo › Salvar como › SeuNome_registro.xlsx'
     };
 

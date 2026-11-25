@@ -364,3 +364,32 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .mmf-botao { background: #5b0d9e; font-size: 15px; padding: 4px 22px; }
 .mmf-ref figcaption { display: block; color: #4b5b51; line-height: 1.6; }
 .mmf-ref figcaption b { color: #13201a; }
+
+/* curvas de referência: linha crua clara + média grossa, como no gráfico da planilha */
+.curvas-grafico .curva-crua { fill: none; stroke: rgba(255,106,77,.35); stroke-width: 1; }
+.curvas-grafico .base { stroke: #ff6a4d; stroke-dasharray: 7 6; stroke-width: 2; }
+.curvas-grafico .base-txt { fill: #ff8a6e; }
+
+/* hipóteses: um quadro que expande por opção */
+.hip-lista { display: grid; gap: 10px; margin-top: 8px; }
+.hip { border: 1px solid var(--linha-forte); border-radius: 16px; background: var(--superficie); }
+.hip > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 0 18px; font: 700 18px var(--f-titulo); }
+.hip > summary::-webkit-details-marker { display: none; }
+.hip > summary::before { content: "+"; flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: #b48cff; color: #1a0b33; font: 700 16px var(--f-mono); }
+.hip[open] > summary::before { content: "\2212"; }
+.hip[open] > summary { border-bottom: 1px dashed var(--linha-forte); }
+.hip > *:not(summary) { margin-left: 18px; margin-right: 18px; }
+.hip > .roteiro { margin-bottom: 10px; --cor: #b48cff; }
+.hip-nota { margin-top: 12px; color: var(--tinta-2); font-size: 15px; }
+.hip-celulas { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px 14px; margin-top: 14px; margin-bottom: 4px; }
+.hip-celulas div { display: flex; gap: 10px; align-items: center; }
+.hip-celulas dt { font: 700 13px var(--f-mono); background: #fff2b3; color: #3a3200; box-shadow: inset 0 0 0 1.5px #b9a24a; border-radius: 4px; padding: 2px 8px; flex: none; }
+.hip-celulas dd { margin: 0; font-weight: 600; font-size: 15px; }
+.hip-regra { margin: 4px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: 15px; color: var(--tinta-2); }
+.hip-regra b { color: var(--tinta); }
+
+/* comandos no meio do texto podem quebrar no celular */
+.roteiro code.t { white-space: normal; overflow-wrap: anywhere; }
+/* referência: média grossa verde, igual ao gráfico da planilha */
+.curvas-grafico .curva { stroke: #7fc400; filter: drop-shadow(0 0 5px rgba(127,196,0,.45)); }
+.curvas-grafico .curva-crua { stroke: rgba(200,210,190,.35); }
