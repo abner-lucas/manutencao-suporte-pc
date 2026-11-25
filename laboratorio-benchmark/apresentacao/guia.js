@@ -23,7 +23,7 @@
         '7-Zip · ler a saída': 'Medicoes › último número do Tot (Rating) e o do meio (R/U) · colunas D, E, F',
         '7-Zip · razão todos/1 thread': 'Medicoes › G35 calcula sozinho',
         'IPC do 7-Zip': 'Medicoes › G36 calcula sozinho (depois de colar o Log CPU)',
-        'Os testes web': 'Medicoes › Speedometer linhas 14 e 15 · MotionMark 16 · Hz da tela 17',
+        'Os testes web': 'Medicoes › Speedometer linhas 14 e 15 · MotionMark 16 · Framerate (Hz) 17',
         'Speedometer · onde clicar': 'Medicoes › navegador 1 linha 14 · navegador 2 linha 15 · só a nota, sem o ±',
         'Experimento: navegador × navegador': 'Medicoes › linha 14 (navegador 1) · linha 15 (navegador 2)',
         'DiskSpd · comandos': 'Os resultados vão para d1.txt a d5.txt, na pasta amd64',

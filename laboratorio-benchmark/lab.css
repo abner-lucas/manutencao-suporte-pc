@@ -337,3 +337,11 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .saida-clara figcaption { justify-content: center; color: #4b5b51; }
 .saida-clara figcaption b { color: #13201a; }
 .saida-quebra pre { white-space: pre-wrap; word-break: break-word; }
+
+/* referência da tela do MotionMark */
+.mm-ref { text-align: left; background: #fffaf3; border-color: #f3d3a6; }
+.mm-botao { display: inline-block; margin: 0 0 8px; padding: 6px 28px; background: #f7931e; color: #fff; font: italic 500 20px var(--f-corpo); transform: skewX(-12deg); }
+.mm-frase { margin: 0; font-size: 15px; color: #1d1d1d; }
+.mm-frase b { background: #fff2b3; padding: 0 3px; }
+.mm-ref figcaption { justify-content: flex-start; }
+.mm-ref figcaption { display: block; line-height: 1.6; }
