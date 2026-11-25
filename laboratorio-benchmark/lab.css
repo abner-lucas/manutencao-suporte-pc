@@ -354,3 +354,13 @@ code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5
 .sp-det { display: inline-block; margin: 0 0 8px; padding: 2px 22px; border: 2px solid #ddd; border-radius: 8px; font-size: 14px; }
 .sp-ref figcaption { display: block; color: #c9ccce; line-height: 1.6; }
 .sp-ref figcaption b { color: #fff; }
+
+/* referência do resultado do MotionMark */
+.mmf-ref { text-align: left; background: #fff; border-color: #ddd; }
+.mmf-nota { margin: 0; font: italic 800 48px/1 var(--f-corpo); color: #111; }
+.mmf-fps { margin: 0; font: italic 800 30px/1.1 var(--f-corpo); color: #111; }
+.mmf-mais { margin: 2px 0 8px 28px; font: italic 400 18px var(--f-corpo); color: #777; }
+.mmf-tab { margin: 0 0 10px; font: italic 400 13.5px/1.5 var(--f-corpo); color: #333; }
+.mmf-botao { background: #5b0d9e; font-size: 15px; padding: 4px 22px; }
+.mmf-ref figcaption { display: block; color: #4b5b51; line-height: 1.6; }
+.mmf-ref figcaption b { color: #13201a; }
