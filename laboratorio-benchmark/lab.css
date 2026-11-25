@@ -316,3 +316,16 @@ abbr.sigla:focus-visible { outline: 2px solid var(--cobre-claro); outline-offset
 .link-site { font: 600 15px var(--f-mono); color: var(--cobre); text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
 .link-site:hover { color: var(--tinta); }
 .link-site::after { content: " ↗"; font-family: var(--f-corpo); }
+
+/* comando digitado no CMD dentro do texto: mesmo fundo preto do terminal */
+code.t { background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5px; font-weight: 600; white-space: nowrap; }
+/* sequência: uma tela preta por comando, com a ordem no título */
+.cmd-seq { display: grid; gap: 8px; counter-reset: none; }
+.cmd[data-ordem]::before { content: attr(data-ordem) " · " attr(data-titulo); }
+.cmd[data-ordem] pre { padding: 10px 16px; }
+/* o que significa cada parte do comando */
+.partes-cmd { margin: 2px 0 0; display: grid; gap: 6px; }
+.partes-cmd div { display: flex; gap: 12px; align-items: baseline; font-size: 15px; }
+.partes-cmd dt { flex: none; min-width: 64px; }
+.partes-cmd dt { font: 700 13.5px var(--f-mono); background: #050a07; color: #b9f27a; padding: 2px 8px; border-radius: 5px; }
+.partes-cmd dd { margin: 0; color: var(--tinta-2); }

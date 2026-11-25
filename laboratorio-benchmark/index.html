@@ -23,9 +23,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../style.css?v=2026.11.24j">
-    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24j">
-    <link rel="stylesheet" href="lab.css?v=2026.11.24j">
+    <link rel="stylesheet" href="../style.css?v=2026.11.24k">
+    <link rel="stylesheet" href="../disciplina/disciplina.css?v=2026.11.24k">
+    <link rel="stylesheet" href="lab.css?v=2026.11.24k">
 </head>
 <body>
     <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -286,7 +286,7 @@
                             <p class="r-anote"><span class="cel">B18</span> versão do Windows</p>
                         </li>
                         <li>
-                            <p class="r-faca"><kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Na janela preta, digite <code>systeminfo</code> e <kbd>Enter</kbd>.</p>
+                            <p class="r-faca"><kbd>⊞</kbd> + <kbd>R</kbd>, digite <code>cmd</code>, <kbd>Enter</kbd>. Na janela preta, digite <code class="t">systeminfo</code> e <kbd>Enter</kbd>.</p>
                             <p class="r-ve">Uma lista longa. A segunda linha é <b>Nome do host</b>.</p>
                             <p class="r-anote"><span class="cel">B7</span> nome do computador</p>
                         </li>
@@ -368,10 +368,15 @@
                         <li>
                             <p class="r-faca">Digite (ou cole com o botão direito) e aperte <kbd>Enter</kbd>:</p>
                             <div class="cmd" data-titulo="Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\extra\x64</code></pre></div>
-                            <p class="r-ve">A linha agora termina em <code>\x64&gt;</code>. Se aparecer "O sistema não pode encontrar o caminho", rode o <b>preparar.bat</b>.</p>
+                            <p class="r-ve">A linha agora termina em <code class="t">\x64&gt;</code>. Se aparecer "O sistema não pode encontrar o caminho", rode o <b>preparar.bat</b>.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Digite <code>7za b</code> e <kbd>Enter</kbd>. Mãos fora por cerca de 1 minuto.</p>
+                            <p class="r-faca">Digite e aperte <kbd>Enter</kbd>. Mãos fora por cerca de 1 minuto:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b</code></pre></div>
+                            <dl class="partes-cmd" aria-label="O que significa cada parte">
+                                <div><dt>7za</dt><dd>o programa 7-Zip, versão para linha de comando</dd></div>
+                                <div><dt>b</dt><dd><i>benchmark</i>: em vez de comprimir um arquivo, faz o teste de desempenho</dd></div>
+                            </dl>
                             <p class="r-ve">Uma tabela. A última linha começa com <b>Tot:</b> e tem três números.</p>
                             <figure class="saida">
 <pre>Tot:          <span class="s-fraco">1108</span>   <span class="s-meio">4475</span>   <span class="s-fim">49630</span></pre>
@@ -380,10 +385,16 @@
                             <p class="r-anote"><span class="cel">D8</span> o último número (Rating) <span class="cel">D12</span> o número do meio (R/U)</p>
                         </li>
                         <li>
-                            <p class="r-faca">Repita com estes comandos. De cada um, anote só o <b>último número</b> da linha Tot:</p>
-                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>7za b -mmt1
-7za b -mmt2
-7za b -mmt4</code></pre></div>
+                            <p class="r-faca">Rode estes três, um de cada vez, na ordem. Espere cada um terminar (a linha <code class="t">\x64&gt;</code> volta) antes do próximo. De cada um, anote só o <b>último número</b> da linha Tot:</p>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Prompt de Comando"><pre><code>7za b -mmt1</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>7za b -mmt2</code></pre></div>
+                                <div class="cmd" data-ordem="3º" data-titulo="Prompt de Comando"><pre><code>7za b -mmt4</code></pre></div>
+                            </div>
+                            <dl class="partes-cmd" aria-label="O que significa cada parte">
+                                <div><dt>-mmt</dt><dd><i>multithread</i>: quantos threads o teste pode usar</dd></div>
+                                <div><dt>-mmt1 · -mmt2 · -mmt4</dt><dd>usa 1, 2 ou 4 threads. Sem <code class="t">-mmt</code> (só <code class="t">7za b</code>), usa todos</dd></div>
+                            </dl>
                             <p class="r-anote"><span class="cel">D9</span> -mmt1 (1 thread) <span class="cel">D10</span> -mmt2 <span class="cel">D11</span> -mmt4</p>
                         </li>
                         <li>
@@ -474,20 +485,24 @@
                 <div class="estacao-corpo">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Abra o <code>cmd</code> e entre na pasta do DiskSpd:</p>
+                            <p class="r-faca">Abra o <code>cmd</code>, digite e aperte <kbd>Enter</kbd> para entrar na pasta do DiskSpd:</p>
                             <div class="cmd" data-titulo="Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\DiskSpd\amd64</code></pre></div>
                         </li>
                         <li>
-                            <p class="r-faca">Cole um comando por vez e aperte <kbd>Enter</kbd>. Espere a linha <code>&gt;</code> voltar antes do próximo.</p>
-                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b1M -Sh -L teste.dat &gt; d1.txt
-diskspd -c1G -d20 -b1M -w100 -Sh -L teste.dat &gt; d2.txt
-diskspd -c1G -d20 -b4K -r -o1 -Sh -L teste.dat &gt; d3.txt
-diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat &gt; d4.txt
-diskspd -c1G -d20 -b1M -L teste.dat &gt; d5.txt</code></pre></div>
+                            <p class="r-faca">Rode os cinco, um de cada vez, na ordem. Cole um, aperte <kbd>Enter</kbd> e espere a linha <code class="t">amd64&gt;</code> voltar antes do próximo.</p>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b1M -Sh -L teste.dat &gt; d1.txt</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b1M -w100 -Sh -L teste.dat &gt; d2.txt</code></pre></div>
+                                <div class="cmd" data-ordem="3º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b4K -r -o1 -Sh -L teste.dat &gt; d3.txt</code></pre></div>
+                                <div class="cmd" data-ordem="4º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b4K -r -o32 -t4 -Sh -L teste.dat &gt; d4.txt</code></pre></div>
+                                <div class="cmd" data-ordem="5º" data-titulo="Prompt de Comando"><pre><code>diskspd -c1G -d20 -b1M -L teste.dat &gt; d5.txt</code></pre></div>
+                            </div>
                             <p class="r-ve">Nada aparece na tela por cerca de 20 segundos: o resultado vai direto para os arquivos d1.txt a d5.txt. O primeiro demora mais, porque cria o arquivo de teste de 1 GB.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Digite <code>notepad d1.txt</code> e <kbd>Enter</kbd>. No Bloco de Notas, aperte <kbd>Ctrl</kbd> + <kbd>F</kbd> e procure <code>Total IO</code>.</p>
+                            <p class="r-faca">Digite e aperte <kbd>Enter</kbd> para abrir o resultado no Bloco de Notas:</p>
+                            <div class="cmd" data-titulo="Prompt de Comando"><pre><code>notepad d1.txt</code></pre></div>
+                            <p class="r-faca">No Bloco de Notas, aperte <kbd>Ctrl</kbd> + <kbd>F</kbd> e procure <code>Total IO</code>.</p>
                             <p class="r-ve">Uma tabela. Use a linha que começa com <b>total:</b>.</p>
                             <figure class="saida">
 <pre>  thread |  bytes  | I/Os | <span class="s-fim">MiB/s</span>  | <span class="s-meio">I/O per s</span> | <span class="s-fraco">AvgLat</span>
@@ -550,9 +565,11 @@ diskspd -c1G -d20 -b1M -L teste.dat &gt; d5.txt</code></pre></div>
                 <div class="estacao-corpo">
                     <ol class="roteiro">
                         <li>
-                            <p class="r-faca">Abra um <code>cmd</code> e digite, uma linha por vez:</p>
-                            <div class="cmd" data-titulo="Janela 1 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench
-registrar</code></pre></div>
+                            <p class="r-faca">Abra um <code>cmd</code> e rode, um de cada vez, na ordem:</p>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Janela 1 · Prompt de Comando"><pre><code>registrar</code></pre></div>
+                            </div>
                             <p class="r-ve"><code>Gravando em ...\bench\log_cpu.csv</code> e uma linha nova por segundo com 4 números. Deixe essa janela aberta.</p>
                         </li>
                         <li>
@@ -560,12 +577,17 @@ registrar</code></pre></div>
                         </li>
                         <li>
                             <p class="r-faca">Abra um <b>segundo</b> <code>cmd</code> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>cmd</code>) e rode a carga:</p>
-                            <div class="cmd" data-titulo="Janela 2 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\extra\x64
-7za b 60</code></pre></div>
+                            <div class="cmd-seq">
+                                <div class="cmd" data-ordem="1º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>cd %USERPROFILE%\bench\extra\x64</code></pre></div>
+                                <div class="cmd" data-ordem="2º" data-titulo="Janela 2 · Prompt de Comando"><pre><code>7za b 60</code></pre></div>
+                            </div>
+                            <dl class="partes-cmd" aria-label="O que significa cada parte">
+                                <div><dt>b 60</dt><dd>repete o teste 60 vezes seguidas: é a carga longa que esquenta o processador</dd></div>
+                            </dl>
                             <p class="r-ve">O 7-Zip repete o teste 60 vezes, por cerca de 10 minutos. Mãos fora.</p>
                         </li>
                         <li>
-                            <p class="r-faca">Quando a janela 2 terminar, espere <b>2 minutos</b>. Na janela 1, aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code>S</code> e <kbd>Enter</kbd>.</p>
+                            <p class="r-faca">Quando a janela 2 terminar, espere <b>2 minutos</b>. Na janela 1, aperte <kbd>Ctrl</kbd> + <kbd>C</kbd>. Se perguntar "Deseja finalizar o arquivo em lotes (S/N)?", digite <code class="t">S</code> e <kbd>Enter</kbd>.</p>
                         </li>
                         <li>
                             <p class="r-faca">Na pasta <b>bench</b> (<kbd>⊞</kbd> + <kbd>R</kbd>, <code>%USERPROFILE%\bench</code>, <kbd>Enter</kbd>), dê dois cliques em <b>log_cpu.csv</b>. Aperte <kbd>Ctrl</kbd> + <kbd>A</kbd> e <kbd>Ctrl</kbd> + <kbd>C</kbd>.</p>
@@ -600,7 +622,7 @@ registrar</code></pre></div>
 
                     <details class="entenda">
                         <summary>O registrar não funcionou?</summary>
-                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Anote o valor no caderno a cada 30 segundos durante o <code>7za b 60</code>.</p>
+                        <p>Observe à mão: <kbd>⊞</kbd> + <kbd>R</kbd>, <code>taskmgr</code> › Desempenho › CPU, campo <b>Velocidade</b>. Anote o valor no caderno a cada 30 segundos durante o <code class="t">7za b 60</code>.</p>
                     </details>
                     <details class="entenda">
                         <summary>Sobre a temperatura</summary>
@@ -648,12 +670,12 @@ registrar</code></pre></div>
                     <caption class="sr-only">Hipóteses e como mudar a variável</caption>
                     <thead><tr><th scope="col">Hipótese</th><th scope="col">Como mudar (A → B)</th><th scope="col">Meça com</th></tr></thead>
                     <tbody>
-                        <tr><td>Modo de energia muda o desempenho</td><td><kbd>⊞</kbd> + <kbd>I</kbd> › Sistema › Energia › Modo de energia: <b>Melhor eficiência</b> → <b>Melhor desempenho</b></td><td>7-Zip (<code>7za b</code>)</td></tr>
-                        <tr><td>Notebook perde na bateria</td><td>Na tomada → tire o carregador</td><td>7-Zip (<code>7za b</code>)</td></tr>
+                        <tr><td>Modo de energia muda o desempenho</td><td><kbd>⊞</kbd> + <kbd>I</kbd> › Sistema › Energia › Modo de energia: <b>Melhor eficiência</b> → <b>Melhor desempenho</b></td><td>7-Zip (<code class="t">7za b</code>)</td></tr>
+                        <tr><td>Notebook perde na bateria</td><td>Na tomada → tire o carregador</td><td>7-Zip (<code class="t">7za b</code>)</td></tr>
                         <tr><td>Segundo plano rouba desempenho</td><td>Tudo fechado → um vídeo tocando em outra janela</td><td>7-Zip ou Speedometer</td></tr>
-                        <tr><td>Mais threads nem sempre rendem</td><td><code>-mmt1</code> → <code>-mmt8</code> (use os valores da Estação 2)</td><td>7-Zip</td></tr>
+                        <tr><td>Mais threads nem sempre rendem</td><td><code class="t">-mmt1</code> → <code class="t">-mmt8</code> (use os valores da Estação 2)</td><td>7-Zip</td></tr>
                         <tr><td>O pendrive é o gargalo</td><td>Disco interno → pendrive: troque <code>teste.dat</code> por <code>E:\teste.dat</code> (a letra do pendrive)</td><td>DiskSpd (comando do d1)</td></tr>
-                        <tr><td>A primeira medição engana</td><td>Primeira linha de resultado do <code>7za b 60</code> → linha <b>Avr:</b> (média)</td><td>7-Zip</td></tr>
+                        <tr><td>A primeira medição engana</td><td>Primeira linha de resultado do <code class="t">7za b 60</code> → linha <b>Avr:</b> (média)</td><td>7-Zip</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -796,8 +818,8 @@ registrar</code></pre></div>
         <p class="rodape-assinatura" aria-hidden="true">MSC-PORTAL · LAB BENCHMARK · SEM ADMINISTRADOR</p>
     </footer>
 
-    <script src="../logica.js?v=2026.11.24j"></script>
-    <script src="../comum.js?v=2026.11.24j"></script>
-    <script src="lab.js?v=2026.11.24j"></script>
+    <script src="../logica.js?v=2026.11.24k"></script>
+    <script src="../comum.js?v=2026.11.24k"></script>
+    <script src="lab.js?v=2026.11.24k"></script>
 </body>
 </html>
